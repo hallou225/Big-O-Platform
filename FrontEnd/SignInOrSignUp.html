@@ -4,6 +4,7 @@
     <!-- On this page, users have the option the sign in as an student, sign in as a instructor, or create an account -->
 
     <head>
+
         <!-- Page Title -->
         <title>---ADD PAGE TITLE---</title>
 
@@ -30,22 +31,36 @@
 
         <!-- Make every link in Newest.htm open on a new, or blank, tab (unless otherwise specified for that particular link) -->
         <base href="SignInOrSignUp.html" target="_blank">
+
     </head>
+
     <body>
+
         <!-- Body -->
 
         <h1>Sign in</h1>
+
+        <!-- Login Form -->
         <form id="loginForm">
+
+            <!-- Label to be paired with input id="username" -->
             <label for="username">Username:</label>
+            <!-- Text input with id="username" -->
             <input type="text" id="username" name="username" required><br>
     
+            <!-- Label to be paired with input id="username" -->
             <label for="password">Password:</label>
+            <!-- Text input with id="username" -->
             <input type="password" id="password" name="password" required><br>
     
+            <!-- Submit button which calls showUsernameAndPassword() function when clicked -->
             <input type="button" value="Submit" onclick="showUsernameAndPassword()">
+
         </form>
     
+        <!-- Div that displays username and password when submit button is clicked (FOR TESTING PURPOSES ONLY) -->
         <div id="testingDiv"></div>
 
     </body>
+
 </html>
