@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+    <!-- On this page, users have the option the sign in as an student, sign in as a instructor, or create an account -->
+
+    <head>
+        <!-- Page Title -->
+        <title>---ADD PAGE TITLE---</title>
+
+        <!-- Reference a CSS Page -->
+        <link rel="stylesheet" href="SignInOrSignUp.css">
+
+        <!-- Reference a JS Page -->
+        <script src="SignInOrSignUp.js"></script>
+
+        <!-- Define the character set used -->
+        <meta charset="UTF-8">
+
+        <!-- Define keywords for search engines -->
+        <meta name="keywords" content="---ADD KEYWORDS---">
+
+        <!-- Define a description of your web page -->
+        <meta name="description" content="---ADD DESCRIPTION---">
+
+        <!-- Define the author of a page -->
+        <meta name="author" content="---ADD AUTHORS---">
+
+        <!-- Setting the viewport to make your webpage look good on all devices -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Make every link in Newest.htm open on a new, or blank, tab (unless otherwise specified for that particular link) -->
+        <base href="SignInOrSignUp.html" target="_blank">
+    </head>
+    <body>
+        <!-- Body -->
+
+        <h1>Sign in</h1>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+    
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+    
+            <input type="button" value="Submit" onclick="showUsernameAndPassword()">
+        </form>
+    
+        <div id="testingDiv"></div>
+
+    </body>
+</html>
