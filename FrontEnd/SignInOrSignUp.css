@@ -1,0 +1,126 @@
+body {
+    margin: 0;
+    background-color: rgb(1, 132, 202);
+}
+
+#toolBar {
+    height: 55px;
+    box-shadow: 0px 4px 8px rgb(33, 70, 90);
+    background-color: white;
+}
+
+#signInForm {
+    width: 370px;
+    height: 480px;
+    margin: auto;
+    background-color: white;
+    margin-top: 50px;
+    box-shadow: 0px 4px 8px rgb(33, 70, 90);;
+}
+
+.textEntry {
+    width: 98%;
+    display: block;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
+    border-bottom: 1px solid #c5c5c5;
+    margin-bottom: 10px;
+}
+
+.textEntry::placeholder {
+    color: #c5c5c5;
+    font-size: 12pt;
+}
+
+#signInFormContent {
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 1px;
+}
+
+#signInButton {
+    margin-top: 25px;
+    width: 100%;
+    height: 35px;
+    border: none;
+    background-color: rgb(1, 132, 202);
+    color: white;
+    font-size: 12pt;
+}
+
+#signInButton:hover {
+    cursor: pointer;
+    background-color: rgb(0, 108, 167);
+}
+
+#checkboxDiv {
+    position: relative;
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+  }
+  
+#checkboxDiv input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: white;
+    border: 2px solid rgb(117, 117, 117);
+}
+
+#checkboxDiv:hover input ~ .checkmark {
+    border-color: rgb(1, 132, 202);
+}
+
+#checkboxDiv input:checked ~ .checkmark {
+    background-color: rgb(1, 132, 202);
+    border-color: rgb(1, 132, 202);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+#checkboxDiv input:checked ~ .checkmark:after {
+    display: block;
+}
+
+#checkboxDiv .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+label[for="passwordCheckbox"] {
+    margin-left: 35px;
+    font-size: 14pt;
+}
+
+#forgotPassword {
+    display: block;
+    padding-top: 20px;
+    font-size: 14pt;
+    text-decoration: none;
+    color: rgb(1, 132, 202);
+font-weight: 600;
+}
+
+#forgotPassword:hover {
+    color: rgb(0, 92, 142);
+}
