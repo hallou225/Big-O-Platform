@@ -7,6 +7,10 @@ body {
     height: 55px;
     box-shadow: 0px 4px 8px rgb(33, 70, 90);
     background-color: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+
 }
 
 #signInForm {
@@ -14,7 +18,7 @@ body {
     height: 480px;
     margin: auto;
     background-color: white;
-    margin-top: 50px;
+    margin-top: 120px;
     box-shadow: 0px 4px 8px rgb(33, 70, 90);;
 }
 
