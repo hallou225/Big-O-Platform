@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,7 +12,8 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
-    <title>{% block title %}My Site{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/base.css'%}">
+    <title>{% block title %}Big-O Project{% endblock %}</title>
   </head>
   <body>
 
