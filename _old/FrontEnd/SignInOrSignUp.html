@@ -36,7 +36,18 @@
 
     <body>
 
-        <div id="toolBar"></div>
+        <!-- Tool Bar -->
+        <div id="toolBar">
+
+            <!-- Content inside the tool bar -->
+            <div id="toolBarContent">
+
+            <!-- Title -->
+            <h1>Big <label id="O">O</label> Complexity</h1>
+
+            </div>
+
+        </div>
 
         <!-- Sign in form -->
         <form id="signInForm">
@@ -47,10 +58,10 @@
                 <h1 id="signInHeader">Sign in</h1>
 
                 <!-- Text entry for username -->
-                <input type="text" class="textEntry" id="username" name="username" placeholder="Username" required><br>
+                <input type="text" class="textEntry" id="username" name="username" placeholder="Username" autocomplete="off" required><br>
         
                 <!-- Text entry for password -->
-                <input type="password" class="textEntry" id="password" name="password" placeholder="Password" required><br>
+                <input type="password" class="textEntry" id="password" name="password" placeholder="Password" autocomplete="off" required><br>
 
                 <!-- Check box for toggling password visibility -->
                 <label id="checkboxDiv">
@@ -65,7 +76,10 @@
                 <input type="button" id="signInButton" value="Sign In" onclick="showUsernameAndPassword()">
 
                 <!-- Link to "Forgot Password" page -->
-                <a id="forgotPassword" href="https://www.google.com">Forgot Password?</a>
+                <a class="formLink" id="forgotPassword" href="https://www.google.com">Forgot Password?</a>
+
+                <!-- Link to "Sign Up" page -->
+                <a class="formLink" id="signUp" href="https://www.google.com">New? Sign up for free!</a>
 
             </div>
 
