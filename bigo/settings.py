@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
-from secrets import *
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,11 +19,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config("SECRET_KEY")
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bigo',
+        'USER': 'bigo',
+        'PASSWORD': config("DB_PASS"),
+        'HOST':'localhost',
+        'PORT':'3306',
+    }
+}
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','54.161.242.113','ec2-54-161-242-113.compute-1.amazonaws.com']
 
+## adding static root
+STATIC_ROOT = 'staticfiles'
 
 # Application definition
 
@@ -108,6 +122,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+#STATIC_URL = '/home/ubuntu/Big-O-Platform/_static/'
 STATIC_URL = '/static/'
 MEDIA_URL  = '/images/'
 
