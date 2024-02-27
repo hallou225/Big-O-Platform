@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
-from secrets import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,11 +18,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-g)!7_qp5w6e1=%cnac++x_w52*c77l#kley(-1_s&aubq1a$!c'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','54.161.242.113','ec2-54-161-242-113.compute-1.amazonaws.com']
 
+## adding static root
+STATIC_ROOT = 'staticfiles'
 
 # Application definition
 
@@ -74,6 +78,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bigo.wsgi.application'
 
+
+# Database
+# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bigo',
+        'USER': 'bigo',
+        'PASSWORD': 'password',
+        'HOST':'localhost',
+        'PORT':'3306',
+    }
+}
+
+
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -108,6 +131,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+#STATIC_URL = '/home/ubuntu/Big-O-Platform/_static/'
 STATIC_URL = '/static/'
 MEDIA_URL  = '/images/'
 
