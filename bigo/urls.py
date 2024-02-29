@@ -22,9 +22,9 @@ urlpatterns = [
     path('admin/', admin.site.urls), 
     path("__debug__/", include("debug_toolbar.urls")),
     path("", include('home.urls')),
-    path("home/", include('home.urls')),
-    path("login/", include('login.urls')),
-    path("register/", include('register.urls')),
+    path("signup/", include('signup.urls')),
+    path("signup2/", include('signup2.urls')),
+    path("createclass/", include('createclass.urls')),
     path("student/", include('student.urls')),
     path("teacher/", include('teacher.urls'))
 ]

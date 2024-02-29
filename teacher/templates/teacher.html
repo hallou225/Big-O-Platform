@@ -1,4 +1,126 @@
-{% extends 'base.html' %}
+{% extends 'baseTeacher.html' %}
+{% load static %}
 {% block content %}
-    <h1>teacher page rendered</h1>
+    <!-- Div for main content of page -->
+    <div id="mainContent">
+
+        <div id="mainHeadingDiv">
+
+            <!-- Main heading -->
+            <h1 class="myH1" id="mainHeading"></h1>
+
+            <!-- Button to open "Create a Class" page -->
+            <button" id="createClassButton" onclick="createNewClass()"><div id="createClassText">Create a Class</div><div id="plus">+</div></button>
+
+        </div>
+
+        <!--  Class buttons -->
+        <div id="classButtonsDiv">
+
+            <!-- Class buttons with class name and class image inside -->
+            <button class="classButton" onclick="openClass()">
+
+                <!-- Name of class -->
+                <div class="className">Class Name 1</div>
+
+                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
+                <div class="semester">Spring 2024</div>
+
+                <!-- Container for the  classimage -->
+                <div class="classImageContainer">
+
+                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
+                    <img id="classImage" src="{% static '/images/pencil.svg'%}" alt="Filler Image">
+
+                </div>
+
+            </button>
+
+            <!-- Class buttons with class name and class image inside -->
+            <button class="classButton" onclick="openClass()">
+
+                <!-- Name of class -->
+                <div class="className">Class Name 1</div>
+
+                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
+                <div class="semester">Spring 2024</div>
+
+                <!-- Container for the  classimage -->
+                <div class="classImageContainer">
+
+                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
+                    <img id="classImage" src="{% static '/images/fillerArt.png'%}" alt="Filler Image">
+
+                </div>
+
+            </button>
+
+            <!-- Class buttons with class name and class image inside -->
+            <button class="classButton" onclick="openClass()">
+
+                <!-- Name of class -->
+                <div class="className">Class Name 1</div>
+
+                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
+                <div class="semester">Spring 2024</div>
+
+                <!-- Container for the  classimage -->
+                <div class="classImageContainer">
+
+                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
+                    <img id="classImage" src="{% static '/images/pencilBLUE.svg'%}" alt="Filler Image">
+
+                </div>
+
+            </button>
+
+            <!-- Class buttons with class name and class image inside -->
+            <button class="classButton" onclick="openClass()">
+
+                <!-- Name of class -->
+                <div class="className">Class Name 1</div>
+
+                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
+                <div class="semester">Spring 2024</div>
+
+                <!-- Container for the  classimage -->
+                <div class="classImageContainer">
+
+                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
+                    <img id="classImage" src="{% static '/images/pencilBLUE2.svg'%}" alt="Filler Image">
+
+                </div>
+
+            </button>
+
+            <!-- Class buttons with class name and class image inside -->
+            <button class="classButton" onclick="openClass()">
+
+                <!-- Name of class -->
+                <div class="className">Class Name 1</div>
+
+                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
+                <div class="semester">Spring 2024</div>
+
+                <!-- Container for the  classimage -->
+                <div class="classImageContainer">
+
+                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
+                    <img id="classImage" src="{% static '/images/pencilBLUE3.svg'%}" alt="Filler Image">
+
+                </div>
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Div for teacher profile content -->
+    <div id="teacherProfileDiv">
+
+        <!-- Main heading -->
+        <h1 class="myH1">Profile</h1>
+
+    </div>
 {% endblock %}

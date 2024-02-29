@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+    <!-- On this page, users have the option the sign in as an student, sign in as a instructor, or create an account -->
+
+    <head>
+
+        <!-- Page Title -->
+        <title>---ADD PAGE TITLE---</title>
+
+        <!-- Reference a CSS Page -->
+        <link rel="stylesheet" href="CreateAClass.css">
+
+        <!-- Reference a JS Page -->
+        <script src="CreateAClass.js"></script>
+
+        <!-- Define the character set used -->
+        <meta charset="UTF-8">
+
+        <!-- Define keywords for search engines -->
+        <meta name="keywords" content="---ADD KEYWORDS---">
+
+        <!-- Define a description of your web page -->
+        <meta name="description" content="---ADD DESCRIPTION---">
+
+        <!-- Define the author of a page -->
+        <meta name="author" content="---ADD AUTHORS---">
+
+        <!-- Setting the viewport to make your webpage look good on all devices -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    </head>
+
+    <body>
+
+        <!-- Tool Bar -->
+        <div id="toolBar">
+
+            <!-- Content inside the tool bar -->
+            <div id="toolBarContent">
+
+            <!-- Title -->
+            <h1>Big <label id="O">O</label> Complexity</h1>
+
+            </div>
+
+        </div>
+
+        <!-- Create a Class form (use post method to prevent data being shown in url) -->
+        <form id="createAClassForm" method="post">
+
+            <!-- Content inside the form -->
+            <div id="createAClassFormContent">
+            
+                <h1 id="createAClassHeader">Create a Class</h1>
+                <h2 id="enterClassName">Enter a Class Name</h2>
+
+                <!-- Text entry for class name -->
+                <input type="text" class="textEntry" id="className" name="className" placeholder="Class Name" autocomplete="off" required><br>
+
+                <h2>Choose the Semester</h2>
+
+                <!-- Input for season -->
+                <input type="search" list="seasonList" class="textEntry" id="seasonInput" placeholder="Term">
+
+                <!-- List of season options -->
+                <datalist id="seasonList">
+                    <option value="Spring"></option>
+                    <option value="Summer"></option>
+                    <option value="Fall"></option>
+                    <option value="Winter"></option>
+                </datalist>
+
+                <h3>/</h3>
+
+                <!-- Input for year -->
+                <input type="search" list="yearList" class="textEntry" id="yearInput" placeholder="Year">
+
+                <!-- List of year options -->
+                <datalist id="yearList">
+                    <script>
+                        for (let year = 2020; year <= 2050; year++) {
+                        document.write(`<option>${year}</option>\n`);
+                        }
+                    </script>
+                </datalist>
+                
+                <h2 id="enterClassToken">Enter a Class Token</h2>
+                <!-- Text entry for unique class token -->
+                <input type="text" class="textEntry" id="classToken" name="classToken" placeholder="Class Token" autocomplete="off" required><br>
+
+                <!-- Next button to take the user to the next page -->
+                <button id="submitButton" onclick="submitClass(event)">Submit</button>
+
+            </div>
+
+        </form>
+
+    </body>
+
+</html>
