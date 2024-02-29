@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+    <!-- On this page, users have the option the sign in as an student, sign in as a instructor, or create an account -->
+
+    <head>
+
+        <!-- Page Title -->
+        <title>---ADD PAGE TITLE---</title>
+
+        <!-- Reference a CSS Page -->
+        <link rel="stylesheet" href="SignInOrSignUp.css">
+
+        <!-- Reference a JS Page -->
+        <script src="SignInOrSignUp.js"></script>
+
+        <!-- Define the character set used -->
+        <meta charset="UTF-8">
+
+        <!-- Define keywords for search engines -->
+        <meta name="keywords" content="---ADD KEYWORDS---">
+
+        <!-- Define a description of your web page -->
+        <meta name="description" content="---ADD DESCRIPTION---">
+
+        <!-- Define the author of a page -->
+        <meta name="author" content="---ADD AUTHORS---">
+
+        <!-- Setting the viewport to make your webpage look good on all devices -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Make every link in Newest.htm open on a new, or blank, tab (unless otherwise specified for that particular link) -->
+        <base href="SignInOrSignUp.html" target="_blank">
+
+    </head>
+
+    <body>
+
+        <!-- Tool Bar -->
+        <div id="toolBar">
+
+            <!-- Content inside the tool bar -->
+            <div id="toolBarContent">
+
+            <!-- Title -->
+            <h1>Big <label id="O">O</label> Complexity</h1>
+
+            </div>
+
+        </div>
+
+        <!-- Sign in form -->
+        <form id="signInForm">
+
+            <!-- Content inside the form -->
+            <div id="signInFormContent">
+            
+                <h1 id="signInHeader">Sign in</h1>
+
+                <!-- Text entry for username -->
+                <input type="text" class="textEntry" id="username" name="username" placeholder="Username" autocomplete="off" required><br>
+        
+                <!-- Text entry for password -->
+                <input type="password" class="textEntry" id="password" name="password" placeholder="Password" autocomplete="off" required><br>
+
+                <!-- Check box for toggling password visibility -->
+                <label id="checkboxDiv">
+                    <input type="checkbox" id="passwordCheckbox" onclick="togglePasswordVisibility()">
+                    <span class="checkmark"></span>
+                </label>
+                
+                <!-- Label next to checkbox that describes its purpose -->
+                <label for="passwordCheckbox">Show Password</label><br>
+        
+                <!-- Submit button which calls showUsernameAndPassword() function when clicked -->
+                <input type="button" id="signInButton" value="Sign In" onclick="showUsernameAndPassword()">
+
+                <!-- Link to "Forgot Password" page -->
+                <a class="formLink" id="forgotPassword" href="https://www.google.com">Forgot Password?</a>
+
+                <!-- Link to "Sign Up" page -->
+                <a class="formLink" id="signUp" href="https://www.google.com">New? Sign up for free!</a>
+
+            </div>
+
+        </form>
+    
+        <!-- Div that displays username and password when submit button is clicked (FOR TESTING PURPOSES ONLY) -->
+        <div id="testingDiv"></div>
+
+    </body>
+
+</html>
