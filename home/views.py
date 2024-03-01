@@ -4,3 +4,9 @@ from django.shortcuts import render, HttpResponse
 
 def home(request):
     return render(request, 'home.html')
+
+def teacher(request):
+    return render(request, 'teacher.html')
+
+def signup(request):
+    return render(request, 'signup.html')

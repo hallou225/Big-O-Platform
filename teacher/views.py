@@ -4,3 +4,6 @@ from django.shortcuts import render
 
 def teacher(request):
     return render(request, 'teacher.html')
+
+def createclass(request):
+    return render(request, 'createclass.html')

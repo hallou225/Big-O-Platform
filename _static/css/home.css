@@ -1,0 +1,185 @@
+/* Color Palette:
+        * Black: #1E1F22
+        * Dark Grey: #2A2D31
+        * Lighter Grey: #303338
+        * Text Entry Grey: #3d4147
+        * Text Placeholder Grey: #686b6d
+        * Light blue: #37c6ff
+        * Dark Blue #1b33b6
+*/
+
+html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: #1E1F22;
+}
+
+#navbar {
+    height: 60px;
+    background-color: #303338;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+#navbarContent {
+    color: white;
+    text-align: center;
+    line-height: 0;
+    padding-top: 5px;
+}
+
+#O {
+    color: #37c6ff;
+}
+
+#logo {
+    width: 50px;
+    height: 50px;
+    margin-top: 0;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+
+#signInForm {
+    width: 370px;
+    height: 480px;
+    margin: auto;
+    background-color: #303338;
+    margin-top: 120px;
+
+}
+
+#signInHeader {
+    color: white;
+    padding-bottom: 20px;
+}
+
+.textEntry {
+    width: 96%;
+    display: block;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
+    margin-bottom: 10px;
+    background-color: #3d4147;
+    color: white;
+    font-size: 12pt;
+    border-radius: 8px;
+    padding-left: 10px;
+    font-family: inherit;
+    outline: none;
+}
+
+.textEntry:focus {
+    outline: 2px solid #37c6ff;
+}
+
+.textEntry::placeholder {
+    color: #686b6d;
+    font-size: 12pt;
+}
+
+#signInFormContent {
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 1px;
+}
+
+#signInButton {
+    margin-top: 25px;
+    width: 100%;
+    height: 35px;
+    border: none;
+    background-color: #37c6ff;
+    color: #1b33b6;
+    font-size: 12pt;
+    font-family: inherit;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+#signInButton:hover {
+    cursor: pointer;
+    background-color: #1b33b6;
+    color: #37c6ff;
+}
+
+#checkboxDiv {
+    position: relative;
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+  }
+  
+#checkboxDiv input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #3d4147;
+    border: 2px solid #686b6d;
+}
+
+#checkboxDiv:hover input ~ .checkmark {
+    border-color: #37c6ff;
+}
+
+#checkboxDiv input:checked ~ .checkmark {
+    background-color: #37c6ff;
+    border-color: #37c6ff;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+#checkboxDiv input:checked ~ .checkmark:after {
+    display: block;
+}
+
+#checkboxDiv .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #1b33b6;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+label[for="passwordCheckbox"] {
+    margin-left: 35px;
+    font-size: 12pt;
+    color: white;
+    vertical-align: top;
+    padding-bottom: 20px;
+}
+
+.formLink {
+    display: block;
+    padding-top: 20px;
+    font-size: 12pt;
+    text-decoration: none;
+    color: #37c6ff;
+    font-weight: 600;
+}
+
+.formLink:hover {
+    color: #1b33b6;
+}
