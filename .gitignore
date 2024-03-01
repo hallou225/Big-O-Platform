@@ -1,6 +1,7 @@
 .env
-.pyc
+*.pyc
 .sqlite3
 .DS_Store
 .vscode
 staticfiles/
+venv/
