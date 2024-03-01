@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,12 +20,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g)!7_qp5w6e1=%cnac++x_w52*c77l#kley(-1_s&aubq1a$!c'
+SECRET_KEY = config("SECRET_KEY")
+DATABASES = {
+
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bigo',
+        'USER': 'bigo',
+        'PASSWORD': config("DB_PASS"),
+        'HOST':'localhost',
+        'PORT':'3306',
+    }
+}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','54.161.242.113']
+ALLOWED_HOSTS = ['127.0.0.1','54.161.242.113','ec2-54-161-242-113.compute-1.amazonaws.com']
 
 ## adding static root
 STATIC_ROOT = 'staticfiles'
@@ -79,18 +91,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bigo.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -125,7 +125,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/staticfiles/'
+STATIC_URL = '/static/'
 MEDIA_URL  = '/images/'
 
 # Default primary key field type
