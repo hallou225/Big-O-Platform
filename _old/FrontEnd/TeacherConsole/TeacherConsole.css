@@ -1,0 +1,180 @@
+/* Color Palette:
+        * Black: #1E1F22
+        * Dark Grey: #2A2D31
+        * Lighter Grey: #303338
+        * Text Entry Grey: #3d4147
+        * Text Placeholder Grey: #686b6d
+        * Light blue: #37c6ff
+        * Dark Blue #1b33b6
+*/
+
+html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: #1E1F22;
+}
+
+#toolBar {
+    height: 55px;
+    background-color: #303338;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+#toolBarContent {
+    color: white;
+    text-align: center;
+    line-height: 0;
+    padding-top: 5px;
+}
+
+#O {
+    color: #37c6ff;
+}
+
+#mainContent {
+    margin-left: 35px;
+    margin-top: 50px;
+    position: absolute;
+    /*background-color: red;*/
+}
+
+.myH1 {
+    color: white;
+    font-size: 24pt;
+}
+
+#mainHeadingDiv {
+    display: flex;
+    /*background-color: red;*/
+    width: 830px;
+}
+
+#mainHeading {
+    width: 540px;
+    /*background-color: orange;*/
+}
+
+#createClassButton {
+    transition: 0.3s ease;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: #37c6ff;
+    font-family: inherit;
+    right: 0;
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    display: flex;
+    position: absolute;
+    user-select: none;
+}
+
+#createClassButton:hover {
+    width: 220px;
+    cursor: pointer;
+    background-color: #1b33b6;
+    margin-right: 0;
+}
+
+#createClassButton:hover #createClassText {
+    visibility: visible;
+    padding-left: 5px;
+}
+
+#createClassButton:hover #plus {
+    color: #37c6ff;
+}
+
+#plus {
+    font-size: 24pt;
+    font-weight: 600;
+    right: 7px;
+    margin-bottom: 5px;
+    position: absolute;
+    color: #1b33b6;
+}
+
+#createClassText {
+    transition-delay: 0.2s;
+    font-size: 17pt;
+    font-weight: 600;
+    margin-left: 10px;
+    visibility: hidden;
+    margin-right: 4px;
+    white-space: nowrap;
+    color: #37c6ff;
+}
+
+#classButtonsDiv {
+    display: grid;
+    grid-template-columns: 250px 250px 250px;
+    /*background-color: red;*/
+    width: min-content;
+    height: min-content;
+    row-gap: 40px;
+    column-gap: 40px;
+}
+
+.classButton {
+    width: 250px;
+    height: 250px;
+    background-color: #303338;
+    color: white;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    display: block;
+}
+
+.classButton:hover {
+    outline: 2px solid #37c6ff;
+    cursor: pointer;
+    background-color: #1d1f22;
+}
+
+.classImageContainer {
+    background-color: white;
+    height: 182px;
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#classImage {
+    height: 180px;
+    width: 250px;
+}
+
+.className {
+    font-size: 15pt;
+    margin-top: 15px;
+    /*background-color: red;*/
+}
+
+.semester {
+    font-size: 10pt;
+    margin-top: 0;
+    padding-top: 0;
+    /*background-color: red;*/
+    margin-bottom: 15px;
+}
+
+#teacherProfileDiv {
+    margin-left: 905px;
+    margin-top: 132px;
+    position: absolute;
+    background-color: #303338;
+    width: 497px;
+    height: 540px;
+}
