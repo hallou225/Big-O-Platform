@@ -15,7 +15,11 @@
 
             <h2 id="chooseRole">Are you a Teacher or a Student?</h2>
 
-            <h5>*** ADD A TOGGLE SWITCH HERE ***</h5>
+            <!-- Dropdown menu for role selection -->
+            <select name="roles" id="dropDownRoles" class="textEntry">
+                <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
+            </select>
 
             <!-- Next button to take the user to the next page -->
             <button id="submitButton" onclick="submitAccount(event)">Create Account</button>

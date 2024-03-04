@@ -15,30 +15,35 @@
 
             <h2>Choose the Semester</h2>
 
-            <!-- Input for season -->
-            <input type="search" list="seasonList" class="textEntry" id="seasonInput" placeholder="Term">
+            <!-- Div for the semester inputs -->
+            <div id="semesterDiv">
 
-            <!-- List of season options -->
-            <datalist id="seasonList">
-                <option value="Spring"></option>
-                <option value="Summer"></option>
-                <option value="Fall"></option>
-                <option value="Winter"></option>
-            </datalist>
+                <!-- Input for season -->
+                <input type="search" list="seasonList" class="textEntry" id="seasonInput" placeholder="Term">
 
-            <h3>/</h3>
+                <!-- List of season options -->
+                <datalist id="seasonList">
+                    <option value="Spring"></option>
+                    <option value="Summer"></option>
+                    <option value="Fall"></option>
+                    <option value="Winter"></option>
+                </datalist>
 
-            <!-- Input for year -->
-            <input type="search" list="yearList" class="textEntry" id="yearInput" placeholder="Year">
+                <h3>/</h3>
 
-            <!-- List of year options -->
-            <datalist id="yearList">
-                <script>
-                    for (let year = 2020; year <= 2050; year++) {
-                    document.write(`<option>${year}</option>\n`);
-                    }
-                </script>
-            </datalist>
+                <!-- Input for year -->
+                <input type="search" list="yearList" class="textEntry" id="yearInput" placeholder="Year">
+
+                <!-- List of year options -->
+                <datalist id="yearList">
+                    <script>
+                        for (let year = 2020; year <= 2050; year++) {
+                        document.write(`<option>${year}</option>\n`);
+                        }
+                    </script>
+                </datalist>
+
+            </div>
             
             <h2 id="enterClassToken">Enter a Class Token</h2>
             <!-- Text entry for unique class token -->
