@@ -30,7 +30,7 @@ DATABASES = {
         'HOST':     config("DB_HOST"),
         'PORT':     config("DB_PORT"),
     }
-}
+} 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG")
@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'home',
     'signup',
-    'signup2',
     'createclass',
     'student',
     'teacher',

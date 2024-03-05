@@ -6,6 +6,6 @@ function nextPage(event) {
     event.preventDefault();
 
     /* Open the next page in the same tab */
-    window.open("../signup2", "_self");
+    window.open("/signup/2", "_self");
 
 }

@@ -18,10 +18,10 @@ body {
 }
 
 #navbar {
-    height: 60px;
+    height: 5vw;
     background-color: #303338;
     position: fixed;
-    width: 100%;
+    width: 100vw;
     top: 0;
     z-index: 10;
 }
@@ -30,7 +30,11 @@ body {
     color: white;
     text-align: center;
     line-height: 0;
-    padding-top: 5px;
+    padding-top: 0.4vw;
+}
+
+#bigoTitle {
+    font-size: 2.8vw;
 }
 
 #O {
@@ -38,81 +42,86 @@ body {
 }
 
 #logo {
-    width: 50px;
-    height: 50px;
+    width: 4.2vw;
+    height: 4.2vw;
     margin-top: 0;
     position: absolute;
-    left: 5px;
-    top: 5px;
+    left: 0.4vw;
+    top: 0.4vw;
 }
 
 #createAccountForm {
-    width: 370px;
-    height: 480px;
+    width: 29.5vw;
+    height: 38.3vw;
     margin: auto;
     background-color: #303338;
-    margin-top: 120px;
+    margin-top: 8.3vw;
 }
 
 #createAccountFormContent {
-    padding-left: 25px;
-    padding-right: 25px;
-    padding-top: 1px;
+    padding-left: 1.7vw;
+    padding-right: 1.7vw;
+    padding-top: 0.1vw;
 }
 
 #createAccountHeader {
     color: white;
-    padding-bottom: 20px;
+    padding-bottom: 1.6vw;
+    font-size: 2.2vw;
 }
 
 h2 {
     color: white;
-    font-size: 15pt;
+    font-size: 1.6vw;
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0.8vw;
 }
 
 .textEntry {
-    width: 96%;
+    width: 25.2vw;
     display: block;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 0.6vw;
+    padding-bottom: 0.6vw;
     border: none;
-    margin-bottom: 10px;
+    margin-bottom: 0.8vw;
     background-color: #3d4147;
     color: white;
-    font-size: 12pt;
-    border-radius: 8px;
-    padding-left: 10px;
+    font-size: 1.3vw;
+    border-radius: 0.8vw;
+    padding-left: 0.8vw;
     font-family: inherit;
     outline: none;
 }
 
 .textEntry:focus {
-    outline: 2px solid #37c6ff;
+    outline: 0.2vw solid #37c6ff;
 }
 
 .textEntry::placeholder {
     color: #686b6d;
-    font-size: 12pt;
+    font-size: 1.3vw;
 }
 
 #chooseRole {
-    width: 325px;
+    width: 25.9vw;
+}
+
+#dropDownRoles {
+    width: 25.9vw;
 }
 
 #submitButton {
-    margin-top: 150px;
-    width: 100%;
-    height: 35px;
+    margin-top: 2vw;
+    width: 26.2vw;
+    height: 2.8vw;
     border: none;
     background-color: #37c6ff;
     color: #1b33b6;
-    font-size: 12pt;
+    font-size: 1.3vw;
     font-family: inherit;
     font-weight: 600;
-    border-radius: 8px;
-    margin-top: 5px;
+    border-radius: 0.8vw;
+    margin-top: 0.4vw;
 }
 
 #submitButton:hover {
