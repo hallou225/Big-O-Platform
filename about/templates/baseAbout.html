@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en-US">
+
+  <head>
+
+    <!-- Page Title -->
+    <title>{% block title %}Big-O Project{% endblock %}</title>
+
+    <!-- Reference a CSS Page -->
+    <link rel="stylesheet" type="text/css" href="{% static '/css/about.css'%}">
+
+    <!-- Reference a JS Page -->
+    <script src="{% static '/js/about.js'%}"></script>
+
+    <!-- Define the character set used -->
+    <meta charset="UTF-8">
+
+    <!-- Define keywords for search engines -->
+    <meta name="keywords" content="---ADD KEYWORDS---">
+
+    <!-- Define a description of your web page -->
+    <meta name="description" content="---ADD DESCRIPTION---">
+
+    <!-- Define the author of a page -->
+    <meta name="author" content="---ADD AUTHORS---">
+
+    <!-- Setting the viewport to make your webpage look good on all devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  </head>
+
+  <body>
+
+    {% include 'navbar.html' %}
+
+    <div>{% block content %} {% endblock %}</div>
+
+  </body>
+
+</html>
