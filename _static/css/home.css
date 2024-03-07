@@ -17,7 +17,7 @@ body {
     background-color: #1E1F22;
 }
 
-#navbar {
+#header {
     height: 5vw;
     background-color: #303338;
     position: fixed;
@@ -26,7 +26,7 @@ body {
     z-index: 10;
 }
 
-#navbarContent {
+#headerContent {
     color: white;
     text-align: center;
     line-height: 0;
@@ -49,6 +49,9 @@ body {
     left: 0.4vw;
     top: 0.4vw;
 }
+
+
+
 
 #signInForm {
     width: 29.5vw;

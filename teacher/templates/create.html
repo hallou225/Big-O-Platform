@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/createclass.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+<!-- <script src="{% static '/js/   .js'%}">  </script> -->
+{% endblock %}
+
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<h1>Create Class  page</h1>
+{% endblock %}
+

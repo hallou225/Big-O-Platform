@@ -7,3 +7,9 @@ def teacher(request):
 
 def createclass(request):
     return render(request, 'createclass.html')
+
+def profile(request):
+    return render(request, 'profile.html')
+
+def create(request):
+    return render(request, 'create.html')

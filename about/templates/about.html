@@ -1,5 +1,14 @@
-{% extends 'baseAbout.html' %}
+{% extends 'base.html' %}
 {% load static %}
+
+{% block _static copycss %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/about.css'%}">    
+{% endblock %}
+
+{% block javascript %}    
+    <!-- <script src="{% static '/js/   .js'%}">  </script> -->
+{% endblock %}
+
 {% block content %}
 
     <!--Top portion of the webpage, about Big-O Project-->
@@ -45,3 +54,5 @@
     </div>
 
 {% endblock %}
+
+
