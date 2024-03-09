@@ -8,51 +8,6 @@
         * Dark Blue #1b33b6
 */
 
-html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-    margin: 0;
-    background-color: #1E1F22;
-}
-
-#header {
-    height: 5vw;
-    background-color: #303338;
-    position: fixed;
-    width: 100vw;
-    top: 0;
-    z-index: 10;
-}
-
-#headerContent {
-    color: white;
-    text-align: center;
-    line-height: 0;
-    padding-top: 0.4vw;
-}
-
-#bigoTitle {
-    font-size: 2.8vw;
-}
-
-#O {
-    color: #37c6ff;
-}
-
-#logo {
-    width: 4.2vw;
-    height: 4.2vw;
-    margin-top: 0;
-    position: absolute;
-    left: 0.4vw;
-    top: 0.4vw;
-}
-
-
-
-
 #signInForm {
     width: 29.5vw;
     height: 38.3vw;
