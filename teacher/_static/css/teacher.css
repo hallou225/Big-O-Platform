@@ -11,10 +11,6 @@
     font-size: 2.2vw;
 }
 
-#profileHeader {
-    margin-left: 1.7vw;
-}
-
 #mainHeadingDiv {
     display: flex;
     /*background-color: red;*/
@@ -136,11 +132,3 @@
     margin-bottom: 1vw;
 }
 
-#teacherProfileDiv {
-    margin-left: 63vw;
-    margin-top: 10.1vw;
-    position: absolute;
-    background-color: #303338;
-    width: 34.5vw;
-    height: 37.5vw;
-}

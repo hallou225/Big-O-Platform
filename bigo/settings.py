@@ -51,11 +51,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
    # 'debug_toolbar',
     'home',
-    'signup',
     'student',
     'teacher',
     '_database',
     'about',
+    'register',
 ]
 
 MIDDLEWARE = [
@@ -146,5 +146,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'teacher/_static'),
     os.path.join(BASE_DIR, 'student/_static'),
     os.path.join(BASE_DIR, 'about/_static'),
-    os.path.join(BASE_DIR, 'signup/_static')
+    os.path.join(BASE_DIR, 'register/_static')
 ]

@@ -10,6 +10,10 @@
     <script src="{% static '/js/home.js'%}"></script>
 {% endblock %}
 
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
 {% block content %}
     <!-- Sign in form -->
     <form id="signInForm">

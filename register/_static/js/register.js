@@ -6,6 +6,6 @@ function submitAccount(event) {
     event.preventDefault();
 
     /* Open the sign in page in the same tab */
-    window.open("../../", "_self");
+    window.open("../", "_self");
 
 }

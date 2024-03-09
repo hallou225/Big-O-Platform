@@ -50,4 +50,12 @@ body {
     top: 0.4vw;
 }
 
+#sidebar {
+    visibility: visible;
+    border: solid 2px red;
+}
 
+#content {
+    visibility: visible;
+    border: solid 2px rgb(0, 89, 255);
+}
