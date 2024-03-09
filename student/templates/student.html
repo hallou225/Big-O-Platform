@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/student.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+    <!-- <script src="{% static '/js/   .js'%}">  </script> -->
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
 {% block content %}
-    <h1>student page rendered</h1>
+    <h1 class="myH1">student page rendered</h1>
     <div class="row">
         <div class="col-md-5">
             <h5>Code Review:</h5>

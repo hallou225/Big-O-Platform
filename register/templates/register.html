@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/register.css'%}"> 
+{% endblock %}
+
+{% block javascript %}    
+    <script src="{% static '/js/register.js'%}"></script>
+{% endblock %}
+
+{% block content %}
+    <!-- Create a Class form -->
+    <form id="createAccountForm" method="post">
+
+        <h1 id="createAccountHeader">Create an Account</h1>
+        
+        <!-- Content inside the form -->
+        <div id="createAccountFormContent">
+    
+            <h2 id="enterName">Enter your Account Info</h2>
+
+            <!-- Div containing the text entries where the user enters their name -->
+            <div id="nameEntries">
+
+                <!-- Text entry for class name -->
+                <input type="text" class="textEntry" id="firstName" name="firstName" placeholder="First" autocomplete="off"><br>
+                <input type="text" class="textEntry" id="middleName" name="middleName" placeholder="Middle (Optional)" autocomplete="off"><br>
+                <input type="text" class="textEntry" id="lastName" name="lastName" placeholder="Last" autocomplete="off"><br>
+
+            </div>
+
+            <!-- Text entry for class name -->
+            <input type="text" class="textEntry" id="email" name="email" placeholder="Email" autocomplete="off"><br>
+
+            <h2 id="chooseRole">Are you a Teacher or a Student?</h2>
+
+            <!-- Dropdown menu for role selection -->
+            <select name="roles" id="dropDownRoles" class="textEntry">
+                <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
+            </select>
+
+            <!-- Next button to take the user to the next page -->
+            <button id="submitButton" onclick="submitAccount(event)">Create Account</button>
+
+        </div>
+
+    </form>
+{% endblock %}
+

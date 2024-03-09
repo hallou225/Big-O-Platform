@@ -1,5 +1,18 @@
-{% extends 'baseTeacher.html' %}
+{% extends 'base.html' %}
 {% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+    <script src="{% static '/js/teacher.js'%}">  </script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
 {% block content %}
     <!-- Div for main content of page -->
     <div id="mainContent">
@@ -116,11 +129,4 @@
 
     </div>
 
-    <!-- Div for teacher profile content -->
-    <div id="teacherProfileDiv">
-
-        <!-- Main heading -->
-        <h1 class="myH1" id="profileHeader">Profile</h1>
-
-    </div>
 {% endblock %}

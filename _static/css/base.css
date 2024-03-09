@@ -1,0 +1,61 @@
+/* Color Palette:
+        * Black: #1E1F22
+        * Dark Grey: #2A2D31
+        * Lighter Grey: #303338
+        * Text Entry Grey: #3d4147
+        * Text Placeholder Grey: #686b6d
+        * Light blue: #37c6ff
+        * Dark Blue #1b33b6
+*/
+
+html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: #1E1F22;
+}
+
+#header {
+    height: 5vw;
+    background-color: #303338;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    z-index: 10;
+}
+
+#headerContent {
+    color: white;
+    text-align: center;
+    line-height: 0;
+    padding-top: 0.4vw;
+}
+
+#bigoTitle {
+    font-size: 2.8vw;
+}
+
+#O {
+    color: #37c6ff;
+}
+
+#logo {
+    width: 4.2vw;
+    height: 4.2vw;
+    margin-top: 0;
+    position: absolute;
+    left: 0.4vw;
+    top: 0.4vw;
+}
+
+#sidebar {
+    visibility: visible;
+    border: solid 2px red;
+}
+
+#content {
+    visibility: visible;
+    border: solid 2px rgb(0, 89, 255);
+}
