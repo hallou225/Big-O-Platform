@@ -1,0 +1,74 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/createclass.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+<script src="{% static '/js/createclass.js'%}">  </script>
+{% endblock %}
+
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <!-- Create a Class form (use post method to prevent data being shown in url) -->
+    <form id="createAClassForm" method="post">
+
+        <!-- Content inside the form -->
+        <div id="createAClassFormContent">
+        
+            <h1 id="createAClassHeader">Create a Class</h1>
+            <h2 id="enterClassName">Enter a Class Name</h2>
+
+            <!-- Text entry for class name -->
+            <input type="text" class="textEntry" id="className" name="className" placeholder="Class Name" autocomplete="off" required><br>
+
+            <h2>Choose the Semester</h2>
+
+            <!-- Div for the semester inputs -->
+            <div id="semesterDiv">
+
+                <!-- Input for season -->
+                <input type="search" list="seasonList" class="textEntry" id="seasonInput" placeholder="Term">
+
+                <!-- List of season options -->
+                <datalist id="seasonList">
+                    <option value="Spring"></option>
+                    <option value="Summer"></option>
+                    <option value="Fall"></option>
+                    <option value="Winter"></option>
+                </datalist>
+
+                <h3>/</h3>
+
+                <!-- Input for year -->
+                <input type="search" list="yearList" class="textEntry" id="yearInput" placeholder="Year">
+
+                <!-- List of year options -->
+                <datalist id="yearList">
+                    <script>
+                        for (let year = 2020; year <= 2050; year++) {
+                        document.write(`<option>${year}</option>\n`);
+                        }
+                    </script>
+                </datalist>
+
+            </div>
+            
+            <h2 id="enterClassToken">Enter a Class Token</h2>
+            <!-- Text entry for unique class token -->
+            <input type="text" class="textEntry" id="classToken" name="classToken" placeholder="Class Token" autocomplete="off" required><br>
+
+            <!-- Next button to take the user to the next page -->
+            <button id="submitButton" onclick="submitClass(event)">Submit</button>
+
+        </div>
+
+    </form>
+{% endblock %}
+

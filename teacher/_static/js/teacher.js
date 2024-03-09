@@ -18,7 +18,7 @@ function openClass() {
 function createNewClass() {
     /* This function opens "Create a Class" page */
 
-    window.open("../createclass", "_self");
+    window.open("./createclass", "_self");
 
 }
 
