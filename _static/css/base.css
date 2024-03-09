@@ -51,11 +51,13 @@ body {
 }
 
 #sidebar {
-    visibility: visible;
-    border: solid 2px red;
+    background-color: #37c6ff;
+    width: 9.7vw;
+    position: fixed;
+    top: 5vw;
+    z-index: 10;
 }
 
 #content {
     visibility: visible;
-    border: solid 2px rgb(0, 89, 255);
 }
