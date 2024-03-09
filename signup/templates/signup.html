@@ -1,5 +1,14 @@
-{% extends 'baseSignup.html' %}
+{% extends 'base.html' %}
 {% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/signup.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+    <script src="{% static '/js/signup.js'%}"></script>
+{% endblock %}
+
 {% block content %}
     <!-- Create a Class form -->
         <form id="createAccountForm" method="post">
