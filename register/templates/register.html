@@ -10,6 +10,10 @@
     <script src="{% static '/js/register.js'%}"></script>
 {% endblock %}
 
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
 {% block content %}
     <!-- Create a Class form -->
     <form id="createAccountForm" method="post">
