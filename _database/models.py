@@ -2,6 +2,46 @@ from django.db import models
 
 # Create your models here.
 
+class Teacher(models.Model):
+    first_name = models.CharField(max_length=100, null=True)        # Required Field
+    middle_name = models.CharField(max_length=100, null=True)       # Optional Field
+    last_name = models.CharField(max_length=100, null=True)         # Required Field
+    display_name = models.CharField(max_length=100, null=True)      # Optional Field
+    username = models.CharField(max_length=100, null=True)          # Required Field
+    password = models.CharField(max_length=100, null=True)          # Required Field
+    email = models.CharField(max_length=100, null=True)             # Required Field
+    date_created = models.DateTimeField(auto_now_add=True)          # No Specification Required
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+    
+
+class Student(models.Model):
+    first_name = models.CharField(max_length=100, null=True)         # Required Field
+    middle_name = models.CharField(max_length=100, null=True)        # Optional Field
+    last_name = models.CharField(max_length=100, null=True)          # Required Field
+    username = models.CharField(max_length=100, null=True)           # Required Field
+    password = models.CharField(max_length=100, null=True)           # Required Field
+    email = models.CharField(max_length=100, null=True)              # Required Field
+    date_created = models.DateTimeField(auto_now_add=True)           # No Specification Required
+
+    def __str__(self) -> str:
+        return self.first_name + " " + self.last_name
+
+
+class Class(models.Model):
+    class_name = models.CharField(max_length=100, null=True)                        # Required Field
+    class_code = models.CharField(max_length=100, null=True)                        # Required Field
+    term = models.CharField(max_length=100, null=True)                              # Optional Field
+    '''
+    teacher_id = models.ForeignKey(Teacher, null=True, on_delete=models.SET_NULL)   # Points to Teacher Model
+    #module_id = 
+    '''
+
+    def __str__(self) -> str:
+        return self.first_name + " " + self.last_name
+
+'''
 class Student(models.Model):
     firstname    = models.CharField(max_length=100, null=True)
     lastname     = models.CharField(max_length=100, null=True)
@@ -90,3 +130,4 @@ class Task(models.Model):
 
     def __str__(self) -> str:
         return self.firstname + " " + self.lastname
+'''

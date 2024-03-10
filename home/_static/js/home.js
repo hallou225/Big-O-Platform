@@ -7,6 +7,38 @@ function checkCredentials(event) {
     var username = document.getElementById("username").value;   // Read input from text input with id="username"
     var password = document.getElementById("password").value;   // Read input from text input with id="password"
 
+    window.alert("hi");
+
+    /* Loop through the students table */
+    
+        /* If username exists in the students table */
+
+            /* If password matches */
+                /* Redirect the user the student page */
+                /* return */
+
+            /* If password does NOT match */
+                /* Tell the user the password they entered is incorrect */
+                /* Clear only the password text entry */
+                /* return */
+
+        /* If the username does NOT exist in the students table */
+            /* Loop through the teachers table */
+
+                /* If password matches */
+                    /* Redirect the user the teacher page */
+                    /* return */
+
+                /* If password does NOT match */
+                    /* Tell the user the password they entered is incorrect */
+                    /* Clear only the password text entry */
+                    /* return */
+        
+        /* If the username does NOT exist in either table */
+            /* Tell the user the username they entered is not associated with a registered account */
+
+/*
+
     let usersTableLength = usersTable.length;   // Number of users in usersTable
 
     for (let i = 0; i <= (usersTableLength - 1); i++) {     // Iterating through the usersTable
@@ -14,7 +46,7 @@ function checkCredentials(event) {
         if ( (username == usersTable[i].username) && (password == usersTable[i].password) ) {
             alert("Congratulations!!! The provided credentials are valid!");    // Output for valid credentials
             if (usersTable[i].role == "teacher") {
-                /* Open the next page in the same tab */
+                //Open the next page in the same tab
                 window.open("teacher", "_self");
             }
             break;
@@ -25,6 +57,8 @@ function checkCredentials(event) {
         }
 
     }
+    
+*/
     
 }
 
