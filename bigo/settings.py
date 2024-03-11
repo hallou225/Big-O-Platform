@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
    # 'debug_toolbar',
-    'home',
+    'login',
     'student',
     'teacher',
     '_database',
@@ -143,7 +143,7 @@ INTERNAL_IPS = [
 BASE_DIR2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '_static'),
-    os.path.join(BASE_DIR, 'home/_static'),
+    os.path.join(BASE_DIR, 'login/_static'),
     os.path.join(BASE_DIR, 'teacher/_static'),
     os.path.join(BASE_DIR, 'student/_static'),
     os.path.join(BASE_DIR, 'about/_static'),

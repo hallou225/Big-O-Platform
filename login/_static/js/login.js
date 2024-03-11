@@ -1,11 +1,25 @@
-function checkCredentials(event) {
-    /* This function alerts a message based on whether the credentials are valid */
+function togglePasswordVisibility() {
+    /* This function allows the user to show/hide their password on the screen (password hidden by default) */
+    
+    var passwordInput = document.getElementById("password");    // Locate the password text entry
 
-    /* Prevent default behavior from overwriting what we want the function to do */
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";        // Show the user's password
+    } else {
+        passwordInput.type = "password";    // Hide the user's password
+    }
+}
+
+/*
+function checkCredentials(event) {
+    // This function alerts a message based on whether the credentials are valid
+
+    // Prevent default behavior from overwriting what we want the function to do
     event.preventDefault();
 
     var username = document.getElementById("username").value;   // Read input from text input with id="username"
     var password = document.getElementById("password").value;   // Read input from text input with id="password"
+*/
 
     /* Loop through the students table */
     
@@ -58,20 +72,9 @@ function checkCredentials(event) {
     
 */
     
-}
+// }
 
-function togglePasswordVisibility() {
-    /* This function allows the user to show/hide their password on the screen (password hidden by default) */
-    
-    var passwordInput = document.getElementById("password");    // Locate the password text entry
-
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";        // Show the user's password
-    } else {
-        passwordInput.type = "password";    // Hide the user's password
-    }
-}
-
+/*
 let user1 = {
     uniqueID: "user1",
     email: "user1@gmail.com",
@@ -101,3 +104,4 @@ let usersTable = [
     user2, 
     user3
 ];
+*/
