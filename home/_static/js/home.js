@@ -7,8 +7,6 @@ function checkCredentials(event) {
     var username = document.getElementById("username").value;   // Read input from text input with id="username"
     var password = document.getElementById("password").value;   // Read input from text input with id="password"
 
-    window.alert("hi");
-
     /* Loop through the students table */
     
         /* If username exists in the students table */
