@@ -10,6 +10,3 @@ def createclass(request):
 
 def profile(request):
     return render(request, 'profile.html')
-
-def create(request):
-    return render(request, 'create.html')
