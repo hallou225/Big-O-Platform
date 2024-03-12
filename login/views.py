@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-def home(request):
+def loginBase(request):
     '''
     students = Student.objects.all()
     teachers = Teacher.objects.all()
