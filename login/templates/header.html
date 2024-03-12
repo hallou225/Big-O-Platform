@@ -1,0 +1,31 @@
+{% load static %}
+
+<style>
+  .hello-msg{
+    font-size: 1vw;
+    color: white;
+    position: absolute;
+    right: 2vw;
+    top: 2vw;
+  }
+</style>
+
+<!-- Tool Bar -->
+<div id="header">
+
+  <!-- Content inside the tool bar -->
+  <div id="headerContent">
+
+  <!-- Title -->
+  <h1 id="bigoTitle">Big <label id="O">O</label> Complexity Algorithm</h1>
+
+  <!-- Logo -->
+  <!-- <a href="../"><img id="logo" src="{% static 'images/logo.svg' %}" alt=""></a> -->
+  <a href="/teacher"><img id="logo" src="{% static 'images/logo.svg' %}" alt=""></a>
+
+  </div>
+
+  <span class="hello-msg">Hello, {{request.user}}         <a href="{% url 'logout' %}">Logout</a></span>
+
+</div>
+

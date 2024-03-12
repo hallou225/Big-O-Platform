@@ -30,7 +30,7 @@ DATABASES = {
         'HOST':     config("DB_HOST"),
         'PORT':     config("DB_PORT"),
     }
-}
+} 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG")
@@ -49,19 +49,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
-    'home',
-    'signup',
-    'signup2',
-    'createclass',
+   # 'debug_toolbar',
+    'login',
     'student',
     'teacher',
     '_database',
     'about',
+    'register',
 ]
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -144,5 +142,10 @@ INTERNAL_IPS = [
 
 BASE_DIR2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '_static')
+    os.path.join(BASE_DIR, '_static'),
+    os.path.join(BASE_DIR, 'login/_static'),
+    os.path.join(BASE_DIR, 'teacher/_static'),
+    os.path.join(BASE_DIR, 'student/_static'),
+    os.path.join(BASE_DIR, 'about/_static'),
+    os.path.join(BASE_DIR, 'register/_static'),
 ]

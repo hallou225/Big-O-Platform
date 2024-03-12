@@ -1,0 +1,154 @@
+/* Color Palette:
+        * Black: #1E1F22
+        * Dark Grey: #2A2D31
+        * Lighter Grey: #303338
+        * Text Entry Grey: #3d4147
+        * Text Placeholder Grey: #686b6d
+        * Light blue: #37c6ff
+        * Dark Blue #1b33b6
+*/
+
+#signInForm {
+    width: 29.5vw;
+    height: 38.3vw;
+    margin: auto;
+    background-color: #303338;
+    margin-top: 8.3vw;
+}
+
+#signInFormContent {
+    padding-left: 1.7vw;
+    padding-right: 1.7vw;
+    padding-top: 0.1vw;
+}
+
+#signInHeader {
+    color: white;
+    padding-bottom: 1.6vw;
+    font-size: 2.2vw;
+}
+
+.textEntry {
+    width: 25.2vw;
+    display: block;
+    padding-top: 0.6vw;
+    padding-bottom: 0.6vw;
+    border: none;
+    margin-bottom: 0.8vw;
+    background-color: #3d4147;
+    color: white;
+    font-size: 1.3vw;
+    border-radius: 0.8vw;
+    padding-left: 0.8vw;
+    font-family: inherit;
+    outline: none;
+}
+
+.textEntry:focus {
+    outline: 0.2vw solid #37c6ff;
+}
+
+.textEntry::placeholder {
+    color: #686b6d;
+    font-size: 1.3vw;
+}
+
+#signInButton {
+    margin-top: 2vw;
+    width: 26.2vw;
+    height: 2.8vw;
+    border: none;
+    background-color: #37c6ff;
+    color: #1b33b6;
+    font-size: 1.3vw;
+    font-family: inherit;
+    font-weight: 600;
+    border-radius: 0.8vw;
+}
+
+#signInButton:hover {
+    cursor: pointer;
+    background-color: #1b33b6;
+    color: #37c6ff;
+}
+
+#checkboxDiv {
+    position: relative;
+    cursor: pointer;
+    font-size: 1.8vw;
+    user-select: none;
+  }
+  
+#checkboxDiv input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1.6vw;
+    width: 1.6vw;
+    background-color: #3d4147;
+    border: 0.2vw solid #686b6d;
+}
+
+#checkboxDiv:hover input ~ .checkmark {
+    border-color: #37c6ff;
+}
+
+#checkboxDiv input:checked ~ .checkmark {
+    background-color: #37c6ff;
+    border-color: #37c6ff;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+#checkboxDiv input:checked ~ .checkmark:after {
+    display: block;
+}
+
+#checkboxDiv .checkmark:after {
+    left: 0.4vw;
+    top: 0.1vw;
+    width: 0.5vw;
+    height: 0.9vw;
+    border: solid #1b33b6;
+    border-width: 0 0.3vw 0.3vw 0;
+    transform: rotate(45deg);
+}
+
+label[for="passwordCheckbox"] {
+    margin-left: 2.8vw;
+    font-size: 1.3vw;
+    color: white;
+    vertical-align: top;
+    padding-bottom: 1.6vw;
+    margin-top: 0.2vw;
+    position: absolute;
+}
+
+.formLink {
+    display: block;
+    padding-top: 1.6vw;
+    font-size: 1.3vw;
+    text-decoration: none;
+    color: #37c6ff;
+    font-weight: 600;
+}
+
+.formLink:hover {
+    color: #1b33b6;
+}
+
+#messages {
+    font-size: 1.3vw;
+    color: white;
+}
