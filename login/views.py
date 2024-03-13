@@ -96,6 +96,8 @@ def signup(request):
     return render(request, 'signup.html', context)
 
 def loginPage(request):
+    user = None
+    
     if request.user.is_authenticated:
         return redirect("/teacher")
     else:
@@ -103,10 +105,14 @@ def loginPage(request):
             username = request.POST.get("username")
             password = request.POST.get("password")
 
+            '''
             try:
                 user = Teacher.objects.get(username=username, password=password)
             except Teacher.DoesNotExist:
                 user = None
+            '''
+
+            user = authenticate(request, username=username, password=password)
 
             if user is not None:
                 login(request, user)
@@ -115,6 +121,30 @@ def loginPage(request):
                 messages.info(request, "Username OR password is incorrect")
 
         return render(request, 'login.html')
+
+'''
+def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect("/teacher")
+    else:
+        if request.method == "POST":
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                # Check if the user is a teacher
+                if user.teacher:
+                    login(request, user)
+                    return redirect("/teacher")
+                else:
+                    messages.info(request, "You do not have permission to log in as a teacher.")
+            else:
+                messages.info(request, "Username OR password is incorrect")
+
+        return render(request, 'login.html')
+'''
 
 def logoutUser(request):
     logout(request)
