@@ -25,7 +25,10 @@
 
   </div>
 
-  <span class="hello-msg">Hello, {{request.user}}         <a href="{% url 'logout' %}">Logout</a></span>
+  <!-- Only show this username and logout option in the header if the user is logged in -->
+  {% if user.is_authenticated %}
+    <span class="hello-msg">Hello, {{request.user}}         <a href="{% url 'logout' %}">Logout</a></span>
+  {% endif %}
 
-</div>
+</div
 
