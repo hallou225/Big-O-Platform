@@ -11,6 +11,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.models import User
+from bigo.forms import CreateUserForm
+
 # Create your views here.
 
 def loginBase(request):
@@ -41,6 +44,7 @@ def loginBase(request):
 def teacher(request):
     return render(request, 'teacher.html')
 
+'''
 @csrf_protect
 def signup(request):
     if request.user.is_authenticated:
@@ -58,6 +62,38 @@ def signup(request):
 
     context = {"form": form}
     return render(request, 'signup.html', context)
+'''
+
+@csrf_protect
+def signup(request):
+    if request.user.is_authenticated:
+        return redirect("/teacher")
+    else:
+        form = CreateUserForm()
+        if request.method == "POST":
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                # Extract the username and password from the form
+                username = form.cleaned_data.get("username")
+                password = form.cleaned_data.get("password1")
+
+                # Create a new Teacher instance with the provided data
+                new_teacher = Teacher.objects.create(
+                    first_name=form.cleaned_data.get("first_name"),
+                    middle_name=form.cleaned_data.get("middle_name"),
+                    last_name=form.cleaned_data.get("last_name"),
+                    display_name=form.cleaned_data.get("display_name"),
+                    username=username,
+                    password=password,
+                    email=form.cleaned_data.get("email"),
+                )
+
+                messages.success(request, "Account was created for " + username)
+
+                return redirect("/login")
+
+    context = {"form": form}
+    return render(request, 'signup.html', context)
 
 def loginPage(request):
     if request.user.is_authenticated:
@@ -67,7 +103,10 @@ def loginPage(request):
             username = request.POST.get("username")
             password = request.POST.get("password")
 
-            user = authenticate(request, username=username, password=password)
+            try:
+                user = Teacher.objects.get(username=username, password=password)
+            except Teacher.DoesNotExist:
+                user = None
 
             if user is not None:
                 login(request, user)

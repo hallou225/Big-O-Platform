@@ -13,9 +13,8 @@ class Teacher(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)          # No Specification Required
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.username
     
-
 class Student(models.Model):
     first_name = models.CharField(max_length=100, null=True)         # Required Field
     middle_name = models.CharField(max_length=100, null=True)        # Optional Field
