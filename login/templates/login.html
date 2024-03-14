@@ -39,10 +39,21 @@
             <!-- Label next to checkbox that describes its purpose -->
             <label for="passwordCheckbox">Show Password</label><br>
 
+            <!-- Label next to checkbox that describes its purpose -->
+            <p id="studentOrTeacherLabel">Login as Student or Teacher?</label><br>
+
+            <!-- Drop down menu for toggling student or teacher login -->
+            <label id="studentOrTeacherDiv">
+                <select class="textEntry" id="studentOrTeacherDropDownMenu">
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                </select>
+            </label>
+
             <!-- Submit button which calls checkCredentials() function when clicked -->
             <!-- <input type="submit" id="signInButton" value="Sign In" onclick="checkCredentials(event)"> -->
             <input class="btn login_btn" id="signInButton" type="submit" value="Login">
-            
+
             <!-- Link to "Forgot Password" page -->
             <a class="formLink" id="forgotPassword" href="https://www.google.com">Forgot Password?</a>
 
