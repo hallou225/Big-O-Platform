@@ -10,7 +10,7 @@
 
 #createAccountForm {
     width: 29.5vw;
-    height: 50vw;
+    height: min-content;
     margin: auto;
     background-color: #303338;
     margin-top: 8.3vw;
@@ -21,6 +21,7 @@
     padding-left: 1.7vw;
     padding-right: 1.7vw;
     padding-top: 0.1vw;
+    padding-bottom: 2vw;
 }
 
 #createAccountHeader {
@@ -108,4 +109,9 @@ h2 {
 
 .formLink:hover {
     color: #1b33b6;
+}
+
+.errors {
+    font-size: 1.3vw;
+    color: white;
 }

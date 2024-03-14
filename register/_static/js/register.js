@@ -1,11 +1,18 @@
-function submitAccount(event) {
-    /* This function saves the user's first and last name and 
-       redirects them to the next page for creating an account */
-    
-    /* Prevent default behavior from overwriting what we want the function to do */
-    event.preventDefault();
+/*
+document.addEventListener('DOMContentLoaded', function() {
+    // Add a small delay to ensure other processing is completed
+    setTimeout(function() {
 
-    /* Open the sign in page in the same tab */
-    window.open("../", "_self");
+        // Get the form
+        var form = document.getElementById('createAccountForm');
 
-}
+        // Get all elements inside the form
+        var elements = form.querySelectorAll('*');
+
+        // Remove focus from each element
+        elements.forEach(function(element) {
+            element.blur();
+        });
+    }, 100); // Delay of 100 milliseconds
+});
+*/
