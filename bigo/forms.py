@@ -8,4 +8,4 @@ from _database.models import *
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = Teacher
-        fields = ["username", "email", "password1", "password2"]
+        fields = ["first_name", "middle_name", "last_name", "display_name", "username", "email", "password1", "password2"]

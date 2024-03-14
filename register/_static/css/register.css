@@ -10,10 +10,11 @@
 
 #createAccountForm {
     width: 29.5vw;
-    height: 38.3vw;
+    height: 50vw;
     margin: auto;
     background-color: #303338;
     margin-top: 8.3vw;
+    margin-bottom: 3.4vw;
 }
 
 #createAccountFormContent {
@@ -54,6 +55,7 @@ h2 {
     padding-left: 0.8vw;
     font-family: inherit;
     outline: none;
+    margin-bottom: 0.8vw;
 }
 
 .textEntry:focus {
@@ -76,7 +78,6 @@ h2 {
 }
 
 #submitButton {
-    margin-top: 2vw;
     width: 26.2vw;
     height: 2.8vw;
     border: none;
@@ -87,6 +88,7 @@ h2 {
     font-weight: 600;
     border-radius: 0.8vw;
     margin-top: 2.1vw;
+    margin-bottom: 0;
 }
 
 #submitButton:hover {
@@ -95,3 +97,15 @@ h2 {
     color: #37c6ff;
 }
 
+.formLink {
+    display: block;
+    padding-top: 1.6vw;
+    font-size: 1.3vw;
+    text-decoration: none;
+    color: #37c6ff;
+    font-weight: 600;
+}
+
+.formLink:hover {
+    color: #1b33b6;
+}

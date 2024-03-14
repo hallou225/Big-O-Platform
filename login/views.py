@@ -114,11 +114,13 @@ def register(request):
                 password = form.cleaned_data.get("password1")
 
                 new_teacher = get_user_model().objects.create_user(
+                    first_name=form.cleaned_data.get("first_name"),
+                    middle_name=form.cleaned_data.get("middle_name"),
+                    last_name=form.cleaned_data.get("last_name"),
+                    display_name=form.cleaned_data.get("display_name"),
                     username=username,
                     password=password,
                     email=form.cleaned_data.get("email"),
-                    first_name=form.cleaned_data.get("first_name"),
-                    last_name=form.cleaned_data.get("last_name"),
                 )
 
                 messages.success(request, "Account was created for " + username)
