@@ -102,7 +102,7 @@ def signup(request):
 '''
 
 @csrf_protect
-def signup(request):
+def register(request):
     if request.user.is_authenticated:
         return redirect("/teacher")
     else:
@@ -126,7 +126,7 @@ def signup(request):
                 return redirect("/login")
 
     context = {"form": form}
-    return render(request, 'signup.html', context)
+    return render(request, 'register.html', context)
 
 def loginPage(request):
     if request.user.is_authenticated:
