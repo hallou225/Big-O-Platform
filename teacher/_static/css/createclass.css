@@ -71,10 +71,6 @@ h3 {
     font-size: 1.3vw;
 }
 
-#semesterDiv {
-    white-space: nowrap;
-}
-
 #seasonInput {
     width: 12.1vw;
     display: inline-block;
@@ -86,11 +82,11 @@ h3 {
     display: inline-block;
 }
 
-#enterClassToken {
+#enterClassCode {
     margin-top: 1.6vw;
 }
 
-#classToken {
+#classCode {
     margin-top: 0.8vw;
 }
 

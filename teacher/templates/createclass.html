@@ -29,41 +29,14 @@
             <!-- Text entry for class name -->
             <input type="text" class="textEntry" id="className" name="className" placeholder="Class Name" autocomplete="off" required><br>
 
-            <h2>Choose the Semester</h2>
+            <h2>Choose the Class Term</h2>
 
-            <!-- Div for the semester inputs -->
-            <div id="semesterDiv">
-
-                <!-- Input for season -->
-                <input type="search" list="seasonList" class="textEntry" id="seasonInput" placeholder="Term">
-
-                <!-- List of season options -->
-                <datalist id="seasonList">
-                    <option value="Spring"></option>
-                    <option value="Summer"></option>
-                    <option value="Fall"></option>
-                    <option value="Winter"></option>
-                </datalist>
-
-                <h3>/</h3>
-
-                <!-- Input for year -->
-                <input type="search" list="yearList" class="textEntry" id="yearInput" placeholder="Year">
-
-                <!-- List of year options -->
-                <datalist id="yearList">
-                    <script>
-                        for (let year = 2020; year <= 2050; year++) {
-                        document.write(`<option>${year}</option>\n`);
-                        }
-                    </script>
-                </datalist>
-
-            </div>
+            <!-- Text entry for class term -->
+            <input type="text" class="textEntry" id="classTerm" name="classTerm" placeholder="Class Term (e.g. Spring 2024)" autocomplete="off" required><br>
             
-            <h2 id="enterClassToken">Enter a Class Token</h2>
-            <!-- Text entry for unique class token -->
-            <input type="text" class="textEntry" id="classToken" name="classToken" placeholder="Class Token" autocomplete="off" required><br>
+            <h2 id="enterClassCode">Enter a unique Class Code</h2>
+            <!-- Text entry for unique class code -->
+            <input type="text" class="textEntry" id="classCode" name="classCode" placeholder="Class Code" autocomplete="off" required><br>
 
             <!-- Next button to take the user to the next page -->
             <button id="submitButton" onclick="submitClass(event)">Submit</button>
