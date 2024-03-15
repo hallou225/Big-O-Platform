@@ -10,16 +10,19 @@
 
 #createAClassForm {
     width: 29.5vw;
-    height: 38.3vw;
+    height: min-content;
+    min-height: 38.3vw;
     margin: auto;
     background-color: #303338;
     margin-top: 8.3vw;
+    margin-bottom: 3.4vw;
 }
 
 #createAClassFormContent {
     padding-left: 1.7vw;
     padding-right: 1.7vw;
     padding-top: 0.1vw;
+    padding-bottom: 2vw;
 }
 
 #createAClassHeader {
@@ -101,11 +104,16 @@ h3 {
     font-family: inherit;
     font-weight: 600;
     border-radius: 0.8vw;
-    margin-top: 0;
+    margin-top: 3vw;
 }
 
 #submitButton:hover {
     cursor: pointer;
     background-color: #1b33b6;
     color: #37c6ff;
+}
+
+.errors {
+    font-size: 1.3vw;
+    color: white;
 }

@@ -8,9 +8,9 @@
 {% endblock %}
 
 {% block javascript %}    
-<script src="{% static '/js/createclass.js'%}">  </script>
+<script src="{% static '/js/createclass.js'%}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 {% endblock %}
-
 
 {% block sidebar %}
     {% include 'teacher_sidebar.html' %}
@@ -18,7 +18,8 @@
 
 {% block content %}
     <!-- Create a Class form (use post method to prevent data being shown in url) -->
-    <form id="createAClassForm" method="post">
+    <form id="createAClassForm" method="POST" action="">
+        {% csrf_token %}
 
         <!-- Content inside the form -->
         <div id="createAClassFormContent">
@@ -27,22 +28,50 @@
             <h2 id="enterClassName">Enter a Class Name</h2>
 
             <!-- Text entry for class name -->
-            <input type="text" class="textEntry" id="className" name="className" placeholder="Class Name" autocomplete="off" required><br>
+            <!-- <input type="text" class="textEntry" id="className" name="className" placeholder="Class Name" autocomplete="off" required><br> -->
+            {{form.class_name}}
 
             <h2>Choose the Class Term</h2>
 
             <!-- Text entry for class term -->
-            <input type="text" class="textEntry" id="classTerm" name="classTerm" placeholder="Class Term (e.g. Spring 2024)" autocomplete="off" required><br>
+            <!-- <input type="text" class="textEntry" id="classTerm" name="classTerm" placeholder="Class Term (e.g. Spring 2024)" autocomplete="off" required><br> -->
+            {{form.term}}
             
             <h2 id="enterClassCode">Enter a unique Class Code</h2>
             <!-- Text entry for unique class code -->
-            <input type="text" class="textEntry" id="classCode" name="classCode" placeholder="Class Code" autocomplete="off" required><br>
+            <!-- <input type="text" class="textEntry" id="classCode" name="classCode" placeholder="Class Code" autocomplete="off" required><br> -->
+            {{form.class_code}}
 
             <!-- Next button to take the user to the next page -->
-            <button id="submitButton" onclick="submitClass(event)">Submit</button>
+            <!-- <button id="submitButton" onclick="submitClass(event)">Submit</button> -->
+            <input class="btn login_btn" id="submitButton" type="submit" value="Create Class">
+
+            {% if form.errors %}
+					{% for field in form %}
+						{% if field.errors %}
+							<p class="errors">
+								{% for error in field.errors %}
+									{{ error }}
+								{% endfor %}
+							</p>
+						{% endif %}
+					{% endfor %}
+			{% endif %}
 
         </div>
 
     </form>
-{% endblock %}
 
+    <script>
+        //Query All input fields
+		var form_fields = document.getElementsByTagName('input')
+		form_fields[1].placeholder='Class Name';
+		form_fields[2].placeholder='Term';
+		form_fields[3].placeholder='Class Code';
+
+        for (var field in form_fields) {
+            form_fields[field].className += ' form-control';
+			form_fields[field].className += ' textEntry';
+        }
+    </script>
+{% endblock %}
