@@ -26,9 +26,9 @@ class TeacherManager(BaseUserManager):
 
 class Teacher(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=100, null=True)            # Required Field
-    middle_name = models.CharField(max_length=100, null=True)           # Optional Field
+    middle_name = models.CharField(max_length=100, null=True, blank=True)           # Optional Field
     last_name = models.CharField(max_length=100, null=True)             # Required Field
-    display_name = models.CharField(max_length=100, null=True)          # Optional Field
+    display_name = models.CharField(max_length=100, null=True, blank=True)          # Optional Field
     username = models.CharField(max_length=100, null=True, unique=True) # Required Identifier
     email = models.EmailField(max_length=250, null=True, unique=True)   # Required Field
     date_created = models.DateTimeField(auto_now_add=True)              # No Specification Required
@@ -48,6 +48,11 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
 
     def get_by_natural_key(self, username):
         return self.get(username=username)
+    
+    def save(self, *args, **kwargs):
+        if not self.display_name and self.first_name and self.last_name:
+            self.display_name = f"{self.first_name} {self.last_name}"
+        super().save(*args, **kwargs)
 
 '''
 class Teacher(AbstractUser):
@@ -81,15 +86,21 @@ class Student(models.Model):
 
 class Class(models.Model):
     class_name = models.CharField(max_length=100, null=True)                        # Required Field
-    class_code = models.CharField(max_length=100, null=True)                        # Required Field
+    class_code = models.CharField(max_length=100, null=True, unique=True)                        # Required Field
     term = models.CharField(max_length=100, null=True)                              # Optional Field
-    '''
-    teacher_id = models.ForeignKey(Teacher, null=True, on_delete=models.SET_NULL)   # Points to Teacher Model
+    teacher = models.ForeignKey(Teacher, null=True, on_delete=models.SET_NULL)      # Points to Teacher Model
+        # when a teacher account is deleted, any classes associated with that account 
+        # will remain in the database, with a null value for teacher
     #module_id = 
-    '''
 
     def __str__(self) -> str:
         return self.class_name
+    
+    class Meta:
+        verbose_name = 'Class'
+        verbose_name_plural = 'Classes'
+
+
 
 '''
 class Student(models.Model):
