@@ -1,45 +1,82 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 class Teacher(models.Model):
-    first_name = models.CharField(max_length=100, null=True)        # Required Field
-    middle_name = models.CharField(max_length=100, null=True)       # Optional Field
-    last_name = models.CharField(max_length=100, null=True)         # Required Field
-    display_name = models.CharField(max_length=100, null=True)      # Optional Field
-    username = models.CharField(max_length=100, null=True)          # Required Field
-    password = models.CharField(max_length=100, null=True)          # Required Field
-    email = models.CharField(max_length=100, null=True)             # Required Field
-    date_created = models.DateTimeField(auto_now_add=True)          # No Specification Required
+    first_name      = models.CharField(max_length=100, null=True)        # Required Field
+    middle_name     = models.CharField(max_length=100, null=True)       # Optional Field
+    last_name       = models.CharField(max_length=100, null=True)         # Required Field
+    display_name    = models.CharField(max_length=100, null=True)      # Optional Field
+    username        = models.CharField(max_length=100, null=True)          # Required Field
+    password        = models.CharField(max_length=100, null=True)          # Required Field
+    email           = models.CharField(max_length=100, null=True)             # Required Field
+    date_created    = models.DateTimeField(auto_now_add=True)          # No Specification Required
 
     def __str__(self):
         return self.first_name + " " + self.last_name
     
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=100, null=True)         # Required Field
-    middle_name = models.CharField(max_length=100, null=True)        # Optional Field
-    last_name = models.CharField(max_length=100, null=True)          # Required Field
-    username = models.CharField(max_length=100, null=True)           # Required Field
-    password = models.CharField(max_length=100, null=True)           # Required Field
-    email = models.CharField(max_length=100, null=True)              # Required Field
+    first_name   = models.CharField(max_length=100, null=True)         # Required Field
+    middle_name  = models.CharField(max_length=100, null=True)        # Optional Field
+    last_name    = models.CharField(max_length=100, null=True)          # Required Field
+    username     = models.CharField(max_length=100, null=True)           # Required Field
+    password     = models.CharField(max_length=100, null=True)           # Required Field
+    email        = models.CharField(max_length=100, null=True)              # Required Field
     date_created = models.DateTimeField(auto_now_add=True)           # No Specification Required
 
     def __str__(self) -> str:
         return self.first_name + " " + self.last_name
 
 
-class Class(models.Model):
-    class_name = models.CharField(max_length=100, null=True)                        # Required Field
-    class_code = models.CharField(max_length=100, null=True)                        # Required Field
-    term = models.CharField(max_length=100, null=True)                              # Optional Field
-    '''
-    teacher_id = models.ForeignKey(Teacher, null=True, on_delete=models.SET_NULL)   # Points to Teacher Model
-    #module_id = 
-    '''
+class Language(models.Model):
+    name = models.CharField(max_length=100)                          # Required Field
 
     def __str__(self) -> str:
-        return self.first_name + " " + self.last_name
+        return self.name 
+    
+
+class Module(models.Model):
+    name = models.CharField(max_length=100)                          # Required Field
+    # number_of_question
+    # algorithm_id
+    def __str__(self) -> str:
+        return self.name
+    
+class Year(models.Model):                      
+    start_date    = models.CharField(max_length=100)                            # Required Field  
+    end_date      = models.CharField(max_length=100)                          # Required Field
+    # number_of_question
+    # algorithm_id
+    def __str__(self) -> str:
+        return self
+    
+
+class Term(models.Model):
+    year_id        = models.ForeignKey(Year, on_delete=models.CASCADE)         # Required Field
+    name           = models.CharField(max_length=100)                          # Required Fielded 
+    term_number    = models.CharField(max_length=100)                          # Required Field
+    # number_of_question
+    # algorithm_id
+    def __str__(self) -> str:
+        return self
+    
+
+
+class Class(models.Model):    
+    teacher_id           = models.ForeignKey(User, on_delete=models.CASCADE, default="1") 
+    language_id          = models.ForeignKey(Language, on_delete=models.CASCADE, default="1") 
+    module_id            = models.ForeignKey(Module, on_delete=models.CASCADE, default="1")  
+    term_id              = models.ForeignKey(Term, on_delete=models.CASCADE, default="1")  
+    class_code           = models.CharField(max_length=100, null=True)                        # Required Field
+    term                 = models.CharField(max_length=100, null=True)                              # Optional Field
+
+    def __str__(self) -> str:
+        return self
+
+
+
 
 '''
 class Student(models.Model):
