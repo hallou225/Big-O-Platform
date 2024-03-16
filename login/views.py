@@ -43,7 +43,14 @@ def loginBase(request):
 
 @login_required(login_url="/login")
 def teacher(request):
-    return render(request, 'teacher.html')
+    teacher_id = request.user.id
+    teacher_username = request.user.username
+    teacher_password = request.user.password
+
+    teacher_classes = Class.objects.filter(teacher_id=teacher_id)
+
+    context = {"teacher_id": teacher_id, "teacher_username": teacher_username, "teacher_password": teacher_password, "teacher_classes": teacher_classes}
+    return render(request, 'teacher.html', context)
 
 '''
 @csrf_protect
