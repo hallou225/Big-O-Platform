@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 
 # Create your views here.
 
+
 @login_required(login_url="/login")
 def teacher(request):
     return render(request, 'teacher.html')
@@ -15,7 +16,18 @@ def createclass(request):
     if request.method == "POST":
         form = CreateClassForm(request.POST)
         if form.is_valid():
-            form.save()
+            teacher = request.user
+
+            '''
+            teacher_id = request.user.id
+            teacher_username = request.user.username
+            teacher_password = request.user.password
+            '''
+
+            new_class = form.save(commit=False)
+            new_class.teacher = teacher
+            new_class.save()
+
             return redirect("/teacher")
     
     context = {"form": form}
