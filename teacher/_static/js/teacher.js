@@ -11,7 +11,7 @@ window.onload = () => {
 function openClass() {
     /* This function allows the instructor to access the main page for their selected class */
     
-    window.open("https://www.google.com", "_blank");
+    window.open("/teacher/class/", "_self");
 
 }
 

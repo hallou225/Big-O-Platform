@@ -36,3 +36,7 @@ def createclass(request):
 @login_required(login_url="/login")
 def profile(request):
     return render(request, 'profile.html')
+
+@login_required(login_url="/login")
+def teacherClass(request):
+    return render(request, 'class.html')

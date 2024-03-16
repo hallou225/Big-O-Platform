@@ -1,0 +1,29 @@
+<!--
+    Name of Class
+    Name of Teacher
+    Term
+
+    {for}
+        Modules
+    {endfor}
+-->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/class.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+    <script src="{% static '/js/class.js'%}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <p>This is class.html!</p>
+{% endblock %}
