@@ -79,11 +79,25 @@ class Student(models.Model):
         #return self.first_name + " " + self.last_name
 
 
+class Language(models.Model):
+    name = models.CharField(max_length=100, null=True)                          # Required Field
+
+    def __str__(self) -> str:
+        return self.name 
+
+class Term(models.Model):
+    name           = models.CharField(max_length=100, null=True)                          # Required Fielded 
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Class(models.Model):
     class_name = models.CharField(max_length=100, null=True)                        # Required Field
     class_code = models.CharField(max_length=100, null=True, unique=True)                        # Required Field
-    term = models.CharField(max_length=100, null=True)                              # Optional Field
+    term = models.ForeignKey(Term, null=True, on_delete=models.SET_NULL)                              # Optional Field
     teacher = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)      # Points to Teacher Model
+    language = models.ForeignKey(Language, null=True, on_delete=models.SET_NULL)
         # when a teacher account is deleted, any classes associated with that account 
         # will remain in the database, with a null value for teacher
     #module_id = 
@@ -94,3 +108,13 @@ class Class(models.Model):
     class Meta:
         verbose_name = 'Class'
         verbose_name_plural = 'Classes'
+
+
+class Module(models.Model):
+    name      = models.CharField(max_length=100)                          # Required Field
+    class_id  = models.ForeignKey(Class, on_delete=models.CASCADE, default="1") 
+    # number_of_question
+    # algorithm_id
+    def str(self) -> str:
+        #return self.name + " " + self.last_name
+        return self
