@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
 
 from _database.models import *
 
@@ -12,3 +13,6 @@ class CreateClassForm(ModelForm):
     class Meta:
         model = Class
         fields = ['class_name', 'term', 'class_code']
+        widgets = {
+            'term': forms.Select(attrs={'class': 'textEntry'})
+        }

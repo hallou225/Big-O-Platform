@@ -39,4 +39,8 @@ def profile(request):
 
 @login_required(login_url="/login")
 def teacherClass(request):
+    teacher_class = Class.objects.get(id=3)
+
+    class_name = teacher_class.class_name
+    print("class_name: ", class_name)
     return render(request, 'class.html')
