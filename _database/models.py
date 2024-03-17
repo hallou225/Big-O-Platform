@@ -96,7 +96,7 @@ class Class(models.Model):
     class_code = models.CharField(max_length=100, null=True, unique=True)                        # Required Field
     term = models.ForeignKey(Term, null=True, on_delete=models.SET_NULL)                              # Optional Field
     teacher = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)      # Points to Teacher Model
-    language = models.ForeignKey(Language, null=True, on_delete=models.SET_NULL)
+    language = models.ForeignKey(Language, null=True, on_delete=models.SET_NULL, blank=True)
         # when a teacher account is deleted, any classes associated with that account 
         # will remain in the database, with a null value for teacher
 

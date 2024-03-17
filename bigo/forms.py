@@ -12,7 +12,8 @@ class CreateUserForm(UserCreationForm):
 class CreateClassForm(ModelForm):
     class Meta:
         model = Class
-        fields = ['class_name', 'term', 'class_code']
+        fields = ['class_name', 'term', 'class_code', 'language']
         widgets = {
-            'term': forms.Select(attrs={'class': 'textEntry'})
+            'term': forms.Select(attrs={'class': 'textEntry'}),
+            'language': forms.Select(attrs={'class': 'textEntry'})
         }

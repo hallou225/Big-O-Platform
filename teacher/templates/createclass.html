@@ -43,6 +43,9 @@
             <!-- <input type="text" class="textEntry" id="classCode" name="classCode" placeholder="Class Code" autocomplete="off" required><br> -->
             {{form.class_code}}
 
+            <h2>Choose the Language</h2>
+            {{form.language}}
+
             <!-- Next button to take the user to the next page -->
             <!-- <button id="submitButton" onclick="submitClass(event)">Submit</button> -->
             <input class="btn login_btn" id="submitButton" type="submit" value="Create Class">
@@ -67,8 +70,7 @@
         //Query All input fields
 		var form_fields = document.getElementsByTagName('input')
 		form_fields[1].placeholder='Class Name';
-		form_fields[2].placeholder='Term';
-		form_fields[3].placeholder='Class Code';
+		form_fields[2].placeholder='Class Code';
 
         for (var field in form_fields) {
             form_fields[field].className += ' form-control';
