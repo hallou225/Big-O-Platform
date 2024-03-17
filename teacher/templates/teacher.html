@@ -38,7 +38,8 @@
 
             {% for teacher_class in teacher_classes %}
                 <!-- Class buttons with class name and class image inside -->
-                <button class="classButton" onclick="openClass()">
+                <!-- <button class="classButton" onclick="openClass()"> -->
+                <a href="{% url 'teacherClass' teacher_class.id %}" class="classButton">
 
                     <!-- Name of class -->
                     <div class="className">{{teacher_class.class_name}}</div>
@@ -54,7 +55,7 @@
 
                     </div>
 
-                </button>
+                </a>
             {% endfor %}
 
         </div>

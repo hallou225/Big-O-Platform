@@ -5,5 +5,5 @@ urlpatterns = [
     path("", views.teacher, name="teacher"),
     path("createclass/", views.createclass, name="createclass"),
     path("profile/", views.profile, name="profile"),
-    path("class/", views.teacherClass, name="class"),
+    path("class/<str:class_pk>/", views.teacherClass, name="teacherClass"),
 ]

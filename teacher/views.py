@@ -38,9 +38,11 @@ def profile(request):
     return render(request, 'profile.html')
 
 @login_required(login_url="/login")
-def teacherClass(request):
-    teacher_class = Class.objects.get(id=3)
+def teacherClass(request, class_pk):
+    teacher_class = Class.objects.get(id=class_pk)
 
     class_name = teacher_class.class_name
-    print("class_name: ", class_name)
-    return render(request, 'class.html')
+    modules = teacher_class.module_set.all()
+
+    context = {"teacher_class": teacher_class, "modules": modules}
+    return render(request, 'class.html', context)
