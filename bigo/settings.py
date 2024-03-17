@@ -152,7 +152,7 @@ STATICFILES_DIRS = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
-    '_database.backends.TeacherBackend',  # Custom backend
+    '_database.backends.AccountBackend',  # Custom backend
 ]
 
-AUTH_USER_MODEL = '_database.Teacher'
+AUTH_USER_MODEL = '_database.Account'

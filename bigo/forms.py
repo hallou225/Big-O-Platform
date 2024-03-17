@@ -5,7 +5,7 @@ from _database.models import *
 
 class CreateUserForm(UserCreationForm):
     class Meta:
-        model = Teacher
+        model = Account
         fields = ["first_name", "middle_name", "last_name", "display_name", "username", "email", "password1", "password2"]
 
 class CreateClassForm(ModelForm):

@@ -1,10 +1,9 @@
-var username = "Henri";
-
 window.onload = () => {
-    if (username[username.length - 1] == 's') {
-        document.getElementById("mainHeading").innerHTML = username + "' Classes";
+    let heading = document.getElementById("mainHeading")
+    if (heading[-1] == 's') {
+        document.getElementById("mainHeading").innerHTML +=  "' Classes";
     } else {
-        document.getElementById("mainHeading").innerHTML = username + "'s Classes";
+        document.getElementById("mainHeading").innerHTML += "'s Classes";
     }
 }
 

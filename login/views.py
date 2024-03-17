@@ -46,10 +46,11 @@ def teacher(request):
     teacher_id = request.user.id
     teacher_username = request.user.username
     teacher_password = request.user.password
+    teacher_display_name = request.user.display_name
 
     teacher_classes = Class.objects.filter(teacher_id=teacher_id)
 
-    context = {"teacher_id": teacher_id, "teacher_username": teacher_username, "teacher_password": teacher_password, "teacher_classes": teacher_classes}
+    context = {"teacher_id": teacher_id, "teacher_username": teacher_username, "teacher_password": teacher_password, "teacher_display_name": teacher_display_name, "teacher_classes": teacher_classes}
     return render(request, 'teacher.html', context)
 
 '''
@@ -138,7 +139,9 @@ def register(request):
     return render(request, 'register.html', context)
 
 def loginPage(request):
+
     if request.user.is_authenticated:
+    #if request.user.is_authenticated and (request.POST.get("role") == "teacher"):
         return redirect("/teacher")
     else:
         if request.method == "POST":
@@ -153,13 +156,13 @@ def loginPage(request):
             print("User after authentication:", user)
 
             if user is not None:
-                if isinstance(user, Teacher):
+                if isinstance(user, Account):
                     login(request, user)
-                    '''
-                    next_url = request.GET.get('next', '/teacher/')
-                    return redirect(next_url)
-                    '''
-                    return redirect("/teacher")
+                    print("request.user.role: ", str(request.user.role))
+                    if str(request.user.role) == "Teacher":
+                        return redirect("/teacher")
+                    elif str(request.user.role) == "Student":
+                        return redirect("/student")
                 else:
                     messages.info(request, "You do not have permission to log in as a teacher.")
             else:
