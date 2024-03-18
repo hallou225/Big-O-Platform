@@ -1,0 +1,17 @@
+/* Color Palette:
+        * Black: #1E1F22
+        * Dark Grey: #2A2D31
+        * Lighter Grey: #303338
+        * Text Entry Grey: #3d4147
+        * Text Placeholder Grey: #686b6d
+        * Light blue: #37c6ff
+        * Dark Blue #1b33b6
+*/
+
+#mainContent {
+    margin-left: 12.5vw;
+    margin-top: 4.5vw;
+    position: absolute;
+    background-color: red;
+    width: 80vw;
+}

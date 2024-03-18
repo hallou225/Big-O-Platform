@@ -42,12 +42,12 @@
             <!-- Submit button which calls checkCredentials() function when clicked -->
             <!-- <input type="submit" id="signInButton" value="Sign In" onclick="checkCredentials(event)"> -->
             <input class="btn login_btn" id="signInButton" type="submit" value="Login">
-            
+
             <!-- Link to "Forgot Password" page -->
             <a class="formLink" id="forgotPassword" href="https://www.google.com">Forgot Password?</a>
 
             <!-- Link to "Sign Up" page -->
-            <a class="formLink" id="signUp" href="register/">New? Sign up for free!</a>
+            <a class="formLink" id="signUp" href="/register">New? Sign up for free!</a>
 
             {% for message in messages %}
                 <p id="messages">{{message}}</p>

@@ -24,7 +24,7 @@
 
 #signInHeader {
     color: white;
-    padding-bottom: 1.6vw;
+    padding-bottom: 0;
     font-size: 2.2vw;
 }
 
@@ -34,7 +34,7 @@
     padding-top: 0.6vw;
     padding-bottom: 0.6vw;
     border: none;
-    margin-bottom: 0.8vw;
+    margin-bottom: 0;
     background-color: #3d4147;
     color: white;
     font-size: 1.3vw;
@@ -135,9 +135,21 @@ label[for="passwordCheckbox"] {
     position: absolute;
 }
 
+#studentOrTeacherLabel {
+    color: white;
+    font-size: 1.6vw;
+    margin-top: 1.8vw;
+    font-weight: 600;
+}
+
+#studentOrTeacherDropDownMenu {
+    width: 26.1vw;
+    margin-top: 0.8vw;
+}
+
 .formLink {
     display: block;
-    padding-top: 1.6vw;
+    padding-top: 1vw;
     font-size: 1.3vw;
     text-decoration: none;
     color: #37c6ff;
