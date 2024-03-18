@@ -37,18 +37,37 @@ class Language(models.Model):
         return self.name 
     
 
-
-class Term(models.Model):
-    name           = models.CharField(max_length=100)                          # Required Fielded 
-
+class Module(models.Model):
+    name = models.CharField(max_length=100)                          # Required Field
+    # number_of_question
+    # algorithm_id
     def __str__(self) -> str:
         return self.name
+    
+class Year(models.Model):                      
+    start_date    = models.CharField(max_length=100)                            # Required Field  
+    end_date      = models.CharField(max_length=100)                          # Required Field
+    # number_of_question
+    # algorithm_id
+    def __str__(self) -> str:
+        return self
+    
+
+class Term(models.Model):
+    year_id        = models.ForeignKey(Year, on_delete=models.CASCADE)         # Required Field
+    name           = models.CharField(max_length=100)                          # Required Fielded 
+    term_number    = models.CharField(max_length=100)                          # Required Field
+    # number_of_question
+    # algorithm_id
+    def __str__(self) -> str:
+        return self
     
 
 
 class Class(models.Model):    
     teacher_id           = models.ForeignKey(User, on_delete=models.CASCADE, default="1") 
     language_id          = models.ForeignKey(Language, on_delete=models.CASCADE, default="1") 
+    module_id            = models.ForeignKey(Module, on_delete=models.CASCADE, default="1")  
     term_id              = models.ForeignKey(Term, on_delete=models.CASCADE, default="1")  
     class_code           = models.CharField(max_length=100, null=True)                        # Required Field
     term                 = models.CharField(max_length=100, null=True)                              # Optional Field
@@ -57,15 +76,6 @@ class Class(models.Model):
         return self
 
 
-class Module(models.Model):
-    name      = models.CharField(max_length=100)                          # Required Field
-    class_id  = models.ForeignKey(Class, on_delete=models.CASCADE, default="1") 
-    # number_of_question
-    # algorithm_id
-    def __str__(self) -> str:
-        #return self.name + " " + self.last_name
-        return self
-    
 
 
 '''
