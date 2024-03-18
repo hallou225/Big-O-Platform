@@ -82,3 +82,11 @@ h1 {
     z-index: 4;
     display: none;
 }
+
+.classHandleButton {
+    width: 5vw;
+    height: 3vw;
+    text-decoration: none;
+    color: white;
+    background-color: #303338;
+}
