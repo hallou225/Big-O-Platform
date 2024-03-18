@@ -58,8 +58,10 @@
                         <h1>Term: {{teacher_class.term}}</h1>
                     </div>
                 </div>
+                
+                <button>Edit Class Info</button>
 
-                <a href="">Edit Class Info</a>
+                <a href="{% url 'deleteClass' teacher_class.id %}">Delete Class</a>
                 
             </div>
 

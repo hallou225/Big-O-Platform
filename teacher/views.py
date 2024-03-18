@@ -5,13 +5,55 @@ from django.contrib.auth import get_user_model
 
 # Create your views here.
 
+'''
+@login_required(login_url="/login")
+def teacher(request):
+    print("Teacher Function")
+    checkTeacherRole(request)
+    teacher_id = request.user.id
+    teacher_username = request.user.username
+    teacher_password = request.user.password
+    teacher_display_name = request.user.display_name
+
+    teacher_classes = Class.objects.filter(teacher_id=teacher_id)
+
+    context = {"teacher_id": teacher_id, "teacher_username": teacher_username, "teacher_password": teacher_password, "teacher_display_name": teacher_display_name, "teacher_classes": teacher_classes}
+    return render(request, 'teacher.html', context)
+'''
+
+print("Start")
+def isTeacher(request):
+    print("checkRole function")
+    if request.user.is_authenticated:
+        print("request.user.role: ", str(request.user.role))
+        if str(request.user.role) == "Teacher":
+            return True
+        else:
+            print("redirect to /login")
+            return False
 
 @login_required(login_url="/login")
 def teacher(request):
-    return render(request, 'teacher.html')
+    print("Teacher Views: def teacher(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+
+    teacher_id = request.user.id
+    teacher_username = request.user.username
+    teacher_password = request.user.password
+    teacher_display_name = request.user.display_name
+
+    teacher_classes = Class.objects.filter(teacher_id=teacher_id)
+
+    context = {"teacher_id": teacher_id, "teacher_username": teacher_username, "teacher_password": teacher_password, "teacher_display_name": teacher_display_name, "teacher_classes": teacher_classes}
+    return render(request, 'teacher.html', context)
 
 @login_required(login_url="/login")
 def createclass(request):
+    print("Teacher Views: def createclass(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+
     form = CreateClassForm()
     if request.method == "POST":
         form = CreateClassForm(request.POST)
@@ -35,10 +77,18 @@ def createclass(request):
 
 @login_required(login_url="/login")
 def profile(request):
+    print("Teacher Views: def profile(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+
     return render(request, 'profile.html')
 
 @login_required(login_url="/login")
 def teacherClass(request, class_pk):
+    print("Teacher Views: def teacherClass(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+        
     teacher_class = Class.objects.get(id=class_pk)
 
     class_name = teacher_class.class_name
@@ -46,3 +96,17 @@ def teacherClass(request, class_pk):
 
     context = {"teacher_class": teacher_class, "modules": modules}
     return render(request, 'class.html', context)
+
+def deleteClass(request, class_pk):
+    print("Teacher Views: def deleteClass(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+        
+    teacher_class = Class.objects.get(id=class_pk)
+
+    if request.method == "POST":
+        teacher_class.delete()
+        return redirect("/teacher")
+
+    context = {"teacher_class": teacher_class}
+    return render(request, 'deleteClass.html', context)
