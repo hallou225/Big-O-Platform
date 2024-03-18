@@ -1,0 +1,92 @@
+/* Color Palette:
+        * Black: #1E1F22
+        * Dark Grey: #2A2D31
+        * Lighter Grey: #303338
+        * Text Entry Grey: #3d4147
+        * Text Placeholder Grey: #686b6d
+        * Light blue: #37c6ff
+        * Dark Blue #1b33b6
+*/
+
+#mainContent {
+    margin-left: 12.5vw;
+    margin-top: 4.5vw;
+    position: absolute;
+    background-color: red;
+    width: 80vw;
+}
+
+h1 {
+    color: white;
+    font-size: 2.2vw;
+}
+
+#mainHeadingDiv {
+    display: flex;
+    background-color: orange;
+    width: 80vw;
+}
+
+#mainHeading {
+    width: 37.8vw;
+}
+
+#classInfoAndModulesDiv {
+    border: 1px solid yellowgreen;
+    width: 80vw;
+    height: min-content;
+}
+
+#classInfoDiv {
+    background-color: rgb(1, 74, 75);
+    display: inline-block;
+    width: 25vw;
+    margin-right: 2vw;
+}
+
+#modulesDiv {
+    background-color: maroon;
+    display: grid;
+    row-gap: 1vw;
+    width: 53vw;
+    height: min-content;
+    display: inline-block;
+    position: absolute;
+}
+
+#module {
+    width: 100%;
+    height: 5.8vw;
+    background-color: #303338;
+}
+
+#deleteClassModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30vw;
+    height: 20vw;
+    z-index: 5;
+    background-color: cornsilk;
+    display: none;
+}
+
+#dimBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 4;
+    display: none;
+}
+
+.classHandleButton {
+    width: 5vw;
+    height: 3vw;
+    text-decoration: none;
+    color: white;
+    background-color: #303338;
+}

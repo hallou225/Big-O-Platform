@@ -1,14 +1,13 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/createclass.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/updateClass.css'%}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
 {% endblock %}
 
 {% block javascript %}    
-<script src="{% static '/js/createclass.js'%}"></script>
+<script src="{% static '/js/updateClass.js'%}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 {% endblock %}
 
@@ -17,38 +16,33 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Create a Class form (use post method to prevent data being shown in url) -->
-    <form id="createAClassForm" method="POST" action="">
+    <!-- Update a Class form (use post method to prevent data being shown in url) -->
+    <form id="updateClassForm" method="POST" action="">
         {% csrf_token %}
 
         <!-- Content inside the form -->
-        <div id="createAClassFormContent">
+        <div id="updateClassFormContent">
         
-            <h1 id="createAClassHeader">Create a Class</h1>
-            <h2 id="enterClassName">Enter a Class Name</h2>
+            <h1 id="updateClassHeader">Update your Class</h1>
+            <h2 id="enterClassName">Edit the Class Name</h2>
 
             <!-- Text entry for class name -->
-            <!-- <input type="text" class="textEntry" id="className" name="className" placeholder="Class Name" autocomplete="off" required><br> -->
             {{form.class_name}}
 
-            <h2>Choose the Class Term</h2>
+            <h2>Edit the Class Term</h2>
 
             <!-- Text entry for class term -->
-            <!-- <input type="text" class="textEntry" id="classTerm" name="classTerm" placeholder="Class Term (e.g. Spring 2024)" autocomplete="off" required><br> -->
-            <!-- <input id="formTerm" readonly>Hello{{form.term}}</input> -->
             {{form.term}}
             
-            <h2 id="enterClassCode">Enter a unique Class Code</h2>
+            <h2 id="enterClassCode">Edit the Class Code</h2>
             <!-- Text entry for unique class code -->
-            <!-- <input type="text" class="textEntry" id="classCode" name="classCode" placeholder="Class Code" autocomplete="off" required><br> -->
             {{form.class_code}}
 
             <h2>Choose the Language</h2>
             {{form.language}}
 
             <!-- Next button to take the user to the next page -->
-            <!-- <button id="submitButton" onclick="submitClass(event)">Submit</button> -->
-            <input class="btn login_btn" id="submitButton" type="submit" value="Create Class">
+            <input class="btn login_btn" id="submitButton" type="submit" value="Update Class">
 
             {% if form.errors %}
 					{% for field in form %}
