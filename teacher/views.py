@@ -110,3 +110,21 @@ def deleteClass(request, class_pk):
 
     context = {"teacher_class": teacher_class}
     return render(request, 'deleteClass.html', context)
+
+@login_required(login_url="/login")
+def updateClass(request, class_pk):
+    print("Teacher Views: def updateclass(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+
+    teacherClass = Class.objects.get(id=class_pk)
+    form = CreateClassForm(instance=teacherClass)
+
+    if request.method == "POST":
+        form = CreateClassForm(request.POST, instance=teacherClass)
+        if form.is_valid():
+            form.save()
+            return redirect("/teacher")
+
+    context = {"form": form}
+    return render(request, 'updateClass.html', context)
