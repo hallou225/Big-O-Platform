@@ -80,8 +80,11 @@ def profile(request):
     print("Teacher Views: def profile(request):")
     if not isTeacher(request):
         return redirect("/login")
+    
+    teacher = request.user
+    context = {"teacher": teacher}
 
-    return render(request, 'profile.html')
+    return render(request, 'profile.html', context)
 
 @login_required(login_url="/login")
 def teacherClass(request, class_pk):
