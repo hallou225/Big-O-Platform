@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+    <script src="{% static '/js/module.js'%}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <!-- Div for sidebar of page -->
+    <div id="sidebar">
+
+    </div>
+
+    <!-- Div for main content of page -->
+    <div id="mainContent">
+
+        <!-- Div for main heading -->
+        <div id="mainHeadingDiv">
+
+            <!-- Main heading -->
+            <h1 class="myH1" id="mainHeading">{{module.name}}</h1>
+
+        </div>
+
+    </div>
+{% endblock %}

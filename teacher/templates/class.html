@@ -1,13 +1,3 @@
-<!--
-    Name of Class
-    Name of Teacher
-    Term
-
-    {for}
-        Modules
-    {endfor}
--->
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -70,7 +60,7 @@
 
                 {% for module in modules %}
                     <div id="module">
-                        <h1>{{module.name}}</h1>
+                        <h1><a href="{% url 'module' teacher_class.id module.id %}">{{module.name}}</a></h1>
                     </div>
                 {% endfor %}
 

@@ -21,6 +21,15 @@ h1 {
     font-size: 2.2vw;
 }
 
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color: #37c6ff;
+}
+
 #mainHeadingDiv {
     display: flex;
     background-color: orange;

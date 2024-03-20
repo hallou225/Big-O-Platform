@@ -124,7 +124,19 @@ def updateClass(request, class_pk):
         form = CreateClassForm(request.POST, instance=teacherClass)
         if form.is_valid():
             form.save()
-            return redirect("/teacher")
+            return redirect("/teacher/class/" + class_pk)
 
     context = {"form": form}
     return render(request, 'updateClass.html', context)
+
+@login_required(login_url="/login")
+def module(request, class_pk, module_pk):
+    print("Teacher Views: def module(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+        
+    teacherClass = Class.objects.get(id=class_pk)
+    module = Module.objects.get(id=module_pk)
+
+    context = {"teacherClass": teacherClass, "module": module}
+    return render(request, 'module.html', context)
