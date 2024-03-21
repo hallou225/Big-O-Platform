@@ -56,3 +56,7 @@ h1 {
     width: 50%;
     /*background-color:cornsilk*/
 }
+
+#algorithmText {
+    font-family: monospace;
+}

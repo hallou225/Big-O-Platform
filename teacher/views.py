@@ -151,6 +151,8 @@ def module(request, class_pk, module_pk):
         algorithm_file_lines = algorithm_file.open().readlines()
         algorithm_file.close()
 
+        algorithm_file_lines = [line.decode("utf-8") for line in algorithm_file_lines]
+
         answerkey_file = request.FILES['answerkeyUpload']
         answerkey_file_name = answerkey_file.name
         answerkey_file_size = answerkey_file.size

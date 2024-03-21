@@ -49,9 +49,12 @@
         <div id="algorithmAndAnswerkeyDiv">
             <div id="algorithmDiv">
                 <h2>Algorithm Content:</h2>
+                <p id="algorithmText">
                 {% for line in algorithm_file_lines %}
-                    <h3>{{line.decode}}</h3>
+                    {{line}}
+                    <br>
                 {% endfor %}
+                </p>
             </div>
 
             <div id="answerkeyDiv">
