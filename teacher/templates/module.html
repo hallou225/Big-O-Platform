@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+    <script src="{% static '/js/module.js'%}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <!-- Div for sidebar of page -->
+    <div id="sidebar">
+
+    </div>
+
+    <!-- Div for main content of page -->
+    <div id="mainContent">
+
+        <!-- Div for main heading -->
+        <div id="mainHeadingDiv">
+            <!-- Main heading -->
+            <h1 class="myH1" id="mainHeading">{{module.name}}</h1>
+        </div>
+
+        <!-- File upload form -->
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div id="uploadFormDiv">
+                <div class="uploadSubDiv">
+                    <h3>Upload an Algorithm</h3>
+                    <input type="file" id="algorithmUpload" name="algorithmUpload">
+                </div>
+                <div class="uploadSubDiv">
+                    <h3>Upload an Answer Key</h3>
+                    <input type="file" id="answerkeyUpload" name="answerkeyUpload">
+                </div>
+                <input type="submit" id="uploadButton" value="Upload">
+            </div>
+
+        </form>
+
+        <div id="algorithmAndAnswerkeyDiv">
+            <div id="algorithmDiv">
+                <h2>Algorithm Content:</h2>
+                <p id="algorithmText">
+                {% for line in algorithm_file_lines %}
+                    {{line}}
+                    <br>
+                {% endfor %}
+                </p>
+            </div>
+
+            <div id="answerkeyDiv">
+                <h2>Answer Key Content:</h2>
+                {% for line in answerkey_file_lines %}
+                    <h3>{{line.decode}}</h3>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

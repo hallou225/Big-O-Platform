@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from bigo.forms import *
 from django.contrib.auth import get_user_model
+from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 
@@ -80,8 +81,11 @@ def profile(request):
     print("Teacher Views: def profile(request):")
     if not isTeacher(request):
         return redirect("/login")
+    
+    teacher = request.user
+    context = {"teacher": teacher}
 
-    return render(request, 'profile.html')
+    return render(request, 'profile.html', context)
 
 @login_required(login_url="/login")
 def teacherClass(request, class_pk):
@@ -124,7 +128,58 @@ def updateClass(request, class_pk):
         form = CreateClassForm(request.POST, instance=teacherClass)
         if form.is_valid():
             form.save()
-            return redirect("/teacher")
+            return redirect("/teacher/class/" + class_pk)
 
     context = {"form": form}
     return render(request, 'updateClass.html', context)
+
+@login_required(login_url="/login")
+def module(request, class_pk, module_pk):
+    print("Teacher Views: def module(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+
+    teacherClass = Class.objects.get(id=class_pk)
+    module = Module.objects.get(id=module_pk)
+    context = {"teacherClass": teacherClass, "module": module}
+
+    try:
+        algorithm_file = request.FILES['algorithmUpload']
+        algorithm_file_name = algorithm_file.name
+        algorithm_file_size = algorithm_file.size
+        algorithm_file_content_type = algorithm_file.content_type
+        algorithm_file_lines = algorithm_file.open().readlines()
+        algorithm_file.close()
+
+        algorithm_file_lines = [line.decode("utf-8") for line in algorithm_file_lines]
+
+        answerkey_file = request.FILES['answerkeyUpload']
+        answerkey_file_name = answerkey_file.name
+        answerkey_file_size = answerkey_file.size
+        answerkey_file_content_type = answerkey_file.content_type
+        answerkey_file_lines = answerkey_file.open().readlines()
+        answerkey_file.close()
+
+        # Debugging Messages:
+        print("Name of algorithm file: ", algorithm_file_name)
+        print("Size of algorithm file: ", algorithm_file_size)
+        print("Content Type of algorithm file: ", algorithm_file_content_type)
+        print("Was the algorithm file closed? ", algorithm_file.closed)
+
+        print("Name of answerkey file: ", answerkey_file_name)
+        print("Size of answerkey file: ", answerkey_file_size)
+        print("Content Type of answerkey file: ", answerkey_file_content_type)
+        print("Was the answerkey file closed? ", answerkey_file.closed)
+
+        '''
+        context.update({"file": file, "file_name": file_name,
+        "file_size": file_size, "file_content_type": file_content_type,
+        "file_lines": file_lines})
+        '''
+        context.update({"algorithm_file_lines": algorithm_file_lines,
+        "answerkey_file_lines": answerkey_file_lines})
+
+    except MultiValueDictKeyError:
+        print("No file was chosen.")
+
+    return render(request, 'module.html', context)

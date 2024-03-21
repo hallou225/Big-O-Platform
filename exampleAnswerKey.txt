@@ -1,0 +1,11 @@
+O(1)
+O(n)
+O(n)
+
+O(1)
+
+O(n)
+O(n)
+O(1)
+
+O(n^2) never specified because answers are line-by-line
