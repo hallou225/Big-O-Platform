@@ -1,0 +1,326 @@
+{
+  "id": "f17f422d-823b-439a-82ae-6be056f53148",
+  "version": "2.0",
+  "name": "Test",
+  "url": "http://ec2-54-161-242-113.compute-1.amazonaws.com/",
+  "tests": [{
+    "id": "3ddc6791-e778-4c59-8083-75c3ca5f1c55",
+    "name": "0-Not a user",
+    "commands": [{
+      "id": "8feb1a5a-09bd-4803-b1e4-c88a29a5da7a",
+      "comment": "",
+      "command": "open",
+      "target": "login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "dfc044d0-133f-4a36-8966-70d8f9ee5c70",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "dbndghndngfdxflkz"
+    }, {
+      "id": "7846d161-65d1-4654-a242-f7c226f696f3",
+      "comment": "",
+      "command": "click",
+      "target": "id=signInButton",
+      "targets": [
+        ["id=signInButton", "id"],
+        ["css=#signInButton", "css:finder"],
+        ["xpath=//input[@id='signInButton']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "35aa66a6-33b7-4d52-bf2f-3228c0701d8e",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "hotdogs"
+    }, {
+      "id": "1618cffe-d1f2-4cf6-9619-c1b91f0042ad",
+      "comment": "",
+      "command": "click",
+      "target": "id=signInButton",
+      "targets": [
+        ["id=signInButton", "id"],
+        ["css=#signInButton", "css:finder"],
+        ["xpath=//input[@id='signInButton']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "22d2ab53-1729-4a83-b1bc-35ec7d2c4dec",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=messages",
+      "targets": [],
+      "value": "Username OR password is incorrect"
+    }]
+  }, {
+    "id": "8da23bd4-658c-49be-9286-d9bb1aca4f44",
+    "name": "1.1-Teacher login",
+    "commands": [{
+      "id": "b5b0a788-305e-44db-9b18-d29184fd6ffb",
+      "comment": "",
+      "command": "open",
+      "target": "login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c4fa35c9-8c5f-470e-a4c6-e9a4475f7f82",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "teacher"
+    }, {
+      "id": "eafd8e07-83db-4be1-bded-eb2a51d17e9d",
+      "comment": "",
+      "command": "click",
+      "target": "id=signInButton",
+      "targets": [
+        ["id=signInButton", "id"],
+        ["css=#signInButton", "css:finder"],
+        ["xpath=//input[@id='signInButton']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d8f87f27-10cc-4e6e-8521-2f5863ee658d",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "password"
+    }, {
+      "id": "e235d7d1-d426-4db0-b4d2-6c566ac2342a",
+      "comment": "",
+      "command": "click",
+      "target": "id=signInButton",
+      "targets": [
+        ["id=signInButton", "id"],
+        ["css=#signInButton", "css:finder"],
+        ["xpath=//input[@id='signInButton']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ac9bcd07-411e-4761-9a9b-a38b0c99223a",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=teacherSideBar",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "81490271-7af8-41da-9d4b-743085230bee",
+    "name": "1.2-Teacher logout",
+    "commands": [{
+      "id": "0ae57077-237f-46ae-922b-192a26501e87",
+      "comment": "",
+      "command": "open",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d3f65da6-43d3-4b81-9b05-fc931eb4d37e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Logout",
+      "targets": [
+        ["linkText=Logout", "linkText"],
+        ["css=.hello-msg > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
+        ["xpath=//div[@id='header']/span/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout/')]", "xpath:href"],
+        ["xpath=//span/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "687334e2-6fbe-42af-853c-4f7a3c4dce23",
+    "name": "2.1-Student login",
+    "commands": [{
+      "id": "43056058-4125-4046-8a41-18dad4299865",
+      "comment": "",
+      "command": "open",
+      "target": "login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ab011ad2-43e7-49ee-bf8e-c56357a82f93",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "student"
+    }, {
+      "id": "ef862289-235a-4921-911b-337b81a39ffd",
+      "comment": "",
+      "command": "click",
+      "target": "id=signInButton",
+      "targets": [
+        ["id=signInButton", "id"],
+        ["css=#signInButton", "css:finder"],
+        ["xpath=//input[@id='signInButton']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2c03bd2f-b025-48e8-b5ae-9af19602612d",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "password"
+    }, {
+      "id": "2aed13bf-8bb3-4868-9fa1-80570288872a",
+      "comment": "",
+      "command": "click",
+      "target": "id=signInButton",
+      "targets": [
+        ["id=signInButton", "id"],
+        ["css=#signInButton", "css:finder"],
+        ["xpath=//input[@id='signInButton']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[3]", "xpath:idRelative"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e761e101-ca7d-4ddf-84d0-3cb36e2b6189",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "css=.myH1",
+      "targets": [
+        ["css=.myH1", "css:finder"],
+        ["xpath=//div[@id='content']/h1", "xpath:idRelative"],
+        ["xpath=//div[5]/h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'student page rendered')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "56bbd2b5-cb75-498e-98d9-d52b4db972c0",
+    "name": "2.2-Student logout",
+    "commands": [{
+      "id": "3821ed6e-30f0-4658-bbbe-286eca7c9d2e",
+      "comment": "",
+      "command": "open",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0c011561-f82f-4530-8344-302af003c085",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Logout",
+      "targets": [
+        ["linkText=Logout", "linkText"],
+        ["css=.hello-msg > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
+        ["xpath=//div[@id='header']/span/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout/')]", "xpath:href"],
+        ["xpath=//span/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "f0c24fce-e64a-4365-8c33-2db673fb832e",
+    "name": "Show Password",
+    "commands": [{
+      "id": "d831df46-ee7c-480c-bd8f-a791de750ae6",
+      "comment": "",
+      "command": "open",
+      "target": "login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "925f4299-8c40-436b-a29e-8b5e4091a8d0",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "dfsdfngsdfgsd"
+    }, {
+      "id": "60623689-f372-4099-b76c-82ae807981d1",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[@id='signInFormContent']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "secretPassword"
+    }, {
+      "id": "7ed75c29-36b9-4359-8aec-088cafb90166",
+      "comment": "",
+      "command": "click",
+      "target": "css=.checkmark",
+      "targets": [
+        ["css=.checkmark", "css:finder"],
+        ["xpath=//label[@id='checkboxDiv']/span", "xpath:idRelative"],
+        ["xpath=//label/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "017d732f-f80c-4afe-a7ed-ef783478479c",
+      "comment": "",
+      "command": "verifyValue",
+      "target": "id=password",
+      "targets": [],
+      "value": "secretPassword"
+    }]
+  }],
+  "suites": [{
+    "id": "e30ce46b-11ee-409c-a56f-25f51d78e3c6",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["3ddc6791-e778-4c59-8083-75c3ca5f1c55"]
+  }],
+  "urls": ["https://www.youtube.com/", "http://ec2-54-161-242-113.compute-1.amazonaws.com/login/", "http://ec2-54-161-242-113.compute-1.amazonaws.com/"],
+  "plugins": []
+}

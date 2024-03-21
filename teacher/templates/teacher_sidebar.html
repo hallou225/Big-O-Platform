@@ -1,0 +1,48 @@
+{% load static %}
+
+  <div id="teacherSideBar">
+    <ul class="navbar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link" href="/teacher/profile"><img class="sidebarIcon" src="{% static 'images/profileIcon.svg' %}" alt=""></a>
+        <a class="nav-link" href="/teacher/profile">Profile</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/teacher"><img class="sidebarIcon" src="{% static '/images/pencilBLUE3Cropped.svg'%}" alt=""></a>
+        <a class="nav-link" href="/teacher">Classes</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/teacher/createclass"><img class="sidebarIcon" src="{% static '/images/createclassIcon.svg'%}" alt=""></a>
+        <a class="nav-link" href="/teacher/createclass">Create<br>a Class</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/about"><img class="sidebarIcon" src="{% static '/images/aboutIcon.svg'%}" alt=""></a>
+        <a class="nav-link" href="/about">About</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link"href="{% url 'logout' %}"><img class="sidebarIcon" src="{% static '/images/logoutIcon.svg'%}" alt=""></a>
+        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+      </li>
+
+      <!--
+
+      <li class="nav-item">
+        <a class="nav-link" href="/teacher/create">create a class</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/teacher">Home</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/register">Register</a>
+      </li>
+
+      -->
+
+    </ul>
+  </div>

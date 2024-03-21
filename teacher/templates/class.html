@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/class.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+    <script src="{% static '/js/class.js'%}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <!-- Div for sidebar of page -->
+    <div id="sidebar">
+
+    </div>
+
+    <!-- Div for main content of page -->
+    <div id="mainContent">
+
+        <!-- Div for main heading -->
+        <div id="mainHeadingDiv">
+
+            <!-- Main heading -->
+            <h1 class="myH1" id="mainHeading">{{teacher_class.class_name}}</h1>
+
+        </div>
+
+        <!-- Div for class info and modules -->
+        <div id="classInfoAndModulesDiv">
+
+            <!-- Div for class info -->
+            <div id="classInfoDiv">
+
+                <div id="classInfoContent">
+                    <div>
+                        <h2>Class Code:</h2>
+                        <p>{{teacher_class.class_code}}</p>
+                    </div>
+                    <div>
+                        <h2>Programming Language:</h2>
+                        <p>{{teacher_class.language}}</p>
+                    </div>
+                    <div>
+                        <h2>Term:</h2>
+                        <p>{{teacher_class.term}}</p>
+                    </div>
+                </div>
+                
+                <a id="updateClassButton" class="classHandleButton" href="{% url 'updateClass' teacher_class.id %}">Edit Class Info</a>
+
+                <a id="deleteClassButton" class="classHandleButton" href="{% url 'deleteClass' teacher_class.id %}">Delete Class</a>
+                
+            </div>
+
+            <!-- Div for modules -->
+            <div id="modulesDiv">
+
+                {% for module in modules %}
+                    <a class="moduleButton" href="{% url 'module' teacher_class.id module.id %}">{{module.name}}</a>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
