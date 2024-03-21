@@ -25,11 +25,20 @@
 
         <!-- Div for main heading -->
         <div id="mainHeadingDiv">
-
             <!-- Main heading -->
             <h1 class="myH1" id="mainHeading">{{module.name}}</h1>
-
         </div>
+
+        <!-- File upload form -->
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h3>Select a file:</h3>
+            <input type="file" id="file" name="file">
+            <input type="submit" value="Upload">
+
+        </form>
+
+        <h1>{{file_name}}</h1>
 
     </div>
 {% endblock %}

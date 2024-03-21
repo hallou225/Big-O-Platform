@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from bigo.forms import *
 from django.contrib.auth import get_user_model
+from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 
@@ -137,9 +138,17 @@ def module(request, class_pk, module_pk):
     print("Teacher Views: def module(request):")
     if not isTeacher(request):
         return redirect("/login")
-        
+    
     teacherClass = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
-
     context = {"teacherClass": teacherClass, "module": module}
+
+    try:
+        file_name = request.FILES['file'].name
+        context.update({"file_name": file_name})
+
+    except MultiValueDictKeyError:
+        file_name = "No file was chosen."
+        context.update({"file_name": file_name})
+
     return render(request, 'module.html', context)
