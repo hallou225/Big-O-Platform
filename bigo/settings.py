@@ -150,6 +150,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'register/_static'),
 ]
 
+
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
     '_database.backends.AccountBackend',  # Custom backend
