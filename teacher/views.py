@@ -138,17 +138,46 @@ def module(request, class_pk, module_pk):
     print("Teacher Views: def module(request):")
     if not isTeacher(request):
         return redirect("/login")
-    
+
     teacherClass = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
     context = {"teacherClass": teacherClass, "module": module}
 
     try:
-        file_name = request.FILES['file'].name
-        context.update({"file_name": file_name})
+        algorithm_file = request.FILES['algorithmUpload']
+        algorithm_file_name = algorithm_file.name
+        algorithm_file_size = algorithm_file.size
+        algorithm_file_content_type = algorithm_file.content_type
+        algorithm_file_lines = algorithm_file.open().readlines()
+        algorithm_file.close()
+
+        answerkey_file = request.FILES['answerkeyUpload']
+        answerkey_file_name = answerkey_file.name
+        answerkey_file_size = answerkey_file.size
+        answerkey_file_content_type = answerkey_file.content_type
+        answerkey_file_lines = answerkey_file.open().readlines()
+        answerkey_file.close()
+
+        # Debugging Messages:
+        print("Name of algorithm file: ", algorithm_file_name)
+        print("Size of algorithm file: ", algorithm_file_size)
+        print("Content Type of algorithm file: ", algorithm_file_content_type)
+        print("Was the algorithm file closed? ", algorithm_file.closed)
+
+        print("Name of answerkey file: ", answerkey_file_name)
+        print("Size of answerkey file: ", answerkey_file_size)
+        print("Content Type of answerkey file: ", answerkey_file_content_type)
+        print("Was the answerkey file closed? ", answerkey_file.closed)
+
+        '''
+        context.update({"file": file, "file_name": file_name,
+        "file_size": file_size, "file_content_type": file_content_type,
+        "file_lines": file_lines})
+        '''
+        context.update({"algorithm_file_lines": algorithm_file_lines,
+        "answerkey_file_lines": answerkey_file_lines})
 
     except MultiValueDictKeyError:
-        file_name = "No file was chosen."
-        context.update({"file_name": file_name})
+        print("No file was chosen.")
 
     return render(request, 'module.html', context)

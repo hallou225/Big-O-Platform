@@ -32,13 +32,35 @@
         <!-- File upload form -->
         <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
-            <h3>Select a file:</h3>
-            <input type="file" id="file" name="file">
-            <input type="submit" value="Upload">
+            <div id="uploadFormDiv">
+                <div class="uploadSubDiv">
+                    <h3>Upload an Algorithm</h3>
+                    <input type="file" id="algorithmUpload" name="algorithmUpload">
+                </div>
+                <div class="uploadSubDiv">
+                    <h3>Upload an Answer Key</h3>
+                    <input type="file" id="answerkeyUpload" name="answerkeyUpload">
+                </div>
+                <input type="submit" id="uploadButton" value="Upload">
+            </div>
 
         </form>
 
-        <h1>{{file_name}}</h1>
+        <div id="algorithmAndAnswerkeyDiv">
+            <div id="algorithmDiv">
+                <h2>Algorithm Content:</h2>
+                {% for line in algorithm_file_lines %}
+                    <h3>{{line.decode}}</h3>
+                {% endfor %}
+            </div>
+
+            <div id="answerkeyDiv">
+                <h2>Answer Key Content:</h2>
+                {% for line in answerkey_file_lines %}
+                    <h3>{{line.decode}}</h3>
+                {% endfor %}
+            </div>
+        </div>
 
     </div>
 {% endblock %}
