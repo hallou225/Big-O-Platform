@@ -37,21 +37,24 @@
             <!-- Div for class info -->
             <div id="classInfoDiv">
 
-                <div id="classInfo">
-                    <div class="classInfo">
-                        <h1>Class Code: {{teacher_class.class_code}}</h1>
+                <div id="classInfoContent">
+                    <div>
+                        <h2>Class Code:</h2>
+                        <p>{{teacher_class.class_code}}</p>
                     </div>
-                    <div class="classInfo">
-                        <h1>Programming Language: {{teacher_class.language}}</h1>
+                    <div>
+                        <h2>Programming Language:</h2>
+                        <p>{{teacher_class.language}}</p>
                     </div>
-                    <div class="classInfo">
-                        <h1>Term: {{teacher_class.term}}</h1>
+                    <div>
+                        <h2>Term:</h2>
+                        <p>{{teacher_class.term}}</p>
                     </div>
                 </div>
                 
-                <a class="classHandleButton" href="{% url 'updateClass' teacher_class.id %}">Edit Class Info</a>
+                <a id="updateClassButton" class="classHandleButton" href="{% url 'updateClass' teacher_class.id %}">Edit Class Info</a>
 
-                <a class="classHandleButton" href="{% url 'deleteClass' teacher_class.id %}">Delete Class</a>
+                <a id="deleteClassButton" class="classHandleButton" href="{% url 'deleteClass' teacher_class.id %}">Delete Class</a>
                 
             </div>
 
@@ -59,9 +62,7 @@
             <div id="modulesDiv">
 
                 {% for module in modules %}
-                    <div id="module">
-                        <h1><a href="{% url 'module' teacher_class.id module.id %}">{{module.name}}</a></h1>
-                    </div>
+                    <a class="moduleButton" href="{% url 'module' teacher_class.id module.id %}">{{module.name}}</a>
                 {% endfor %}
 
             </div>
