@@ -77,13 +77,16 @@
         <th id="tablecode">Code</th>
         <th id="tableanswer">Answer</th>
     </tr>
-{% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
-    <tr>
-        <td>{{ forloop.counter }}</td>
-        <td><pre>{{ code }}</pre></td>
-        <td> {{ answer.decode }}</td>
-    </tr>
-{% endfor %}
+
+{% if algorithm_file_lines %}
+    {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><pre>{{ code }}</pre></td>
+            <td> {{ answer.decode }}</td>
+        </tr>
+    {% endfor %}
+{% endif %}
 </table>
 
     </div>
