@@ -60,3 +60,25 @@ h1 {
 #algorithmText {
     font-family: monospace;
 }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+border: 1px solid black;
+padding: 5px;
+margin: 0px;
+text-align: left;
+}
+
+th {
+background-color: #bde50b;
+}
+pre {
+    margin: 0px;
+}
+td#tablenumber {
+    color:red;
+}
