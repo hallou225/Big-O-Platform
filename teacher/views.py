@@ -4,6 +4,8 @@ from bigo.forms import *
 from django.contrib.auth import get_user_model
 from django.utils.datastructures import MultiValueDictKeyError
 
+
+
 # Create your views here.
 
 '''
@@ -176,8 +178,15 @@ def module(request, class_pk, module_pk):
         "file_size": file_size, "file_content_type": file_content_type,
         "file_lines": file_lines})
         '''
+        
+        algorithm = zip(algorithm_file_lines, answerkey_file_lines)
+        
         context.update({"algorithm_file_lines": algorithm_file_lines,
-        "answerkey_file_lines": answerkey_file_lines})
+        "answerkey_file_lines": answerkey_file_lines,
+        "algorithm": algorithm})
+
+
+
 
     except MultiValueDictKeyError:
         print("No file was chosen.")

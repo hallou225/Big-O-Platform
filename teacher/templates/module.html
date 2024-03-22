@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load custom_filters %}
 {% block css %}    
     <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
@@ -49,21 +49,42 @@
         <div id="algorithmAndAnswerkeyDiv">
             <div id="algorithmDiv">
                 <h2>Algorithm Content:</h2>
-                <p id="algorithmText">
-                {% for line in algorithm_file_lines %}
-                    {{line}}
-                    <br>
-                {% endfor %}
-                </p>
+                    {% for line in algorithm_file_lines %}
+                    <pre>{{ line }}</pre>
+                    {% endfor %}
             </div>
 
             <div id="answerkeyDiv">
                 <h2>Answer Key Content:</h2>
                 {% for line in answerkey_file_lines %}
-                    <h3>{{line.decode}}</h3>
-                {% endfor %}
+                    <pre>{{ line.decode }}</pre>
+                {% endfor %} 
+
             </div>
         </div>
+
+<br>    
+<br>    
+
+<table style="border:1px; border-color:black">
+    
+    <col style="width: 4%;">
+    <col style="width: 50%;">
+    <col style="width: 46%;">
+
+    <tr>
+        <th id="tablenumber">No</th>
+        <th id="tablecode">Code</th>
+        <th id="tableanswer">Answer</th>
+    </tr>
+{% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><pre>{{ code }}</pre></td>
+        <td> {{ answer.decode }}</td>
+    </tr>
+{% endfor %}
+</table>
 
     </div>
 {% endblock %}
