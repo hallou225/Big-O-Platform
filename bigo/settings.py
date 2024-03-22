@@ -83,6 +83,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+                
+        'libraries':{
+            'custom_filters': 'bigo.templatetags.custom_filters',
+            
+            }
         },
     },
 ]
@@ -149,6 +154,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'about/_static'),
     os.path.join(BASE_DIR, 'register/_static'),
 ]
+
+
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
