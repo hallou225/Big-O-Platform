@@ -165,11 +165,17 @@ def module(request, class_pk, module_pk):
         # Debugging Messages:
         print("Name of algorithm file: ", algorithm_file_name)
         print("Size of algorithm file: ", algorithm_file_size)
+        
+        algorithm_line_count = sum(1 for line in algorithm_file_lines)        
+        print("number of line ", algorithm_line_count)
+
         print("Content Type of algorithm file: ", algorithm_file_content_type)
         print("Was the algorithm file closed? ", algorithm_file.closed)
 
         print("Name of answerkey file: ", answerkey_file_name)
-        print("Size of answerkey file: ", answerkey_file_size)
+        print("Size of answerkey file: ", answerkey_file_size)        
+        answerkey_line_count = sum(1 for line in answerkey_file_lines)        
+        print("number of line ", answerkey_line_count)
         print("Content Type of answerkey file: ", answerkey_file_content_type)
         print("Was the answerkey file closed? ", answerkey_file.closed)
 
@@ -181,9 +187,13 @@ def module(request, class_pk, module_pk):
         
         algorithm = zip(algorithm_file_lines, answerkey_file_lines)
         
-        context.update({"algorithm_file_lines": algorithm_file_lines,
-        "answerkey_file_lines": answerkey_file_lines,
-        "algorithm": algorithm})
+        context.update({
+            "algorithm_file_lines": algorithm_file_lines,
+            "algorithm_line_count": algorithm_line_count,
+            "answerkey_file_lines": answerkey_file_lines,
+            "answerkey_line_count": answerkey_line_count,
+            "algorithm": algorithm
+        })
 
 
 
