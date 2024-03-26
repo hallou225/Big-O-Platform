@@ -4,6 +4,8 @@
 {% block css %}    
     <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+
 {% endblock %}
 
 {% block javascript %}    
@@ -43,51 +45,124 @@
                 </div>
                 <input type="submit" id="uploadButton" value="Upload">
             </div>
-
         </form>
 
+
+
+
+        {% if algorithm_file_lines %}
         <div id="algorithmAndAnswerkeyDiv">
             <div id="algorithmDiv">
                 <h2>Algorithm Content:</h2>
-                    {% for line in algorithm_file_lines %}
-                    <pre>{{ line }}</pre>
+                    {% for line in algorithm_file_lines|remove_newlines %}
+                    <pre><code class="language-java">{{ line }}</code></pre>
                     {% endfor %}
+                    <h3>Number of lines: {{algorithm_line_count}}</h3>
             </div>
 
             <div id="answerkeyDiv">
                 <h2>Answer Key Content:</h2>
                 {% for line in answerkey_file_lines %}
-                    <pre>{{ line.decode }}</pre>
+                    <pre><code>{{ line.decode }}</code></pre>
                 {% endfor %} 
+                <h3>Number of lines: {{answerkey_line_count}}</h3>
 
             </div>
         </div>
+        {% endif %} 
+{% if algorithm_line_count != answerkey_line_count %}
+        <p style="color:red">NB: Error - Lines Mismatch</p>
+        <p>the algorithm content lines does not match the answer key content lines<br>
+        Please check the files and reupload.
+        </p>
 
-<br>    
-<br>    
-
-<table style="border:1px; border-color:black">
-    
-    <col style="width: 4%;">
-    <col style="width: 50%;">
-    <col style="width: 46%;">
-
-    <tr>
-        <th id="tablenumber">No</th>
-        <th id="tablecode">Code</th>
-        <th id="tableanswer">Answer</th>
-    </tr>
-
-{% if algorithm_file_lines %}
-    {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td><pre>{{ code }}</pre></td>
-            <td> {{ answer.decode }}</td>
-        </tr>
-    {% endfor %}
 {% endif %}
-</table>
+
+{% if algorithm_file_lines and algorithm_line_count == answerkey_line_count  %}
+<form id="AlgorithmForm">
+    <table style="border:1px; border-color:black">
+        
+        <col style="width: 4%;">
+        <col style="width: 50%;">
+        <col style="width: 46%;">
+
+        <tr>
+            <th id="tablenumber">No</th>
+            <th id="tablecode">Code</th>
+            <th id="tableanswer">Answer</th>
+            <th id="tablehint">Hint</th>
+        </tr>
+
+        {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
+        
+        {% if code|strip_length == 0 and answer.decode|strip_length == 0 %}
+            <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><pre><code>{{ code }}</pre</code></td>
+                    <td> <pre><code>  {{ answer.decode }} </code></pre></td>
+                    <td> <input type="text"> </td>
+            </tr>
+        
+        {% elif code|strip_length != 0 and answer.decode|strip_length != 0 %}
+            <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><pre><code>{{ code }}</pre</code></td>
+                    <td> <pre><code>  {{ answer.decode }} </code></pre></td>
+                    <td> <input type="text"> </td>
+            </tr>
+        
+        {% elif code|strip_length == 0 and answer.decode|strip_length != 0 %}
+            <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td style="color:red"><pre><code>empty code</pre</code></td>
+                    <td> <pre><code>  {{ answer.decode }} </code></pre></td>
+                    <td> <input type="text"> </td>
+                    <input type="hidden" id="mismatch" value="True">
+            </tr>
+
+        {% elif code|strip_length != 0 and answer.decode|strip_length == 0 %}
+            <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><pre><code>{{ code }}</pre</code></td>
+                    <td style="color:red"> <pre><code>  empty answer </code></pre></td>
+                    <td> <input type="text"> </td>
+                    <input type="hidden" id="mismatch" value="True">
+            </tr>
+        {% endif %}   
+        {% endfor %}
+    </table>
+    <input type="submit" value="AlgorithmFormSubmit">
+</form>
+
+
+{% endif %}
+
 
     </div>
+
+{% endblock %}
+
+
+
+{% block jsscript %} 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    // hljs.highlightAll();
+        // Define the function to check if the element exists
+        function checkElementExists() {
+        var mismatchElement = document.getElementById('mismatch');
+        return mismatchElement !== null;
+    }
+
+    // Add event listener for the form submit event
+    document.getElementById('AlgorithmForm').addEventListener('submit', function(event) {
+        // Check if the element with id 'mismatch' exists
+        if (checkElementExists()) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            // Perform additional actions if needed
+            alert('The algorithm and answer keys files have mismatch lines');
+        }
+    });
+</script>
 {% endblock %}
