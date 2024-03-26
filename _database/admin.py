@@ -14,6 +14,8 @@ admin.site.register(Language)
 admin.site.register(Term)
 admin.site.register(Class)
 admin.site.register(Module)
+admin.site.register(Algorithm)
+admin.site.register(Line)
 
 """
 

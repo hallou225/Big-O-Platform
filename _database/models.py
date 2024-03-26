@@ -115,3 +115,24 @@ class Module(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+class Algorithm(models.Model):
+    name      = models.CharField(max_length=100, null=True)                          # Required Field
+    module = models.ForeignKey(Module, null=True, on_delete=models.SET_NULL)  # The module this algorithm  belongs to
+    # number_of_question
+    # algorithm_id
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Line(models.Model):
+    code      = models.CharField(max_length=100, null=True)                          # Required Field
+    answer    = models.CharField(max_length=100, null=True)                          # Required Field
+    hint      = models.CharField(max_length=100, null=True, blank=True)                          # Required Field
+    algorithm = models.ForeignKey(Algorithm, null=True, on_delete=models.SET_NULL)  # The algorithm this Line  belongs to
+    # number_of_question
+    # algorithm_id
+
+    def __str__(self) -> str:
+        return self.algorithm.name +"-"+ str(self.id)
