@@ -27,5 +27,6 @@
         <p>Role: {{student.role}}</p>
         <p>Email: {{student.email}}</p>
         <p>Password: Your password is hashed.</p>
+        <a class="btn btn-danger" href="{% url 'deleteStudentAccount' %}">Delete Account</a>
     </div>
 {% endblock %}
