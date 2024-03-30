@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/sidebar.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+<script src="{% static '/js/profile.js'%}"></script>x
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'student_sidebar.html' %}
+{% endblock %}
+
+{% block path %}
+            <a class="nav-item nav-link path" href="/student">Home</a>
+            <a class="nav-item nav-link path activePath" href="/student/profile" >Profile</a>
+{% endblock %}
+
+{% block content %}
+    <div class="col">
+        <h1>Profile</h1>
+        <!-- Student Info -->
+        <p>First Name: {{student.first_name}}</p>
+        <p>Middle Name: {{student.middle_name}}</p>
+        <p>Last Name: {{student.last_name}}</p>
+        <p>Display Name: {{student.display_name}}</p>
+        <p>Role: {{student.role}}</p>
+        <p>Email: {{student.email}}</p>
+        <p>Password: Your password is hashed.</p>
+    </div>
+{% endblock %}
