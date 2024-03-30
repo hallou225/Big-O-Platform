@@ -38,8 +38,8 @@ def student(request):
     return render(request, 'student.html', context)
 
 @login_required(login_url="/login")
-def profile(request):
-    print("Student Views: def profile(request):")
+def studentProfile(request):
+    print("Student Views: def studentProfile(request):")
     if not isStudent(request):
         return redirect("/login")
     
@@ -47,6 +47,22 @@ def profile(request):
     context = {"student": student}
 
     return render(request, 'student_profile.html', context)
+
+@login_required(login_url="/login")
+def deleteStudentAccount(request):
+    print("Student Views: def deleteStudentAccount(request):")
+    if not isStudent(request):
+        return redirect("/login")
+    
+    student = request.user
+    
+    if request.method == "POST":
+        student.delete()
+        return redirect("/login")
+
+    context = {"student": student}
+
+    return render(request, 'deleteStudentAccount.html', context)
 
 @login_required(login_url="/login")
 def studentClass(request, class_pk):
@@ -104,12 +120,6 @@ def leaveClass(request, class_pk):
 
     context = {"student_class": student_class}
     return render(request, 'leaveClass.html', context)
-
-
-
-
-
-
 
 @login_required(login_url="/login")
 def studentModule(request, class_pk, module_pk):
