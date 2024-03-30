@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}   
+{% endblock %}
+
+{% block javascript %}    
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'student_sidebar.html' %}
+{% endblock %}
+
+{% block path %}
+    <a class="nav-item nav-link path" href="/student">Home</a>
+    <a class="nav-item nav-link path activePath" href="/student/class/{{student_class.id}}" >{{ student_class.class_name }}</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+        <!-- Button positioned to the right -->
+            <div class="d-flex justify-content-between">
+                <h5>{{student_display_name}} Classes</h5>  
+                </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col border bg-light">
+
+            <div class="row">   
+                <table class="table">
+                    <tr>
+                        <th>Class Name</th>
+                        <th>Language</th>
+                        <th>Term</th>
+                        <th>Class Code</th>
+                    </tr>
+                    <tr>
+                        <td>{{student_class.class_name}}</td>     
+                        <td>{{student_class.language}}</td>
+                        <td>{{student_class.term}}</td>
+                        <td>{{student_class.class_code}}</td>               
+                    </tr>
+                </table>
+            </div>
+
+            <div class="row justify-content-center">             
+                <a class="btn btn-danger col-3" style="margin-left:10px;" href="{% url 'leaveClass' student_class.id %}">Leave Class</a>
+            </div>   
+        </div>
+
+        <div class="col border bg-light">          
+
+            <table class="table">
+                <tr>
+                    <th>Module</th>
+                    <th>View</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for module in modules %}
+                <tr>
+                    <td>{{ module.name  }}</td>    
+                    <td><a class="moduleButton" href="{% url 'studentModule' student_class.id module.id %}">View</a></td>       
+                </tr>             
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
