@@ -2,11 +2,9 @@
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/sidebar.css'%}">
 {% endblock %}
 
 {% block javascript %}    
-<script src="{% static '/js/profile.js'%}"></script>x
 {% endblock %}
 
 {% block sidebar %}
@@ -14,8 +12,8 @@
 {% endblock %}
 
 {% block path %}
-            <a class="nav-item nav-link path" href="/student">Home</a>
-            <a class="nav-item nav-link path activePath" href="/student/profile" >Profile</a>
+    <a class="nav-item nav-link path" href="/student">Home</a>
+    <a class="nav-item nav-link path activePath" href="/student/profile" >Profile</a>
 {% endblock %}
 
 {% block content %}

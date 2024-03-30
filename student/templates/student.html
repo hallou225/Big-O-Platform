@@ -2,32 +2,72 @@
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/student.css'%}">
 {% endblock %}
 
 {% block javascript %}    
-    <!-- <script src="{% static '/js/   .js'%}">  </script> -->
 {% endblock %}
 
 {% block sidebar %}
     {% include 'student_sidebar.html' %}
 {% endblock %}
-{% block path %}   
-            <a class="nav-item nav-link path activePath" href="">Home</a>
+
+{% block path %}  
+    <a class="nav-item nav-link path activePath" href="/student">Home</a>
 {% endblock %}
 
-{% block content %}
-    <div class="row">
-        <div class="col-8">
-            <h5>Classes</h5>
-            <hr>
-            <div class="card card-body">
+{% block content %}    
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            <!-- Button positioned to the right -->
+                <div class="d-flex justify-content-between">
+                    <h5>{{student_display_name}} Classes</h5>  
+                    <a class="btn btn-primary ml-auto" href="/student/joinclass">Join a Class</a>    
+                </div>
             </div>
         </div>
-        <div class="col bg-light">
-            <h5>Module</h5>
-        </div>
-
-        
     </div>
+
+    <div class="row mt-2">
+        <div class="col-md">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Language</th>
+                        <th>Term</th>
+                        <th>Class Code</th>
+                    </tr>
+
+                    {% for i in student_classes %}
+                    <tr>
+                        <td>{{ i.class_name  }}</td>     
+                        <td>{{ i.language  }}</td>
+                        <td>{{ i.term  }}</td>
+                        <td>{{ i.class_code  }}</td>               
+                    </tr>             
+                    {% endfor %}
+                </table>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        {% for i in student_classes %}
+            <div class="col-md-4 ">
+                <a class="border" href="{% url 'studentClass' i.id %}" style="text-decoration: none;">
+                    <div class="card classCard" style="width:250px">        
+                        <img class="card-img-top" style="width:250px" src="{% static '/images/pencilBLUE3.svg'%}"  />
+                        <div class="card-body">
+                            <div class="card-title">{{ i.class_name  }}</div>
+                        </div>
+                        <div class="card-footer">{{ i.term  }}</div>
+                        <div class="card-footer">{{ i.class_code  }}</div>
+                    </div>
+
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+
 {% endblock %}
