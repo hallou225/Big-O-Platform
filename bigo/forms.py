@@ -17,3 +17,13 @@ class CreateClassForm(ModelForm):
             'term': forms.Select(attrs={'class': 'textEntry'}),
             'language': forms.Select(attrs={'class': 'textEntry'})
         }
+
+class CreateModuleForm(ModelForm):
+    class Meta:
+        model = Module
+        fields = '__all__'
+
+class AlgorithmForm(ModelForm):
+    class Meta:
+        model = Algorithm
+        fields = '__all__'

@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
+    <!-- 
+        <link rel="stylesheet" type="text/css" href="{% static '/css/teacher.css'%}">
+    --> 
 {% endblock %}
 
 {% block javascript %}    
@@ -14,52 +15,63 @@
     {% include 'teacher_sidebar.html' %}
 {% endblock %}
 
-{% block content %}
-    <!-- Div for sidebar of page -->
-    <div id="sidebar">
+{% block path %}  
+            <a class="nav-item nav-link path activePath" href="/teacher">Home</a>
+{% endblock %}
 
-    </div>
-    
-    <!-- Div for main content of page -->
-    <div id="mainContent">
-
-        <div id="mainHeadingDiv">
-
-            <!-- Main heading -->
-            <h1 class="myH1" id="mainHeading">{{teacher_display_name}}</h1>
-
-            <!-- Button to open "Create a Class" page -->
-            <button" id="createClassButton" onclick="createNewClass()"><div id="createClassText">Create a Class</div><div id="plus">+</div></button>
-
+{% block content %}    
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            <!-- Button positioned to the right -->
+                <div class="d-flex justify-content-between">
+                    <h5>{{teacher_display_name}} Classes</h5>  
+                    <a class="btn btn-primary ml-auto" href="/teacher/createclass">Create a Class</a>    
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!--  Class buttons -->
-        <div id="classButtonsDiv">
+    <div class="row mt-2">
+        <div class="col-md">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Language</th>
+                        <th>Term</th>
+                        <th>Class Code</th>
+                    </tr>
 
-            {% for teacher_class in teacher_classes %}
-                <!-- Class buttons with class name and class image inside -->
-                <!-- <button class="classButton" onclick="openClass()"> -->
-                <a href="{% url 'teacherClass' teacher_class.id %}" class="classButton">
+                    {% for i in teacher_classes %}
+                    <tr>
+                        <td>{{ i.class_name  }}</td>     
+                        <td>{{ i.language  }}</td>
+                        <td>{{ i.term  }}</td>
+                        <td>{{ i.class_code  }}</td>               
+                    </tr>             
+                    {% endfor %}
+                </table>
+        </div>
+    </div>
 
-                    <!-- Name of class -->
-                    <div class="className">{{teacher_class.class_name}}</div>
-
-                    <!-- Term (e.g. Spring 2024) specified by the instructor -->
-                    <div class="term">{{teacher_class.term}}</div>
-
-                    <!-- Container for the class image -->
-                    <div class="classImageContainer">
-
-                        <!-- Example image (eventually we'll want to let the instructor upload an image) -->
-                        <img id="classImage" src="{% static '/images/pencilBLUE3.svg'%}" alt="Filler Image">
-
+    <div class="row mt-2">
+        {% for i in teacher_classes %}
+            <div class="col-md-4 ">
+                <a class="border" href="{% url 'teacherClass' i.id %}" style="text-decoration: none;">
+                    <div class="card classCard" style="width:250px">        
+                        <img class="card-img-top" style="width:250px" src="{% static '/images/pencilBLUE3.svg'%}"  />
+                        <div class="card-body">
+                            <div class="card-title">{{ i.class_name  }}</div>
+                        </div>
+                        <div class="card-footer">{{ i.term  }}</div>
+                        <div class="card-footer">{{ i.class_code  }}</div>
                     </div>
 
                 </a>
-            {% endfor %}
-
-        </div>
-
+            </div>
+        {% endfor %}
     </div>
+
 
 {% endblock %}

@@ -3,17 +3,19 @@
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/createclass.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/sidebar.css'%}">
 {% endblock %}
 
 {% block javascript %}    
-<script src="{% static '/js/createclass.js'%}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block sidebar %}
     {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block path %}
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path activePath" href="/teacher/createclass">Create class</a>
 {% endblock %}
 
 {% block content %}
@@ -45,10 +47,8 @@
 
             <h2>Choose the Language</h2>
             {{form.language}}
-            
-            <!-- Next button to take the user to the next page -->
-            <!-- <button id="submitButton" onclick="submitClass(event)">Submit</button> -->
-            <input class="btn login_btn" id="submitButton" type="submit" value="Create Class">
+            <br>
+            <input class="btn btn-primary col-2 mt-2" id="submitButton" type="submit" value="Create Class">
 
             {% if form.errors %}
 					{% for field in form %}
@@ -65,16 +65,4 @@
         </div>
 
     </form>
-
-    <script>
-        //Query All input fields
-		var form_fields = document.getElementsByTagName('input')
-		form_fields[1].placeholder='Class Name';
-		form_fields[2].placeholder='Class Code';
-
-        for (var field in form_fields) {
-            form_fields[field].className += ' form-control';
-			form_fields[field].className += ' textEntry';
-        }
-    </script>
 {% endblock %}

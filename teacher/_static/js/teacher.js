@@ -8,15 +8,12 @@ window.onload = () => {
 }
 
 function openClass() {
-    /* This function allows the instructor to access the main page for their selected class */
-    
+    /* This function allows the instructor to access the main page for their selected class */    
     window.open("/teacher/class/", "_self");
-
 }
 
 function createNewClass() {
     /* This function opens "Create a Class" page */
-
     window.open("./createclass", "_self");
-
 }
+

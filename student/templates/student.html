@@ -10,7 +10,10 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% include 'teacher_sidebar.html' %}
+    {% include 'student_sidebar.html' %}
+{% endblock %}
+{% block path %}   
+            <a class="nav-item nav-link path activePath" href="">Home</a>
 {% endblock %}
 
 {% block content %}
@@ -20,7 +23,6 @@
             <h5>Code Review:</h5>
             <hr>
             <div class="card card-body">
-
             </div>
         </div>
 
