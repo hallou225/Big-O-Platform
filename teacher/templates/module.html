@@ -3,7 +3,6 @@
 {% load custom_filters %}
 {% block css %}    
     <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 
 {% endblock %}
@@ -16,130 +15,129 @@
     {% include 'teacher_sidebar.html' %}
 {% endblock %}
 
-{% block content %}
-    <!-- Div for sidebar of page -->
-    <div id="sidebar">
+{% block path %}   
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}">{{module.name}}</a>
+{% endblock %}
 
+{% block content %}
+<div class="row">
+    <h1>{{module.name}}</h1>
+    <!-- File upload form -->
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        
+        <table class="table table-hover">
+            <tr>
+                <th>  </th>
+                <th>Action</th>
+            </tr>
+
+            <tr>
+                <td><h5>Upload an Algorithm</h5></td>        
+                <td><input type="file" id="algorithmUpload" name="algorithmUpload"></td>   
+            </tr> 
+
+            <tr>
+                <td><h5>Upload an Answer Key</h5></td>        
+                <td><input type="file" id="answerkeyUpload" name="answerkeyUpload"></td>                  
+            </tr>  
+            <tr>       
+                <td><input type="submit" id="uploadButton" value="Upload"></td>                  
+            </tr>             
+        </table>
+    </form>
+</div>
+
+<div class="row">
+    {% if algorithm_file_lines %}
+    <div class="col">
+        <h2>Algorithm Content:</h2>
+        {% for line in algorithm_file_lines|remove_newlines %}
+        <pre><code class="language-java">{{ line }}</code></pre>
+        {% endfor %}
+        <h3>Number of lines: {{algorithm_line_count}}</h3>
     </div>
+    <div class="col">
+        <h2>Answer Key Content:</h2>
+        {% for line in answerkey_file_lines %}
+            <pre><code>{{ line.decode }}</code></pre>
+        {% endfor %} 
+        <h3>Number of lines: {{answerkey_line_count}}</h3>
+    </div>    
+    {% endif %} 
+</div>
 
     <!-- Div for main content of page -->
     <div id="mainContent">
-
-        <!-- Div for main heading -->
-        <div id="mainHeadingDiv">
-            <!-- Main heading -->
-            <h1 class="myH1" id="mainHeading">{{module.name}}</h1>
-        </div>
-
-        <!-- File upload form -->
-        <form method="POST" action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div id="uploadFormDiv">
-                <div class="uploadSubDiv">
-                    <h3>Upload an Algorithm</h3>
-                    <input type="file" id="algorithmUpload" name="algorithmUpload">
-                </div>
-                <div class="uploadSubDiv">
-                    <h3>Upload an Answer Key</h3>
-                    <input type="file" id="answerkeyUpload" name="answerkeyUpload">
-                </div>
-                <input type="submit" id="uploadButton" value="Upload">
-            </div>
-        </form>
-
-
-
-
-        {% if algorithm_file_lines %}
-        <div id="algorithmAndAnswerkeyDiv">
-            <div id="algorithmDiv">
-                <h2>Algorithm Content:</h2>
-                    {% for line in algorithm_file_lines|remove_newlines %}
-                    <pre><code class="language-java">{{ line }}</code></pre>
-                    {% endfor %}
-                    <h3>Number of lines: {{algorithm_line_count}}</h3>
-            </div>
-
-            <div id="answerkeyDiv">
-                <h2>Answer Key Content:</h2>
-                {% for line in answerkey_file_lines %}
-                    <pre><code>{{ line.decode }}</code></pre>
-                {% endfor %} 
-                <h3>Number of lines: {{answerkey_line_count}}</h3>
-
-            </div>
-        </div>
-        {% endif %} 
-{% if algorithm_line_count != answerkey_line_count %}
-        <p style="color:red">NB: Error - Lines Mismatch</p>
-        <p>the algorithm content lines does not match the answer key content lines<br>
-        Please check the files and reupload.
-        </p>
-
-{% endif %}
-
+<div class="row">
+    {% if algorithm_line_count != answerkey_line_count %}
+            <p style="color:red">NB: Error - Lines Mismatch</p>
+            <p>the algorithm content lines does not match the answer key content lines<br>
+            Please check the files and reupload.
+            </p>
+    {% endif %}
+    
 {% if algorithm_file_lines and algorithm_line_count == answerkey_line_count  %}
-<form id="AlgorithmForm">
-    <table style="border:1px; border-color:black">
-        
-        <col style="width: 4%;">
-        <col style="width: 50%;">
-        <col style="width: 46%;">
+    <form id="algorithmForm" action="" method="POST">
+        {% csrf_token %}
+        <table id="algorithmTable" style="border:1px; border-color:black">
+            
+            <col style="width: 4%;">
+            <col style="width: 50%;">
+            <col style="width: 46%;">
 
-        <tr>
-            <th id="tablenumber">No</th>
-            <th id="tablecode">Code</th>
-            <th id="tableanswer">Answer</th>
-            <th id="tablehint">Hint</th>
-        </tr>
-
-        {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
-        
-        {% if code|strip_length == 0 and answer.decode|strip_length == 0 %}
             <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td><pre><code>{{ code }}</pre</code></td>
-                    <td> <pre><code>  {{ answer.decode }} </code></pre></td>
-                    <td> <input type="text"> </td>
-            </tr>
-        
-        {% elif code|strip_length != 0 and answer.decode|strip_length != 0 %}
-            <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td><pre><code>{{ code }}</pre</code></td>
-                    <td> <pre><code>  {{ answer.decode }} </code></pre></td>
-                    <td> <input type="text"> </td>
-            </tr>
-        
-        {% elif code|strip_length == 0 and answer.decode|strip_length != 0 %}
-            <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td style="color:red"><pre><code>empty code</pre</code></td>
-                    <td> <pre><code>  {{ answer.decode }} </code></pre></td>
-                    <td> <input type="text"> </td>
-                    <input type="hidden" id="mismatch" value="True">
+                <th id="tableNumber">No</th>
+                <th id="tableCode">Code</th>
+                <th id="tableAnswer">Answer</th>
+                <th id="tableHint">Hint</th>
             </tr>
 
-        {% elif code|strip_length != 0 and answer.decode|strip_length == 0 %}
-            <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td><pre><code>{{ code }}</pre</code></td>
-                    <td style="color:red"> <pre><code>  empty answer </code></pre></td>
-                    <td> <input type="text"> </td>
-                    <input type="hidden" id="mismatch" value="True">
-            </tr>
-        {% endif %}   
-        {% endfor %}
-    </table>
-    <input type="submit" value="AlgorithmFormSubmit">
-</form>
+            {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
+            
+            {% if code|strip_length == 0 and answer.decode|strip_length == 0 %}
+                <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><pre><code>{{ code }}</pre</code></td>
+                        <td> <pre><code>  {{ answer.decode }} </code></pre></td>
+                        <td> <input type="text"> </td>
+                </tr>
+            
+            {% elif code|strip_length != 0 and answer.decode|strip_length != 0 %}
+                <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><pre><code>{{ code }}</pre</code></td>
+                        <td> <pre><code>  {{ answer.decode }} </code></pre></td>
+                        <td> <input type="text"> </td>
+                </tr>
+            
+            {% elif code|strip_length == 0 and answer.decode|strip_length != 0 %}
+                <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td style="color:red"><pre><code>empty code</pre</code></td>
+                        <td> <pre><code>  {{ answer.decode }} </code></pre></td>
+                        <td> <input type="text"> </td>
+                        <input type="hidden" id="mismatch" value="True">
+                </tr>
 
-
+            {% elif code|strip_length != 0 and answer.decode|strip_length == 0 %}
+                <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><pre><code>{{ code }}</pre</code></td>
+                        <td style="color:red"> <pre><code>  empty answer </code></pre></td>
+                        <td> <input type="text"> </td>
+                        <input type="hidden" id="mismatch" value="True">
+                </tr>
+            {% endif %}   
+            {% endfor %}
+        </table>
+        <input type="submit" value="AlgorithmFormSubmit">
+    </form>
 {% endif %}
-
-
-    </div>
-
+</div>
 {% endblock %}
 
 
@@ -155,7 +153,7 @@
     }
 
     // Add event listener for the form submit event
-    document.getElementById('AlgorithmForm').addEventListener('submit', function(event) {
+    document.getElementById('algorithmForm').addEventListener('submit', function(event) {
         // Check if the element with id 'mismatch' exists
         if (checkElementExists()) {
             // Prevent the default form submission behavior
@@ -163,6 +161,38 @@
             // Perform additional actions if needed
             alert('The algorithm and answer keys files have mismatch lines');
         }
+        else {
+            event.preventDefault(); // Prevent default form submission
+        
+            var table = document.getElementById('algorithmTable');
+            var formData = [];
+            
+            // Loop through table rows
+            for (var i = 1; i < table.rows.length; i++) { // Start from index 1 to skip header row
+                var row = table.rows[i];
+                var rowData = {};
+                // rowData.name = row.cells[0].innerText;
+                rowData.code = row.cells[1].innerText;
+                rowData.answer = row.cells[2].innerText;
+                rowData.hint = row.cells[3].innerText;
+                formData.push(rowData);
+            }
+            
+            // Create hidden input field to store JSON data
+            var jsonDataInput = document.createElement('input');
+            jsonDataInput.type = 'hidden';
+            jsonDataInput.name = 'table_data';
+            jsonDataInput.value = JSON.stringify(formData);
+            this.appendChild(jsonDataInput);
+            
+            // Submit the form
+            //this.submit();
+
+        }
     });
+
+
+
+
 </script>
 {% endblock %}

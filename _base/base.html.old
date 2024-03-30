@@ -39,9 +39,18 @@
   </head>
 
   <body>
-    {% include 'header.html' %}
-    <div id="sidebar">{% block sidebar %} {% endblock %}</div>
-    <div id="content">{% block content %} {% endblock %}</div>
+    <div class="container">
+      <div class="row">
+        <div class
+      </div>
+      Hello World
+      {% include 'header.html' %}
+      <div id="sidebar">{% block sidebar %} {% endblock %}</div>    
+      <div id="content">    
+        <div id="path">{% block path %} PATH {% endblock %}</div>     
+        {% block content %} Page Content {% endblock %}
+      </div>
+    </div>
 
       
     {% block jsscript %} 

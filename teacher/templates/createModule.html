@@ -1,0 +1,41 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+{% endblock %}
+
+{% block javascript %}    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block path %}   
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path activePath" href="/teacher/class/{{teacher_class.id}}/createModule">Create Module</a>
+{% endblock %}
+
+{% block content %}
+    <form id="createAClassForm" method="POST" action="">
+        {% csrf_token %}
+        {{form}}
+        <div id="createAClassFormContent">     
+            <input class="btn btn-primary col-2 mt-2" id="submitButton" type="submit" value="Submit">
+            {% if form.errors %}
+					{% for field in form %}
+						{% if field.errors %}
+							<p class="errors">
+								{% for error in field.errors %}
+									{{ error }}
+								{% endfor %}
+							</p>
+						{% endif %}
+					{% endfor %}
+			{% endif %}
+        </div>
+    </form>
+{% endblock %}

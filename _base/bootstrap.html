@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <!-- Page Title -->
+    <title>{% block title %}Big-O Project{% endblock %}</title>
+    <!-- Reference a CSS Page -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> 
+    {% block css %} 
+<style>  
+.navbar-nav {
+    list-style: none;
+    padding-left: 0;
+    text-align: center;
+}
+.nav-item {
+    padding-bottom: 1.5vw;
+    font-size: 1.2vw;
+}
+
+.nav-item:hover .nav-link {
+    color: #1b33b6;
+    font-weight: 600;
+}
+
+.nav-item:hover .sidebarIcon {
+    width: 3.4vw;
+    height: 3.4vw;
+}
+
+.nav-link {
+    color: black;
+    text-decoration: none;
+}
+
+#content {
+    visibility: visible;
+}
+
+.sidebarIcon {
+    width: 3vw;
+    height: 3vw;
+}
+</style>
+
+    {% endblock %}
+    <!-- Reference a JS Page -->
+    {% block javascript %} 
+    {% endblock %}
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Define the character set used -->
+    <meta charset="UTF-8">
+    <!-- Define keywords for search engines -->
+    <meta name="keywords" content="---ADD KEYWORDS---">
+    <!-- Define a description of your web page -->
+    <meta name="description" content="---ADD DESCRIPTION---">
+    <!-- Define the author of a page -->
+    <meta name="author" content="---ADD AUTHORS---">
+    <!-- Setting the viewport to make your webpage look good on all devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="row bg-light border p-3" id="header">
+        <div class="col-1" id="brand">
+          <a href="#" class="navbar-brand">Brand</a>
+        </div>
+        <div class="col-10 text-center" id="Title">
+          Big O Complexity
+        </div>
+        <div class="col-1" id="brand">
+          Left
+        </div>
+      </div> <!-- end of header div -->
+
+      <div class="row justify-content-center" id="body ">
+          {% block sidebar %}  {% include 'teacher_sidebar.html' %} {% endblock %}
+
+
+        <div class="col-md-10  bg-light border" id="content">  
+          <div class="row bg-light border p-3" id="navbar">{% block path %} Path > Path > Path {% endblock %}</div>
+          <div class="row bg-light border p-3 id="page">page content</div>
+        </div> 
+
+
+      </div><!-- end of body div -->
+
+    </div> <!-- end  of main container div -->
+  </body>
+</html>
+

@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/updateClass.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
 {% endblock %}
 
 {% block javascript %}    
@@ -13,6 +11,12 @@
 
 {% block sidebar %}
     {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block path %}  
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/updateClass">Update Class</a>
 {% endblock %}
 
 {% block content %}

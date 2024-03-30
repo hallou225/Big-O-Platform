@@ -49,3 +49,10 @@ body {
     left: 0.4vw;
     top: 0.4vw;
 }
+
+
+/* Custom CSS for active link */
+.nav-link.active.path {
+    background-color: #007bff;
+    color: #fff;
+}

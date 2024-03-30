@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/deleteClass.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
 {% endblock %}
 
 {% block javascript %}    
@@ -13,22 +11,28 @@
 {% block sidebar %}
     {% include 'teacher_sidebar.html' %}
 {% endblock %}
+{% block path %}  
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/deleteClass">Delete Class</a>
+{% endblock %}
 
 {% block content %}
-    <!-- Div for main content of page -->
-    <div id="mainContent">
-
-        <h1>Are you sure you want to delete your class, {{teacher_class.class_name}}?</h1>
-        <h3>CAUTION: Proceeding will delete your class and all related data.</h3>
-        <h3>The action is IRREVERSIBLE.</h3>
-
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        Delete class
+    </div>
+    <div class="card-body bg-warning text-dark">
+        <h5 class="card-title">Warning</h5>
+        <p class="card-text">Are you sure you want to delete your class, {{teacher_class.class_name}}?</p>
+        <p class="card-text">CAUTION: Proceeding will delete your class and all related data.</p>
         <form method="POST" action="{% url 'deleteClass' teacher_class.id %}">
             {% csrf_token %}
 
-            <a href="{% url 'teacherClass' teacher_class.id %}">Cancel</a>
-            <input type="submit" name="Confirm">
-
+            <a href="{% url 'teacherClass' teacher_class.id %}"  class="btn btn-primary">Cancel</a>
+            <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     </div>
+</div>
 
 {% endblock %}

@@ -1,34 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Submission Example</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editable Table</title>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
 </head>
 <body>
 
-<form id="myForm">
-    <!-- Form fields here -->
-    <p id="mismatch">mismatch element</p>
-    <input type="submit" value="Submit">
-</form>
+<table id="editableTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="text" value="John Doe"></td>
+            <td><input type="email" value="john@example.com"></td>
+        </tr>
+        <tr>
+            <td><input type="text" value="Jane Doe"></td>
+            <td><input type="email" value="jane@example.com"></td>
+        </tr>
+    </tbody>
+</table>
 
 <script>
-    // Define the function to check if the element exists
-    function checkElementExists() {
-        var mismatchElement = document.getElementById('mismatch');
-        return mismatchElement !== null;
-    }
-
-    // Add event listener for the form submit event
-    document.getElementById('myForm').addEventListener('submit', function(event) {
-        // Check if the element with id 'mismatch' exists
-        if (checkElementExists()) {
-            // Prevent the default form submission behavior
-            event.preventDefault();
-            // Perform additional actions if needed
-            alert('Element with id "mismatch" exists!');
-        }
+    // Add event listeners to each input field to enable editing
+    const inputs = document.querySelectorAll('#editableTable input');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            // Update the value of the input field to the corresponding cell
+            input.parentNode.textContent = input.value;
+        });
     });
 </script>
 

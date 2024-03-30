@@ -119,9 +119,25 @@ class Module(models.Model):
 class Algorithm(models.Model):
     name      = models.CharField(max_length=100, null=True)                          # Required Field
     module = models.ForeignKey(Module, null=True, on_delete=models.SET_NULL)  # The module this algorithm  belongs to
-    # number_of_question
-    # algorithm_id
-
+    """
+    
+    codes = models.ArrayField(
+        models.CharField(max_length=100), 
+        blank=True,
+        null=True
+    )
+    answers = models.ArrayField(
+        models.CharField(max_length=100), 
+        blank=True,
+        null=True
+    )
+    hints = models.ArrayField(
+        models.CharField(max_length=100), 
+        blank=True,
+        null=True
+    )
+    """
+    
     def __str__(self) -> str:
         return self.name
 

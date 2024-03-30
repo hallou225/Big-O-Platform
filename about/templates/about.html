@@ -8,6 +8,12 @@
 {% block javascript %}    
     <!-- <script src="{% static '/js/   .js'%}">  </script> -->
 {% endblock %}
+{% block path %}    
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path activePath" href="/about" >about</a>
+{% endblock %}
+{% block hello_msg %} <span class="hello-msg">Hello, {{teacher_first_name}} <a href="/logout/">Logout</a></span>{% endblock %}
+
 
 {% block content %}
 
