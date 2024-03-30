@@ -1,3 +1,12 @@
+
+function createNewModule() {
+    /* This function opens "Create a Class" page */
+    window.open("./createModule", "_self");
+}
+
+
+
+
 function openDeleteClassModal() {
     document.getElementById("deleteClassModal").style.display = "block";
     document.getElementById("dimBackground").style.display = "block";

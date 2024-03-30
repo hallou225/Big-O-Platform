@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/class.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
+{% block css %}   
 {% endblock %}
 
 {% block javascript %}    
@@ -14,60 +12,74 @@
     {% include 'teacher_sidebar.html' %}
 {% endblock %}
 
-{% block content %}
-    <!-- Div for sidebar of page -->
-    <div id="sidebar">
 
+{% block path %}
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path activePath" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+        <!-- Button positioned to the right -->
+            <div class="d-flex justify-content-between">
+                <h5>{{teacher_display_name}} Classe</h5>  
+                </div>
+        </div>
     </div>
 
-    <!-- Div for main content of page -->
-    <div id="mainContent">
+    <div class="row mt-2">
+        <div class="col border bg-light">
 
-        <!-- Div for main heading -->
-        <div id="mainHeadingDiv">
-
-            <!-- Main heading -->
-            <h1 class="myH1" id="mainHeading">{{teacher_class.class_name}}</h1>
-
-        </div>
-
-        <!-- Div for class info and modules -->
-        <div id="classInfoAndModulesDiv">
-
-            <!-- Div for class info -->
-            <div id="classInfoDiv">
-
-                <div id="classInfoContent">
-                    <div>
-                        <h2>Class Code:</h2>
-                        <p>{{teacher_class.class_code}}</p>
-                    </div>
-                    <div>
-                        <h2>Programming Language:</h2>
-                        <p>{{teacher_class.language}}</p>
-                    </div>
-                    <div>
-                        <h2>Term:</h2>
-                        <p>{{teacher_class.term}}</p>
-                    </div>
-                </div>
-                
-                <a id="updateClassButton" class="classHandleButton" href="{% url 'updateClass' teacher_class.id %}">Edit Class Info</a>
-
-                <a id="deleteClassButton" class="classHandleButton" href="{% url 'deleteClass' teacher_class.id %}">Delete Class</a>
-                
+            <div class="row">   
+                <table class="table">
+                    <tr>
+                        <th>Class Name</th>
+                        <th>Language</th>
+                        <th>Term</th>
+                        <th>Class Code</th>
+                    </tr>
+                    <tr>
+                        <td>{{teacher_class.class_name}}</td>     
+                        <td>{{ teacher_class.language  }}</td>
+                        <td>{{ teacher_class.term  }}</td>
+                        <td>{{ teacher_class.class_code  }}</td>               
+                    </tr>
+                </table>
             </div>
 
-            <!-- Div for modules -->
-            <div id="modulesDiv">
+            <div class="row justify-content-center">             
+                <a class="btn btn-primary col-3" href="{% url 'updateClass' teacher_class.id %}">Edit</a>
+                <a class="btn btn-danger col-3" style="margin-left:10px;" href="{% url 'deleteClass' teacher_class.id %}">Delete </a>
+            </div>   
+        </div>
+
+        <div class="col border bg-light">          
+
+            <table class="table">
+                <tr>
+                    <th>Module</th>
+                    <th>View</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
 
                 {% for module in modules %}
-                    <a class="moduleButton" href="{% url 'module' teacher_class.id module.id %}">{{module.name}}</a>
+                <tr>
+                    <td>{{ module.name  }}</td>    
+                    <td><a class="moduleButton" href="{% url 'module' teacher_class.id module.id %}">View</a></td> 
+                    <td>Update</td>
+                    <td>delete</td>            
+                </tr>             
                 {% endfor %}
+            </table>
 
-            </div>
-
+            <div class="row justify-content-center">  
+                <a class="btn btn-primary col-4" href="/teacher/class/{{teacher_class.id }}/createModule/">Create a Module</a>                       
+            </div>   
         </div>
-
     </div>
+</div>
 {% endblock %}

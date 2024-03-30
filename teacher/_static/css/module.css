@@ -8,55 +8,6 @@
         * Dark Blue #1b33b6
 */
 
-#mainContent {
-    margin-left: 12.5vw;
-    margin-top: 4.5vw;
-    position: absolute;
-    background-color: #303338;
-    width: 80vw;
-    color: white;
-}
-
-h1 {
-    color: white;
-    font-size: 2.2vw;
-}
-
-#mainHeadingDiv {
-    display: flex;
-    background-color: #1E1F22;
-    width: 80vw;
-}
-
-#mainHeading {
-    width: 37.8vw;
-}
-
-#uploadFormDiv {
-    display: flex;
-}
-
-#uploadButton {
-    width: 10vw;
-    height: 2vw;
-    margin-left: 2vw;
-    margin-top: 2vw;
-}
-
-#algorithmAndAnswerkeyDiv {
-    display: flex;
-}
-
-#algorithmDiv {
-    width: 50%;
-    /*background-color: antiquewhite;*/
-}
-
-#answerkeyDiv {
-    width: 50%;
-    /*background-color:cornsilk*/
-}
-
 #algorithmText {
     font-family: monospace;
 }

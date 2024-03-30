@@ -2,8 +2,7 @@
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/profile.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/sidebar.css'%}">
 {% endblock %}
 
 {% block javascript %}    
@@ -14,20 +13,14 @@
     {% include 'teacher_sidebar.html' %}
 {% endblock %}
 
+{% block path %}
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path activePath" href="/teacher/profile" >Profile</a>
+{% endblock %}
+
 {% block content %}
-    <!-- Div for sidebar of page -->
-    <div id="sidebar">
-
-    </div>
-
-    <!-- Div for main content of page -->
-    <div id="mainContent">
-
-        <!-- Div for main heading -->
-        <div id="mainHeadingDiv">
-            <h1>Profile</h1>
-        </div>
-
+    <div class="col">
+        <h1>Profile</h1>
         <!-- Teacher Info -->
         <p>First Name: {{teacher.first_name}}</p>
         <p>Middle Name: {{teacher.middle_name}}</p>
@@ -36,7 +29,5 @@
         <p>Role: {{teacher.role}}</p>
         <p>Email: {{teacher.email}}</p>
         <p>Password: Your password is hashed.</p>
-
     </div>
-
 {% endblock %}

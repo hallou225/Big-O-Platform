@@ -74,7 +74,9 @@ ROOT_URLCONF = 'bigo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / '_base'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,7 +149,7 @@ INTERNAL_IPS = [
 
 BASE_DIR2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '_static'),
+    os.path.join(BASE_DIR, '_base'),
     os.path.join(BASE_DIR, 'login/_static'),
     os.path.join(BASE_DIR, 'teacher/_static'),
     os.path.join(BASE_DIR, 'student/_static'),
