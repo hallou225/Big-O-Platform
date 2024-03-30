@@ -75,8 +75,8 @@ class Teacher(models.Model):
 class Student(models.Model):
     account_id = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
 
-    #def __str__(self) -> str:
-        #return self.first_name + " " + self.last_name
+    def __str__(self) -> str:
+        return self.account_id.display_name
 
 
 class Language(models.Model):
@@ -99,6 +99,7 @@ class Class(models.Model):
     language = models.ForeignKey(Language, null=True, on_delete=models.SET_NULL, blank=True)
         # when a teacher account is deleted, any classes associated with that account 
         # will remain in the database, with a null value for teacher
+    students = models.ManyToManyField(Account, related_name="student_class", blank=True)
 
     def __str__(self) -> str:
         return self.class_name

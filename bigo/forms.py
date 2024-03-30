@@ -18,6 +18,11 @@ class CreateClassForm(ModelForm):
             'language': forms.Select(attrs={'class': 'textEntry'})
         }
 
+class JoinClassForm(ModelForm):
+    class Meta:
+        model = Class
+        fields = ['class_code']
+
 class CreateModuleForm(ModelForm):
     class Meta:
         model = Module
