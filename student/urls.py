@@ -5,6 +5,7 @@ urlpatterns = [
     path("", views.student, name="student"),
     path("joinclass/", views.joinclass, name="joinclass"),
     path("profile/", views.studentProfile, name="studentProfile"),
+    path("profile/updateStudentAccount/", views.updateStudentAccount, name="updateStudentAccount"),
     path("profile/deleteStudentAccount/", views.deleteStudentAccount, name="deleteStudentAccount"),
     path("class/<str:class_pk>/", views.studentClass, name="studentClass"),
     path("class/<str:class_pk>/leaveClass/", views.leaveClass, name="leaveClass"),
