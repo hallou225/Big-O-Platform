@@ -65,6 +65,24 @@ def deleteStudentAccount(request):
     return render(request, 'deleteStudentAccount.html', context)
 
 @login_required(login_url="/login")
+def updateStudentAccount(request):
+    print("Student Views: def updateStudentAccount(request):")
+    if not isStudent(request):
+        return redirect("/login")
+    
+    student = request.user
+    form = UpdateAccountForm(instance=student)
+
+    if request.method == "POST":
+        form = UpdateAccountForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect("/student/profile")
+ 
+    context = {"form": form, "student": student}
+    return render(request, 'updateStudentAccount.html', context)
+
+@login_required(login_url="/login")
 def studentClass(request, class_pk):
     print("Student Views: def studentClass(request):")
     if not isStudent(request):
