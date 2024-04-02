@@ -36,4 +36,4 @@ class AlgorithmForm(ModelForm):
 class UpdateAccountForm(ModelForm):
     class Meta:
         model = Account
-        fields = ['first_name', 'middle_name', 'last_name', 'display_name', 'role', 'email']
+        fields = ['first_name', 'middle_name', 'last_name', 'display_name', 'email']
