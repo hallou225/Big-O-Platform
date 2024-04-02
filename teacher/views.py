@@ -95,7 +95,9 @@ def teacherClass(request, class_pk):
     teacher_class = Class.objects.get(id=class_pk)
     modules = teacher_class.module_set.all()
 
-    context = {"teacher_class": teacher_class, "modules": modules}
+    students = teacher_class.students.all()
+
+    context = {"teacher_class": teacher_class, "modules": modules, "students": students}
     return render(request, 'class.html', context)
 
 
