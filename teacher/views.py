@@ -50,9 +50,41 @@ def profile(request):
     teacher = request.user
     context = {"teacher": teacher}
 
-    return render(request, 'profile.html', context)
+    return render(request, 'teacher_profile.html', context)
 
+@login_required(login_url="/login")
+def deleteTeacherAccount(request):
+    print("Teacher Views: def deleteTeacherAccount(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+    
+    teacher = request.user
+    
+    if request.method == "POST":
+        teacher.delete()
+        return redirect("/login")
 
+    context = {"student": teacher}
+
+    return render(request, 'deleteTeacherAccount.html', context)
+
+@login_required(login_url="/login")
+def updateTeacherAccount(request):
+    print("Teacher Views: def updateTeacherAccount(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+    
+    teacher = request.user
+    form = UpdateAccountForm(instance=teacher)
+
+    if request.method == "POST":
+        form = UpdateAccountForm(request.POST, instance=teacher)
+        if form.is_valid():
+            form.save()
+            return redirect("/teacher/profile")
+ 
+    context = {"form": form, "teacher": teacher}
+    return render(request, 'updateTeacherAccount.html', context)
 
 @login_required(login_url="/login")
 def teacherClass(request, class_pk):
