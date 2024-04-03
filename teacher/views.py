@@ -7,6 +7,9 @@ from django.urls import reverse
 
 # Create your views here.
 def isTeacher(request):
+    """! The isTeacher class.
+    Checks the role of the user trying to access a page
+    """
     print("checkRole function")
     if request.user.is_authenticated:
         print("request.user.role: ", str(request.user.role))
@@ -50,9 +53,47 @@ def profile(request):
     teacher = request.user
     context = {"teacher": teacher}
 
+<<<<<<< HEAD
     return render(request, 'profile.html', context)
 
 
+=======
+    return render(request, 'teacher_profile.html', context)
+
+@login_required(login_url="/login")
+def deleteTeacherAccount(request):
+    print("Teacher Views: def deleteTeacherAccount(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+    
+    teacher = request.user
+    
+    if request.method == "POST":
+        teacher.delete()
+        return redirect("/login")
+
+    context = {"student": teacher}
+
+    return render(request, 'deleteTeacherAccount.html', context)
+
+@login_required(login_url="/login")
+def updateTeacherAccount(request):
+    print("Teacher Views: def updateTeacherAccount(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+    
+    teacher = request.user
+    form = UpdateAccountForm(instance=teacher)
+
+    if request.method == "POST":
+        form = UpdateAccountForm(request.POST, instance=teacher)
+        if form.is_valid():
+            form.save()
+            return redirect("/teacher/profile")
+ 
+    context = {"form": form, "teacher": teacher}
+    return render(request, 'updateTeacherAccount.html', context)
+>>>>>>> cc5a1c0757f9d462a9f32108ace5ed7ae915ea53
 
 @login_required(login_url="/login")
 def teacherClass(request, class_pk):
@@ -63,7 +104,13 @@ def teacherClass(request, class_pk):
     teacher_class = Class.objects.get(id=class_pk)
     modules = teacher_class.module_set.all()
 
+<<<<<<< HEAD
     context = {"teacher_class": teacher_class, "modules": modules}
+=======
+    students = teacher_class.students.all()
+
+    context = {"teacher_class": teacher_class, "modules": modules, "students": students}
+>>>>>>> cc5a1c0757f9d462a9f32108ace5ed7ae915ea53
     return render(request, 'class.html', context)
 
 

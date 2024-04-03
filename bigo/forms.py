@@ -23,6 +23,14 @@ class JoinClassForm(ModelForm):
         model = Class
         fields = ['class_code']
 
+<<<<<<< HEAD
+=======
+class JoinClassForm(ModelForm):
+    class Meta:
+        model = Class
+        fields = ['class_code']
+
+>>>>>>> cc5a1c0757f9d462a9f32108ace5ed7ae915ea53
 class CreateModuleForm(ModelForm):
     class Meta:
         model = Module
@@ -36,4 +44,8 @@ class AlgorithmForm(ModelForm):
 class UpdateAccountForm(ModelForm):
     class Meta:
         model = Account
+<<<<<<< HEAD
         fields = ['first_name', 'middle_name', 'last_name', 'display_name', 'role', 'email']
+=======
+        fields = ['first_name', 'middle_name', 'last_name', 'display_name', 'email']
+>>>>>>> cc5a1c0757f9d462a9f32108ace5ed7ae915ea53
