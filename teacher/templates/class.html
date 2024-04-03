@@ -81,5 +81,33 @@
             </div>   
         </div>
     </div>
+
+    <div class="row mt-2">
+        <div class="col border bg-light">
+            <p>Students</p>
+            <table class="table">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    {% for module in modules %}
+                        <th>{{module.name}}</th>
+                    {% endfor %}
+                </tr>
+
+                {% for student in students %}
+                    <tr>
+                        <td>{{student.first_name}}</td>
+                        <td>{{student.last_name}}</td>
+                        {% for module in modules %}
+                            <td>10/10</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+
+
+            </table>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

@@ -1,8 +1,13 @@
 {% load static %}
-<div class="col-md-2 bg-light border text-center" id="sidebar">
-  <nav class="navbar" id="teacherSideBar">
-    <div class="container justify-content-center">      
-      <ul class="navbar-nav ">
+<div class="col-md-2 text-center border" id="sidebar">
+
+  <nav class="navbar navbar-expand-md">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav flex-column">
+        
         <li class="nav-item">
           <a class="nav-link" href="/teacher/profile"><img class="sidebarIcon" src="{% static 'images/profileIcon.svg' %}" alt=""></a>
           <a class="nav-link" href="/teacher/profile">Profile</a>
@@ -27,6 +32,7 @@
           <a class="nav-link"href="{% url 'logout' %}"><img class="sidebarIcon" src="{% static '/images/logoutIcon.svg'%}" alt=""></a>
           <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
         </li>
+
       </ul>
     </div>
   </nav>
