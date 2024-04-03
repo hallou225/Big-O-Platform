@@ -15,6 +15,8 @@ from django.contrib.auth.models import User
 from bigo.forms import CreateUserForm
 from django.contrib.auth import get_user_model
 
+from django.shortcuts import get_object_or_404
+
 # Create your views here.
 
 def bootstrap(request):
@@ -41,7 +43,9 @@ def register(request):
                 username = form.cleaned_data.get("username")
                 password = form.cleaned_data.get("password1")
 
-                new_teacher = get_user_model().objects.create_user(
+                student_role = get_object_or_404(Role, role="Student")
+
+                get_user_model().objects.create_user(
                     first_name=form.cleaned_data.get("first_name"),
                     middle_name=form.cleaned_data.get("middle_name"),
                     last_name=form.cleaned_data.get("last_name"),
@@ -49,6 +53,7 @@ def register(request):
                     username=username,
                     password=password,
                     email=form.cleaned_data.get("email"),
+                    role=student_role
                 )
 
                 messages.success(request, "Account was created for " + username)

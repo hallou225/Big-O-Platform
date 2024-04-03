@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+{% endblock %}
+
+{% block javascript %}    
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'student_sidebar.html' %}
+{% endblock %}
+
+{% block path %}
+    <a class="nav-item nav-link path" href="/student">Home</a>
+    <a class="nav-item nav-link path activePath" href="/student/profile" >Profile</a>
+{% endblock %}
+
+{% block content %}
+    <div class="col">
+        <h1>Profile</h1>
+        <!-- Student Info -->
+        <p>First Name: {{student.first_name}}</p>
+        <p>Middle Name: {{student.middle_name}}</p>
+        <p>Last Name: {{student.last_name}}</p>
+        <p>Display Name: {{student.display_name}}</p>
+        <p>Email: {{student.email}}</p>
+        <p>Password: Your password is hashed.</p>
+        <a class="btn btn-primary" href="{% url 'updateStudentAccount' %}">Edit Account Info</a>
+        <a class="btn btn-danger" href="{% url 'deleteStudentAccount' %}">Delete Account</a>
+    </div>
+{% endblock %}

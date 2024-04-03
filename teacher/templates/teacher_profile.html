@@ -2,11 +2,9 @@
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/sidebar.css'%}">
 {% endblock %}
 
 {% block javascript %}    
-<script src="{% static '/js/profile.js'%}"></script>
 {% endblock %}
 
 {% block sidebar %}
@@ -14,8 +12,8 @@
 {% endblock %}
 
 {% block path %}
-            <a class="nav-item nav-link path" href="/teacher">Home</a>
-            <a class="nav-item nav-link path activePath" href="/teacher/profile" >Profile</a>
+    <a class="nav-item nav-link path" href="/teacher">Home</a>
+    <a class="nav-item nav-link path activePath" href="/teacher/profile">Profile</a>
 {% endblock %}
 
 {% block content %}
@@ -26,8 +24,9 @@
         <p>Middle Name: {{teacher.middle_name}}</p>
         <p>Last Name: {{teacher.last_name}}</p>
         <p>Display Name: {{teacher.display_name}}</p>
-        <p>Role: {{teacher.role}}</p>
         <p>Email: {{teacher.email}}</p>
         <p>Password: Your password is hashed.</p>
+        <a class="btn btn-primary" href="{% url 'updateTeacherAccount' %}">Edit Account Info</a>
+        <a class="btn btn-danger" href="{% url 'deleteTeacherAccount' %}">Delete Account</a>
     </div>
 {% endblock %}

@@ -18,6 +18,11 @@ class CreateClassForm(ModelForm):
             'language': forms.Select(attrs={'class': 'textEntry'})
         }
 
+class JoinClassForm(ModelForm):
+    class Meta:
+        model = Class
+        fields = ['class_code']
+
 class CreateModuleForm(ModelForm):
     class Meta:
         model = Module
@@ -27,3 +32,8 @@ class AlgorithmForm(ModelForm):
     class Meta:
         model = Algorithm
         fields = '__all__'
+
+class UpdateAccountForm(ModelForm):
+    class Meta:
+        model = Account
+        fields = ['first_name', 'middle_name', 'last_name', 'display_name', 'email']
