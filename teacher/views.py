@@ -53,11 +53,6 @@ def profile(request):
     teacher = request.user
     context = {"teacher": teacher}
 
-<<<<<<< HEAD
-    return render(request, 'profile.html', context)
-
-
-=======
     return render(request, 'teacher_profile.html', context)
 
 @login_required(login_url="/login")
@@ -93,7 +88,6 @@ def updateTeacherAccount(request):
  
     context = {"form": form, "teacher": teacher}
     return render(request, 'updateTeacherAccount.html', context)
->>>>>>> cc5a1c0757f9d462a9f32108ace5ed7ae915ea53
 
 @login_required(login_url="/login")
 def teacherClass(request, class_pk):
@@ -104,13 +98,9 @@ def teacherClass(request, class_pk):
     teacher_class = Class.objects.get(id=class_pk)
     modules = teacher_class.module_set.all()
 
-<<<<<<< HEAD
-    context = {"teacher_class": teacher_class, "modules": modules}
-=======
     students = teacher_class.students.all()
 
     context = {"teacher_class": teacher_class, "modules": modules, "students": students}
->>>>>>> cc5a1c0757f9d462a9f32108ace5ed7ae915ea53
     return render(request, 'class.html', context)
 
 
