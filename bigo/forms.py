@@ -1,3 +1,9 @@
+"""@package docstring
+Documentation for this module.
+
+More details.
+"""
+
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
@@ -5,7 +11,15 @@ from django import forms
 from _database.models import *
 
 class CreateUserForm(UserCreationForm):
+    """Documentation for the CreateUserForm class.
+    
+    More details.
+    """
     class Meta:
+        """Documentation for the Meta class.
+    
+        More details.
+        """
         model = Account
         fields = ["first_name", "middle_name", "last_name", "display_name", "username", "email", "password1", "password2"]
 
