@@ -3,7 +3,6 @@
 
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/login.css'%}">
 {% endblock %}
 
 {% block javascript %}    
@@ -20,61 +19,71 @@
 
 {% block content %}
 
-    <form method="POST" action="" class="form-inline border">
-        {% csrf_token %}
+<div class="container">
+    <div class="row justify-content-center">
+        <form method="POST" action="" class="form-inline border col-8">
+            {% csrf_token %}
 
-        <div class="row mb-3 text-center pt-3">
-            <h3>Sign In</h3>
-        </div>
-        
-        <div class="row mb-3 justify-content-center pt-3">
-            <label class="col-sm-2 col-form-label">Username</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" name="username" placeholder="Enter username" required>
+            <div class="row mb-3 text-center pt-3">
+                <h3>Sign In</h3>
             </div>
-        </div>
-        
-        <div class="row mb-3 justify-content-center">
-            <label for="form_password" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-5">
-                <input type="password" class="form-control" id="form_password" name="password" placeholder="Password">
+
+            <div class="row mb-3 justify-content-center pt-3">
+                <label class="col-sm-2 col-form-label">Username</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="username" placeholder="Enter username" required>
+                </div>
             </div>
-        </div>
 
-        <div class="row mb-3 justify-content-center">
-            <label for="checkbox" class="col-sm-2 col-form-label"></label>
-            <div class="col-sm-5">
-                <input type="checkbox" class="form-check-input" onclick="togglePasswordVisibility()">
-                <label>Show Password</label>
+            <div class="row mb-3 justify-content-center">
+                <label for="form_password" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-5">
+                    <input type="password" class="form-control" id="form_password" name="password"
+                        placeholder="Password">
+                </div>
             </div>
-        </div>
 
-        <div class="row mb-3 justify-content-center">
-            <input class="btn login_btn col-5" id="signInButton" type="submit" value="Login">
-        </div>
+            <div class="row mb-3 justify-content-center">
+                <label for="checkbox" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-5">
+                    <input type="checkbox" class="form-check-input" onclick="togglePasswordVisibility()">
+                    <label>Show Password</label>
+                </div>
+            </div>
 
-        <div class="row mb-3 justify-content-center">
-            {% for message in messages %}
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary" id="signInButton">Login</button>
+            </div>
+
+            <div class="row mb-3 justify-content-center">
+                {% for message in messages %}
                 <p class="text-danger text-center pb-0 mb-0">{{message}}</p>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
 
-        <div class="row mb-3 justify-content-center">
-            <div class="row pb-2">
-                <div class="col text-center">
-                    <!-- Link to "Forgot Password" page -->
-                    <a class="formLink" href="https://www.google.com">Forgot Password?</a>
+            <div class="row mb-3 justify-content-center">
+                <div class="row pb-2">
+                    <div class="col text-center">
+                        <!-- Link to "Forgot Password" page -->
+                        <a class="formLink" href="https://www.google.com">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <!-- Link to "Sign Up" page -->
+                        <a class="formLink" href="/register">New? Sign up for free!</a>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col text-center">
-                    <!-- Link to "Sign Up" page -->
-                    <a class="formLink" href="/register">New? Sign up for free!</a>
-                </div>
-              </div>
-          </div>
 
-    </form>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+
+
+{% block testblock %}
 
 {% endblock %}
 
