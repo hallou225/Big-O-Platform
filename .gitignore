@@ -6,3 +6,4 @@ staticfiles/
 venv/
 zTest/
 Doxyfile
+.db.sqlite
