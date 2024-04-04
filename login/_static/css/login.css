@@ -8,7 +8,31 @@
         * Dark Blue #1b33b6
 */
 
-#signInForm {
+#signInButton {
+    border: none;
+    background-color: #37c6ff;
+    color: #1b33b6;
+    font-family: inherit;
+    font-weight: 600;
+}
+
+#signInButton:hover {
+    cursor: pointer;
+    background-color: #1b33b6;
+    color: #37c6ff;
+}
+
+.formLink {
+    text-decoration: none;
+    color: #37c6ff;
+    font-weight: 600;
+}
+
+.formLink:hover {
+    color: #1b33b6;
+}
+
+/* #signInForm {
     width: 29.5vw;
     height: 38.3vw;
     margin: auto;
@@ -51,25 +75,6 @@
 .textEntry::placeholder {
     color: #686b6d;
     font-size: 1.3vw;
-}
-
-#signInButton {
-    margin-top: 2vw;
-    width: 26.2vw;
-    height: 2.8vw;
-    border: none;
-    background-color: #37c6ff;
-    color: #1b33b6;
-    font-size: 1.3vw;
-    font-family: inherit;
-    font-weight: 600;
-    border-radius: 0.8vw;
-}
-
-#signInButton:hover {
-    cursor: pointer;
-    background-color: #1b33b6;
-    color: #37c6ff;
 }
 
 #checkboxDiv {
@@ -162,4 +167,4 @@ label[for="passwordCheckbox"] {
 #messages {
     font-size: 1.3vw;
     color: white;
-}
+} */

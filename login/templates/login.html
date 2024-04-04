@@ -3,7 +3,7 @@
 
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/login.css'%}">    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/login.css'%}">
 {% endblock %}
 
 {% block javascript %}    
@@ -14,50 +14,65 @@
 {% block sidebar %}
 {% endblock %}
 {% block path %}
-            <a class="nav-item nav-link path activePath" href="/login">Login</a>
-            <a class="nav-item nav-link path" href="/register">Register</a>
+    <a class="nav-item nav-link path activePath" href="/login">Login</a>
+    <a class="nav-item nav-link path" href="/register">Register</a>
 {% endblock %}
 
 {% block content %}
-    <!-- Sign in form -->
-    <form id="signInForm" method="POST" action="">
+
+    <form method="POST" action="" class="form-inline border">
         {% csrf_token %}
 
-        <!-- Content inside the form -->
-        <div id="signInFormContent">
-        
-            <h1 id="signInHeader">Sign in </h1>
-
-            <!-- Text entry for username -->
-            <input type="text" class="textEntry" id="username" name="username" placeholder="Username" autocomplete="off" required><br>
-
-            <!-- Text entry for password -->
-            <input type="password" class="textEntry" id="password" name="password" placeholder="Password" autocomplete="off" required><br>
-
-            <!-- Check box for toggling password visibility -->
-            <label id="checkboxDiv">
-                <input type="checkbox" id="passwordCheckbox" onclick="togglePasswordVisibility()">
-                <span class="checkmark"></span>
-            </label>
-            
-            <!-- Label next to checkbox that describes its purpose -->
-            <label for="passwordCheckbox">Show Password</label><br>
-
-            <!-- Submit button which calls checkCredentials() function when clicked -->
-            <!-- <input type="submit" id="signInButton" value="Sign In" onclick="checkCredentials(event)"> -->
-            <input class="btn login_btn" id="signInButton" type="submit" value="Login">
-
-            <!-- Link to "Forgot Password" page -->
-            <a class="formLink" id="forgotPassword" href="https://www.google.com">Forgot Password?</a>
-
-            <!-- Link to "Sign Up" page -->
-            <a class="formLink" id="signUp" href="/register">New? Sign up for free!</a>
-
-            {% for message in messages %}
-                <p id="messages">{{message}}</p>
-            {% endfor %}
-
+        <div class="row mb-3 text-center pt-3">
+            <h3>Sign In</h3>
         </div>
+        
+        <div class="row mb-3 justify-content-center pt-3">
+            <label class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" name="username" placeholder="Enter username" required>
+            </div>
+        </div>
+        
+        <div class="row mb-3 justify-content-center">
+            <label for="form_password" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-5">
+                <input type="password" class="form-control" id="form_password" name="password" placeholder="Password">
+            </div>
+        </div>
+
+        <div class="row mb-3 justify-content-center">
+            <label for="checkbox" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-5">
+                <input type="checkbox" class="form-check-input" onclick="togglePasswordVisibility()">
+                <label>Show Password</label>
+            </div>
+        </div>
+
+        <div class="row mb-3 justify-content-center">
+            <input class="btn login_btn col-5" id="signInButton" type="submit" value="Login">
+        </div>
+
+        <div class="row mb-3 justify-content-center">
+            {% for message in messages %}
+                <p class="text-danger text-center pb-0 mb-0">{{message}}</p>
+            {% endfor %}
+        </div>
+
+        <div class="row mb-3 justify-content-center">
+            <div class="row pb-2">
+                <div class="col text-center">
+                    <!-- Link to "Forgot Password" page -->
+                    <a class="formLink" href="https://www.google.com">Forgot Password?</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <!-- Link to "Sign Up" page -->
+                    <a class="formLink" href="/register">New? Sign up for free!</a>
+                </div>
+              </div>
+          </div>
 
     </form>
 
