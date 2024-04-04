@@ -27,7 +27,7 @@
   </head>
 
   <body>
-    
+    <!-- main container div -->
     <div class="container border">
 
       <div class="row p-1 border-bottom" id="header">
@@ -44,7 +44,8 @@
           {% endif %}
         </div>
       </div> <!-- end of header div -->
-
+      
+      <!-- body div -->
       <div class="row justify-content-center" id="body" >
           {% block sidebar %}  {% include 'teacher_sidebar.html' %} {% endblock %}
         <div class="col-md-10 " id="content">  
@@ -64,7 +65,7 @@
             </nav>
           </div>
         
-          <div class="row p-1" id="pageContent">
+          <div class="row p-1 justify-content-center" id="pageContent">
                 {% block content %} Page Content{% endblock %}
           </div>
         </div> 
@@ -72,7 +73,11 @@
 
       </div><!-- end of body div -->
 
-    </div> <!-- end  of main container div -->
+    </div> <!-- end of main container div -->
+    
+    {% block testblock %} 
+    
+    {% endblock %}
   </body>
 </html>
 

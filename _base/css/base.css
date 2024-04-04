@@ -51,3 +51,35 @@
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
     transition: all 0.30s ease; /* Add smooth transition */
 }
+
+/* Style for login and registration form */
+#signInButton {
+    border: none;
+    background-color: #37c6ff;
+    color: #1b33b6;
+    font-family: inherit;
+    font-weight: 600;
+}
+
+#signInButton:hover {
+    cursor: pointer;
+    background-color: #1b33b6;
+    color: #37c6ff;
+}
+
+.formLink {
+    text-decoration: none;
+    color: #37c6ff;
+    font-weight: 600;
+}
+
+.formLink:hover {
+    color: #1b33b6;
+}
+
+form {
+    background-color:#f3f5f6;
+}
+div#body{
+    /* background-color:#ff7300; */
+}
