@@ -14,7 +14,7 @@
     {% endblock %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+    <script src="{% static '/js/base.js'%}"></script>
     <!-- Define the character set used -->
     <meta charset="UTF-8">
     <!-- Define keywords for search engines -->
@@ -27,9 +27,10 @@
   </head>
 
   <body>
-    <div class="container">
+    
+    <div class="container border">
 
-      <div class="row bg-light border p-1" id="header">
+      <div class="row p-1 border-bottom" id="header">
         <div class="col-2" id="brand">
           <a href="/teacher"><img id="logo" src="/static/images/logo.svg" alt=""></a>
         </div>
@@ -44,10 +45,11 @@
         </div>
       </div> <!-- end of header div -->
 
-      <div class="row justify-content-center" id="body ">
+      <div class="row justify-content-center" id="body" >
           {% block sidebar %}  {% include 'teacher_sidebar.html' %} {% endblock %}
-        <div class="col-md-10  bg-light border" id="content">  
-          <div class="row bg-light border p-1" id="navbar">
+        <div class="col-md-10 " id="content">  
+
+          <div class="row p-1 border-bottom" id="navigationRow">
             <nav class="navbar navbar-expand-lg navigationPath">
               <a class="navbar-brand" href="#">Path</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navPath"
@@ -59,10 +61,12 @@
                       {% block path %} <a class="nav-item nav-link path activePath" href="">Home</a> {% endblock %}
                   </div>
               </div>
-          </nav>
-        </div>
+            </nav>
+          </div>
         
-          <div class="row bg-light border p-1 id="page">{% block content %} Page Content{% endblock %}</div>
+          <div class="row p-1" id="pageContent">
+                {% block content %} Page Content{% endblock %}
+          </div>
         </div> 
 
 

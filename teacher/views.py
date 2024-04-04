@@ -7,6 +7,9 @@ from django.urls import reverse
 
 # Create your views here.
 def isTeacher(request):
+    """! The isTeacher class.
+    Checks the role of the user trying to access a page
+    """
     print("checkRole function")
     if request.user.is_authenticated:
         print("request.user.role: ", str(request.user.role))
