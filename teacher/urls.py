@@ -13,5 +13,8 @@ urlpatterns = [
     path("class/<str:class_pk>/createModule/", views.createModule, name="createModule"),
     path("class/<str:class_pk>/module/<str:module_pk>/", views.module, name="module"),
     path("class/<str:class_pk>/module/<str:module_pk>/algorithm/", views.algorithm, name="algorithm"),
+
+    path("class/<str:class_pk>/module/<str:module_pk>/createAlgorithm", views.createAlgorithm, name="createAlgorithm"),
+    path("class/<str:class_pk>/module/<str:module_pk>/createPage", views.createPage, name="createPage"),
     
 ]
