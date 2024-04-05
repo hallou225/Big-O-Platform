@@ -8,3 +8,4 @@ zTest/
 Doxyfile
 *.sqlite3
 db.sqlite3
+ignore/
