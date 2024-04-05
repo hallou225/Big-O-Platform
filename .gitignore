@@ -6,8 +6,5 @@ staticfiles/
 venv/
 zTest/
 Doxyfile
-<<<<<<< HEAD
+*.sqlite3
 db.sqlite3
-=======
-db.sqlite3
->>>>>>> dev-Travis
