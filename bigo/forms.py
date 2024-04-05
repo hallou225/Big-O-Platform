@@ -37,6 +37,11 @@ class JoinClassForm(ModelForm):
         model = Class
         fields = ['class_code']
 
+class JoinClassForm(ModelForm):
+    class Meta:
+        model = Class
+        fields = ['class_code']
+
 class CreateModuleForm(ModelForm):
     class Meta:
         model = Module
