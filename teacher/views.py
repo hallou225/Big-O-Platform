@@ -201,7 +201,37 @@ def module(request, class_pk, module_pk):
 
     teacher_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
-    context = {"teacher_class": teacher_class, "module": module}
+
+    algorithm_lines = {}
+    for item in module.item_set.all():
+        if item.type == "Algorithm":
+            if algorithm.name not in algorithm_lines:
+                algorithm_lines[algorithm.name] = []
+            for line in algorithm.line_set.all():
+                algorithm_lines[algorithm.name].append({
+                'code': line.code,
+                'answer': line.answer,
+                'hint': line.hint
+            })
+    for algorithm_name, lines in algorithm_lines.items():
+        #print(f"Algorithm: {algorithm_name}")
+        output = f"""
+                <p>{algorithm_name}</p>
+                 """
+        for line in lines:
+            output += f"""
+                <p>{line["code"]}</p>
+                <p>{line["answer"]}</p>
+                <p>{line["hint"]}</p>
+                 """
+                
+            print(output)
+        if item.type == "Pages":
+            print("page:", item.name)
+        
+
+    
+    context = {"teacher_class": teacher_class, "module": module, "algorithm_lines_items": algorithm_lines.items()}
 
     try:
         algorithm_file = request.FILES['algorithmUpload']
@@ -261,8 +291,8 @@ def module(request, class_pk, module_pk):
 
 
 @login_required(login_url="/login")
-def uploadAlgorithm(request, class_pk, module_pk):
-    print("upload Algorithm Views: def uploadAlgorithm(request):")
+def createAlgorithm(request, class_pk, module_pk):
+    print("createAlgorithm Views: def createAlgorithm(request):")
     if not isTeacher(request):
         return redirect("/login")
 
@@ -323,8 +353,72 @@ def uploadAlgorithm(request, class_pk, module_pk):
     except MultiValueDictKeyError:
         print("No file was chosen.")
 
-    return render(request, 'module.html', context)
+    return render(request, 'createAlgorithm.html', context)
 
+@login_required(login_url="/login")
+def createPage(request, class_pk, module_pk):
+    print("createPage Views: def createPage(request):")
+    if not isTeacher(request):
+        return redirect("/login")
+
+    teacher_class = Class.objects.get(id=class_pk)
+    module = Module.objects.get(id=module_pk)
+    context = {"teacher_class": teacher_class, "module": module}
+
+    try:
+        algorithm_file = request.FILES['algorithmUpload']
+        algorithm_file_name = algorithm_file.name
+        algorithm_file_size = algorithm_file.size
+        algorithm_file_content_type = algorithm_file.content_type
+        algorithm_file_lines = algorithm_file.open().readlines()
+        algorithm_file.close()
+
+        algorithm_file_lines = [line.decode("utf-8") for line in algorithm_file_lines]
+
+        answerkey_file = request.FILES['answerkeyUpload']
+        answerkey_file_name = answerkey_file.name
+        answerkey_file_size = answerkey_file.size
+        answerkey_file_content_type = answerkey_file.content_type
+        answerkey_file_lines = answerkey_file.open().readlines()
+        answerkey_file.close()
+
+        # Debugging Messages:
+        print("Name of algorithm file: ", algorithm_file_name)
+        print("Size of algorithm file: ", algorithm_file_size)
+        
+        algorithm_line_count = sum(1 for line in algorithm_file_lines)        
+        print("number of line ", algorithm_line_count)
+
+        print("Content Type of algorithm file: ", algorithm_file_content_type)
+        print("Was the algorithm file closed? ", algorithm_file.closed)
+
+        print("Name of answerkey file: ", answerkey_file_name)
+        print("Size of answerkey file: ", answerkey_file_size)        
+        answerkey_line_count = sum(1 for line in answerkey_file_lines)        
+        print("number of line ", answerkey_line_count)
+        print("Content Type of answerkey file: ", answerkey_file_content_type)
+        print("Was the answerkey file closed? ", answerkey_file.closed)
+
+        '''
+        context.update({"file": file, "file_name": file_name,
+        "file_size": file_size, "file_content_type": file_content_type,
+        "file_lines": file_lines})
+        '''
+        
+        algorithm = zip(algorithm_file_lines, answerkey_file_lines)
+        
+        context.update({
+            "algorithm_file_lines": algorithm_file_lines,
+            "algorithm_line_count": algorithm_line_count,
+            "answerkey_file_lines": answerkey_file_lines,
+            "answerkey_line_count": answerkey_line_count,
+            "algorithm": algorithm
+        })
+
+    except MultiValueDictKeyError:
+        print("No file was chosen.")
+
+    return render(request, 'createPage.html', context)
 
 
 @login_required(login_url="/login")

@@ -10,6 +10,9 @@ urlpatterns = [
     path("class/<str:class_pk>/", views.studentClass, name="studentClass"),
     path("class/<str:class_pk>/leaveClass/", views.leaveClass, name="leaveClass"),
     path("class/<str:class_pk>/module/<str:module_pk>/", views.studentModule, name="studentModule"),
+
+    path("class/<str:class_pk>/module/<str:module_pk>/algorithm/<str:item_pk>/", views.algorithm, name="studentAlgorithm"),
+    path("class/<str:class_pk>/module/<str:module_pk>/page/<str:item_pk>/", views.page , name="studentPage"),
 ]
 
 '''

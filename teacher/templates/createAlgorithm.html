@@ -18,7 +18,8 @@
 {% block path %}   
             <a class="nav-item nav-link path" href="/teacher">Home</a>
             <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
-            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}">{{module.name}}</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}">{{module.name}}</a>
+            <a class="nav-item nav-link path activePath" href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}/createAlgorithm">Create Algorithm</a>
 {% endblock %}
 
 {% block content %}
@@ -27,41 +28,39 @@
         <div class="col-md-12">
         <!-- Button positioned to the right -->
             <div class="d-flex justify-content-between">
-                <h5>{{module.name}} Module Items</h5>
-
-
-                
-
-
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="container-fluid">
-                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                      </button>
-                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                          <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              Create
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <li><a class="dropdown-item" href="{% url 'createPage' teacher_class.id module.id %}">Lesson</a></li>
-                              <li><a class="dropdown-item" href="{% url 'createAlgorithm' teacher_class.id module.id %}">Algorithm</a></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </nav>
-
-
-
-
-
-
+                <h5>{{module.name}} Create Algorithm</h5>
             </div>
         </div>
     </div>
+</div>
+
+<div class="row">
+    <h1>{{module.name}}</h1>
+    <!-- File upload form -->
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        
+        <table class="table table-hover">
+            <tr>
+                <th>  </th>
+                <th>Action</th>
+            </tr>
+
+            <tr>
+                <td><h5>Upload an Algorithm</h5></td>        
+                <td><input type="file" id="algorithmUpload" name="algorithmUpload"></td>   
+            </tr> 
+
+            <tr>
+                <td><h5>Upload an Answer Key</h5></td>        
+                <td><input type="file" id="answerkeyUpload" name="answerkeyUpload"></td>                  
+            </tr>  
+            <tr>       
+                <td><input type="submit" id="uploadButton" value="Upload"></td>                  
+            </tr>             
+        </table>
+    </form>
 </div>
 
 <div class="row">
@@ -70,25 +69,6 @@
     {% endfor %}
 
 
-</div>
-
-<div class="row">
-    {% if algorithm_file_lines %}
-    <div class="col">
-        <h2>Algorithm Content:</h2>
-        {% for line in algorithm_file_lines|remove_newlines %}
-        <pre><code class="language-java">{{ line }}</code></pre>
-        {% endfor %}
-        <h3>Number of lines: {{algorithm_line_count}}</h3>
-    </div>
-    <div class="col">
-        <h2>Answer Key Content:</h2>
-        {% for line in answerkey_file_lines %}
-            <pre><code>{{ line.decode }}</code></pre>
-        {% endfor %} 
-        <h3>Number of lines: {{answerkey_line_count}}</h3>
-    </div>    
-    {% endif %} 
 </div>
 
     <!-- Div for main content of page -->

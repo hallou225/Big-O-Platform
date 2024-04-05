@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block css %}    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+{% endblock %}
+
+{% block javascript %}    
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'student_sidebar.html' %}
+{% endblock %}
+
+{% block path %}   
+    <a class="nav-item nav-link path" href="/student">Home</a>
+    <a class="nav-item nav-link path" href="/student/class/{{student_class.id}}" >{{ student_class.class_name }}</a>
+    <a class="nav-item nav-link path" href="/student/class/{{student_class.id}}/module/{{module.id}}">{{module.name}}</a>
+    <a class="nav-item nav-link path activePath" href="/student/class/{{student_class.id}}/module/{{module.id}}/algorithm/{{algorithm.id}}">{{algorithm.name}}</a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <h1>{{module.name}}</h1>
+    <!-- File upload form -->
+    <h3>Module Content eventually...</h3>
+</div>
+
+    <!-- Div for main content of page -->
+    <div id="mainContent">
+<div class="row">
+
+</div>
+{% endblock %}
+
+{% block jsscript %} 
+{% endblock %}

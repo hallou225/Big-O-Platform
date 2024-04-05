@@ -70,7 +70,36 @@
                 </tr>             
                 {% endfor %}
             </table>
+            
+            <div class="accordion" id="accordionExample">
+              {% for module_id, module_info in module_items.items %}
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{module_id}}" aria-expanded="true" aria-controls="collapse{{module_id}}">
+                      {{module_info.module_name}}
+                    </button>
+                  </h2>
+                  <div id="collapse{{module_id}}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    {% for item in module_info.items %}
+                      <h5>Item ID: {{ item.item_id }} - Item Name: {{ item.item_name }} - Item Type: {{ item.item_type }}</h5>
+                      <div class="accordion-body">
+                        {% if item.item_type == "Algorithm" %}
+                          <a href="{% url 'studentAlgorithm' student_class.id module_id item.item_id %}">{{item.item_name}}</a>
+                        {% else %}
+                          <a href="{% url 'studentPage' student_class.id module_id item.item_id %}">{{item.item_name}}</a>
+                        {% endif %}
+                      </div>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+
+            <h3>{{module_items}}</h3>
+
         </div>
     </div>
 </div>
+
+
 {% endblock %}
