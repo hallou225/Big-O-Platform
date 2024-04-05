@@ -109,16 +109,20 @@ def studentClass(request, class_pk):
     print("Number of modules: ", modules.count())
     for module in modules:
         if module.id not in module_items:
-            module_items[module.id] = []
+            module_items[module.id] = {
+                "module_name": module.name,
+                "items": []
+            }
             
         items = module.item_set.all()
         print("Items: ", items)
         for item in items:
 
-            module_items[module.id].append({
+            module_items[module.id]["items"].append({
             'item_id': item.id,
             'item_name': item.name,
-            'item_type': str(item.type)
+            'item_type': str(item.type),
+            "module_name": module.name
         })
 
         print("item.type: ", type(str(item.type)))
