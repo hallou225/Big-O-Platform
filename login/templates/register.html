@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/register.css'%}"> 
 {% endblock %}
 
 {% block javascript %}    
@@ -19,54 +18,87 @@
 {% endblock %}
 {% block content %}
 
-	<!-- Create a Class form -->
-	<form id="createAccountForm" method="POST" action="">
-		{% csrf_token %}
+<div class="container">
+	<div class="row justify-content-center">
+		<form method="POST" action="" class="form-inline border col-8">
+			{% csrf_token %}
 
-		<h1 id="createAccountHeader">Create an Account</h1>
-
-		<!-- Content inside the form -->
-		<div id="createAccountFormContent">
-
-			<h2 id="enterName">Enter your Account Info</h2>
-
-			<!-- Div containing the text entries -->
-			<div id="nameEntries">
-
-				{{form.first_name}}
-				{{form.middle_name}}
-				{{form.last_name}}
-				{{form.display_name}}
-				{{form.username}}
-				{{form.email}}
-				{{form.password1}}
-				{{form.password2}}
-
+			<div class="row mb-3 text-center pt-3">
+				<h3 class="pb-0 mb-0">Create an Account</h3>
 			</div>
 
-			<!-- Next button to take the user to the next page -->
-            <!-- <button id="submitButton" onclick="submitAccount(event)">Create Account</button> -->
-			<input class="btn login_btn" id="submitButton" type="submit" value="Register Account">
+			<div class="row mb-3 justify-content-center pt-2">
+				<label class="col-sm-2 col-form-label">Firstname</label>
+				<div class="col-sm-5">
+					{{form.first_name}}
+				</div>
+			</div>
+			<div class="row mb-3 justify-content-center">
+				<label class="col-sm-2 col-form-label">Middle Name</label>
+				<div class="col-sm-5">
+					{{form.middle_name}}
+				</div>
+			</div>
+			<div class="row mb-3 justify-content-center">
+				<label class="col-sm-2 col-form-label">Last Name</label>
+				<div class="col-sm-5">
+					{{form.last_name}}
+				</div>
+			</div>
+			<div class="row mb-3 justify-content-center">
+				<label class="col-sm-2 col-form-label">Display Name</label>
+				<div class="col-sm-5">
+					{{form.display_name}}
+				</div>
+			</div>
+			<div class="row mb-3 justify-content-center">
+				<label class="col-sm-2 col-form-label">Username</label>
+				<div class="col-sm-5">
+					{{form.username}}
+				</div>
+			</div>
+			<div class="row mb-3 justify-content-center">
+				<label class="col-sm-2 col-form-label">Email</label>
+				<div class="col-sm-5">
+					{{form.email}}
+				</div>
+			</div>
+			<div class="row mb-3 justify-content-center">
+				<label for="form_password" class="col-sm-2 col-form-label">Password</label>
+				<div class="col-sm-5">
+					{{form.password1}}
+				</div>
+			</div>
+			<div class="row mb-3 justify-content-center">
+				<label for="form_password" class="col-sm-2 col-form-label">Confirm Password</label>
+				<div class="col-sm-5">
+					{{form.password2}}
+				</div>
+			</div>
 
-			<!-- Link to "Log In" page -->
-            <a class="formLink" id="login" href="/login">Have an account? Login here</a>
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary" id="signInButton">Register Account</button>
+			</div>
 
-			{% if form.errors %}
-					{% for field in form %}
-						{% if field.errors %}
-							<p class="errors">
-								{% for error in field.errors %}
-									{{ error }}
-								{% endfor %}
-							</p>
-						{% endif %}
-					{% endfor %}
-			{% endif %}
+			<div class="row mb-3 justify-content-center">
+				{% for message in messages %}
+				<p class="text-danger text-center pb-0 mb-0">{{message}}</p>
+				{% endfor %}
+			</div>
 
-		</div>
+			<div class="row mb-3 justify-content-center">
+				<div class="row pb-2">
+					<div class="col text-center">
+						<!-- Link to "Log In" page -->
+						<a class="formLink" id="login" href="/login">Have an account? Login here</a>
+					</div>
+				</div>
+			</div>
 
-	</form>
+		</form>
 
+	</div>
+</div>
 	<script>
 		//Query All input fields
 		var form_fields = document.getElementsByTagName('input')
