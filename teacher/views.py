@@ -203,27 +203,22 @@ def module(request, class_pk, module_pk):
     module = Module.objects.get(id=module_pk)
 
     algorithm_lines = {}
-    for algorithm in module.algorithm_set.all():
-        if algorithm.name not in algorithm_lines:
-            algorithm_lines[algorithm.name] = []
-
-        for line in algorithm.line_set.all():
-            algorithm_lines[algorithm.name].append({
-            'code': line.code,
-            'answer': line.answer,
-            'hint': line.hint
-        })
-    
+    for item in module.item_set.all():
+        if item.type == "Algorithm":
+            if algorithm.name not in algorithm_lines:
+                algorithm_lines[algorithm.name] = []
+            for line in algorithm.line_set.all():
+                algorithm_lines[algorithm.name].append({
+                'code': line.code,
+                'answer': line.answer,
+                'hint': line.hint
+            })
     for algorithm_name, lines in algorithm_lines.items():
         #print(f"Algorithm: {algorithm_name}")
         output = f"""
                 <p>{algorithm_name}</p>
                  """
         for line in lines:
-            #print("Code: ", {line["code"]})
-            #print("Answer: ", {line["answer"]})
-            #print("Hint: ", {line["hint"]})
-
             output += f"""
                 <p>{line["code"]}</p>
                 <p>{line["answer"]}</p>
@@ -231,6 +226,10 @@ def module(request, class_pk, module_pk):
                  """
                 
             print(output)
+        if item.type == "Pages":
+            print("page:", item.name)
+        
+
     
     context = {"teacher_class": teacher_class, "module": module, "algorithm_lines_items": algorithm_lines.items()}
 
