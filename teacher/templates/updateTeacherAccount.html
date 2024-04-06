@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+{% endblock %}
+
+{% block javascript %}    
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block path %}
+    <a class="nav-item nav-link path" href="/teacher">Home</a>
+    <a class="nav-item nav-link path" href="/teacher/profile">Profile</a>
+    <a class="nav-item nav-link path activePath" href="/teacher/profile/updateTeacherAccount">Update Account</a>
+{% endblock %}
+
+{% block content %}
+    <!-- Update Teacher Account Form (use post method to prevent data being shown in url) -->
+    <form id="updateTeacherAccountForm" method="POST" action="">
+        {% csrf_token %}
+
+        <!-- Content inside the form -->
+        <div id="updateTeacherAccountFormContent">
+        
+            <h1 id="editTeacherAccountInfoHeader">Edit Account Info</h1>
+
+            <div id="row">
+                <h3>First Name</h3>
+                {{form.first_name}}
+            </div>
+
+            <div id="row">
+                <h3>Middle Name</h3>
+                {{form.middle_name}}
+            </div>
+            
+            <div id="row">
+                <h3>Last Name</h3>
+                {{form.last_name}}
+            </div>
+
+            <div id="row">
+                <h3>Display Name</h3>
+                {{form.display_name}}
+            </div>
+
+            <div id="row">
+                <h3>Email</h3>
+                {{form.email}}
+            </div>
+
+            <div id="row">
+                <input class="btn btn-primary col-2 mt-2" id="submitButton" type="submit" value="Update Account">
+            </div>
+
+            {% if form.errors %}
+                {% for field in form %}
+                    {% if field.errors %}
+                        <p class="errors">
+                            {% for error in field.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                {% endfor %}
+			{% endif %}
+
+
+        </div>
+
+    </form>
+{% endblock %}

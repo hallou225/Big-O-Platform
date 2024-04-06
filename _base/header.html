@@ -1,0 +1,24 @@
+{% load static %}
+
+<!-- Tool Bar -->
+<div id="header">
+
+  <!-- Content inside the tool bar -->
+  <div id="headerContent">
+
+  <!-- Title -->
+  <h1 id="bigoTitle">Big <label id="O">O</label> Complexity Algorithm</h1>
+
+  <!-- Logo -->
+  <!-- <a href="../"><img id="logo" src="{% static 'images/logo.svg' %}" alt=""></a> -->
+  <a href="/teacher"><img id="logo" src="{% static 'images/logo.svg' %}" alt=""></a>
+
+  </div>
+
+  <!-- Only show this username and logout option in the header if the user is logged in -->
+  {% if user.is_authenticated %}
+    <span class="hello-msg">Hello, {{request.user}}<a href="{% url 'logout' %}">Logout</a></span>
+  {% endif %}
+
+</div
+

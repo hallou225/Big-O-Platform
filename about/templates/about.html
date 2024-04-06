@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/about.css'%}">    
+{% endblock %}
+
+{% block javascript %}    
+    <!-- <script src="{% static '/js/   .js'%}">  </script> -->
+{% endblock %}
+{% block path %}    
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path activePath" href="/about" >about</a>
+{% endblock %}
+{% block hello_msg %} <span class="hello-msg">Hello, {{teacher_first_name}} <a href="/logout/">Logout</a></span>{% endblock %}
+
+
+{% block content %}
+
+    <!--Top portion of the webpage, about Big-O Project-->
+    <div id="AboutProject">
+        <h1 class="AboutHeaders">About Big-O Project</h1>
+        <p class="AboutText">Our application will be a tool for students to learn algorithm complexity analysis. Big-O notation is the format to express complexity analysis,
+            this is where we get the Big-O Project name. Understanding algorithm complexity analysis and how to describe it using Big-O notation is a 
+            key component in computer science. The Big-O Project's goal is to give students a space and resources to learn complexity analysis and its role
+            in programming efficiently. Furthermore, we want to provide teachers a way to integrate their classroom on online and be able to implement
+            their curriculum onto the application. Overall, the Big-O Project wants to extend the classroom feel and the student-teacher relationship,
+            while teaching complexity analysis.
+        </p>
+    </div>
+    <!--Second portion of the webpage, about Big-O Team-->
+    <div id="AboutTeam">
+        <h1 class="AboutHeaders">Big-O Project Team</h1>
+        <p class="AboutText">Our team consists of senior students at the University of Nebraska-Omaha (UNO) from the College of Information Science and Technology. This 
+            application is our final 'capstone' project at UNO. With our final project we want to showcase our education and inspire the next 
+            generation of students. Here are the team members:
+        </p>
+        <!--Div container for our logo and the team members that show up right next to each other-->
+        <div id="Container">
+            <img id="ProjectLogo" src="{% static '/images/logo.svg'%}" >
+            <div id="TeamMembers">
+                <div class="Member">
+                    <h2>Henri Allou</h2>
+                    <p class="AboutText">Client Liaison, Requirements Analyst, Back-end Developer</p>
+                </div>
+                <div class="Member">
+                    <h2>Noah Jorgenson</h2>
+                    <p class="AboutText">Lead Researcher, Lead Architect, Front-end Developer</p>
+                </div>   
+                <div class="Member">
+                    <h2>Wesley Phillipson</h2>
+                    <p class="AboutText">Project Manager, Project Scribe, Back-end Developer</p>
+                </div>   
+                <div class="Member">
+                    <h2>Travis Swartzendruber</h2>
+                    <p class="AboutText">Testing Lead, Front-end Developer</p>
+                </div>   
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

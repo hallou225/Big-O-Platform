@@ -1,126 +1,77 @@
-{% extends 'baseTeacher.html' %}
+{% extends 'base.html' %}
 {% load static %}
-{% block content %}
-    <!-- Div for main content of page -->
-    <div id="mainContent">
 
-        <div id="mainHeadingDiv">
+{% block css %}    
+    <!-- 
+        <link rel="stylesheet" type="text/css" href="{% static '/css/teacher.css'%}">
+    --> 
+{% endblock %}
 
-            <!-- Main heading -->
-            <h1 class="myH1" id="mainHeading"></h1>
+{% block javascript %}    
+    <script src="{% static '/js/teacher.js'%}"></script>
+{% endblock %}
 
-            <!-- Button to open "Create a Class" page -->
-            <button" id="createClassButton" onclick="createNewClass()"><div id="createClassText">Create a Class</div><div id="plus">+</div></button>
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
 
+{% block path %}  
+            <a class="nav-item nav-link path activePath" href="/teacher">Home</a>
+{% endblock %}
+
+{% block content %}    
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            <!-- Button positioned to the right -->
+                <div class="d-flex justify-content-between">
+                    <h5>{{teacher_display_name}} Classes</h5>  
+                    <a class="btn btn-primary ml-auto" href="/teacher/createclass">Create a Class</a>    
+                </div>
+            </div>
         </div>
-
-        <!--  Class buttons -->
-        <div id="classButtonsDiv">
-
-            <!-- Class buttons with class name and class image inside -->
-            <button class="classButton" onclick="openClass()">
-
-                <!-- Name of class -->
-                <div class="className">Class Name 1</div>
-
-                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
-                <div class="semester">Spring 2024</div>
-
-                <!-- Container for the  classimage -->
-                <div class="classImageContainer">
-
-                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
-                    <img id="classImage" src="{% static '/images/pencil.svg'%}" alt="Filler Image">
-
-                </div>
-
-            </button>
-
-            <!-- Class buttons with class name and class image inside -->
-            <button class="classButton" onclick="openClass()">
-
-                <!-- Name of class -->
-                <div class="className">Class Name 1</div>
-
-                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
-                <div class="semester">Spring 2024</div>
-
-                <!-- Container for the  classimage -->
-                <div class="classImageContainer">
-
-                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
-                    <img id="classImage" src="{% static '/images/fillerArt.png'%}" alt="Filler Image">
-
-                </div>
-
-            </button>
-
-            <!-- Class buttons with class name and class image inside -->
-            <button class="classButton" onclick="openClass()">
-
-                <!-- Name of class -->
-                <div class="className">Class Name 1</div>
-
-                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
-                <div class="semester">Spring 2024</div>
-
-                <!-- Container for the  classimage -->
-                <div class="classImageContainer">
-
-                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
-                    <img id="classImage" src="{% static '/images/pencilBLUE.svg'%}" alt="Filler Image">
-
-                </div>
-
-            </button>
-
-            <!-- Class buttons with class name and class image inside -->
-            <button class="classButton" onclick="openClass()">
-
-                <!-- Name of class -->
-                <div class="className">Class Name 1</div>
-
-                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
-                <div class="semester">Spring 2024</div>
-
-                <!-- Container for the  classimage -->
-                <div class="classImageContainer">
-
-                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
-                    <img id="classImage" src="{% static '/images/pencilBLUE2.svg'%}" alt="Filler Image">
-
-                </div>
-
-            </button>
-
-            <!-- Class buttons with class name and class image inside -->
-            <button class="classButton" onclick="openClass()">
-
-                <!-- Name of class -->
-                <div class="className">Class Name 1</div>
-
-                <!-- Semester (e.g. Spring 2024) specified by the instructor -->
-                <div class="semester">Spring 2024</div>
-
-                <!-- Container for the  classimage -->
-                <div class="classImageContainer">
-
-                    <!-- Example image (eventually we'll want to let the instructor upload an image) -->
-                    <img id="classImage" src="{% static '/images/pencilBLUE3.svg'%}" alt="Filler Image">
-
-                </div>
-
-            </button>
-
-        </div>
-
     </div>
 
-    <!-- Div for teacher profile content -->
-    <div id="teacherProfileDiv">
+    <div class="row mt-2">
+        <div class="col-md">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Language</th>
+                        <th>Term</th>
+                        <th>Class Code</th>
+                    </tr>
 
-        <!-- Main heading -->
-        <h1 class="myH1">Profile</h1>
-
+                    {% for i in teacher_classes %}
+                    <tr>
+                        <td>{{ i.class_name  }}</td>     
+                        <td>{{ i.language  }}</td>
+                        <td>{{ i.term  }}</td>
+                        <td>{{ i.class_code  }}</td>               
+                    </tr>             
+                    {% endfor %}
+                </table>
+        </div>
     </div>
+
+    <div class="row mt-2">
+        {% for i in teacher_classes %}
+            <div class="col-md-4 ">
+                <a class="border" href="{% url 'teacherClass' i.id %}" style="text-decoration: none;">
+                    <div class="card classCard" style="width:250px">        
+                        <img class="card-img-top" style="width:250px" src="{% static '/images/pencilBLUE3.svg'%}"  />
+                        <div class="card-body">
+                            <div class="card-title">{{ i.class_name  }}</div>
+                        </div>
+                        <div class="card-footer">{{ i.term  }}</div>
+                        <div class="card-footer">{{ i.class_code  }}</div>
+                    </div>
+
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+
 {% endblock %}

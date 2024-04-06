@@ -1,0 +1,68 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/sidebar.css'%}">
+{% endblock %}
+
+{% block javascript %}    
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block path %}
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path activePath" href="/teacher/createclass">Create class</a>
+{% endblock %}
+
+{% block content %}
+    <!-- Create a Class form (use post method to prevent data being shown in url) -->
+    <form id="createAClassForm" method="POST" action="">
+        {% csrf_token %}
+
+        <!-- Content inside the form -->
+        <div id="createAClassFormContent">
+        
+            <h1 id="createAClassHeader">Create a Class</h1>
+            <h2 id="enterClassName">Enter a Class Name</h2>
+
+            <!-- Text entry for class name -->
+            <!-- <input type="text" class="textEntry" id="className" name="className" placeholder="Class Name" autocomplete="off" required><br> -->
+            {{form.class_name}}
+
+            <h2>Choose the Class Term</h2>
+
+            <!-- Text entry for class term -->
+            <!-- <input type="text" class="textEntry" id="classTerm" name="classTerm" placeholder="Class Term (e.g. Spring 2024)" autocomplete="off" required><br> -->
+            <!-- <input id="formTerm" readonly>Hello{{form.term}}</input> -->
+            {{form.term}}
+            
+            <h2 id="enterClassCode">Enter a unique Class Code</h2>
+            <!-- Text entry for unique class code -->
+            <!-- <input type="text" class="textEntry" id="classCode" name="classCode" placeholder="Class Code" autocomplete="off" required><br> -->
+            {{form.class_code}}
+
+            <h2>Choose the Language</h2>
+            {{form.language}}
+            <br>
+            <input class="btn btn-primary col-2 mt-2" id="submitButton" type="submit" value="Create Class">
+
+            {% if form.errors %}
+					{% for field in form %}
+						{% if field.errors %}
+							<p class="errors">
+								{% for error in field.errors %}
+									{{ error }}
+								{% endfor %}
+							</p>
+						{% endif %}
+					{% endfor %}
+			{% endif %}
+
+        </div>
+
+    </form>
+{% endblock %}

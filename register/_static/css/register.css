@@ -1,0 +1,117 @@
+/* Color Palette:
+        * Black: #1E1F22
+        * Dark Grey: #2A2D31
+        * Lighter Grey: #303338
+        * Text Entry Grey: #3d4147
+        * Text Placeholder Grey: #686b6d
+        * Light blue: #37c6ff
+        * Dark Blue #1b33b6
+*/
+
+#createAccountForm {
+    width: 29.5vw;
+    height: min-content;
+    margin: auto;
+    background-color: #303338;
+    margin-top: 8.3vw;
+    margin-bottom: 3.4vw;
+}
+
+#createAccountFormContent {
+    padding-left: 1.7vw;
+    padding-right: 1.7vw;
+    padding-top: 0.1vw;
+    padding-bottom: 2vw;
+}
+
+#createAccountHeader {
+    color: white;
+    /*padding-bottom: 1.6vw;*/
+    font-size: 2.2vw;
+    padding-left: 1.7vw;
+    padding-top: 1vw;
+}
+
+h2 {
+    color: white;
+    font-size: 1.6vw;
+    margin-top: 0;
+    margin-bottom: 0.8vw;
+}
+
+#enterName {
+    margin-bottom: 0.8vw;
+}
+
+.textEntry {
+    width: 25.2vw;
+    display: block;
+    padding-top: 0.6vw;
+    padding-bottom: 0.6vw;
+    border: none;
+    background-color: #3d4147;
+    color: white;
+    font-size: 1.3vw;
+    border-radius: 0.8vw;
+    padding-left: 0.8vw;
+    font-family: inherit;
+    outline: none;
+    margin-bottom: 0.8vw;
+}
+
+.textEntry:focus {
+    outline: 0.2vw solid #37c6ff;
+}
+
+.textEntry::placeholder {
+    color: #686b6d;
+    font-size: 1.3vw;
+}
+
+#chooseRole {
+    width: 25.9vw;
+    margin-bottom: 0.8vw;
+    margin-top: 1vw;
+}
+
+#dropDownRoles {
+    width: 25.9vw;
+}
+
+#submitButton {
+    width: 26.2vw;
+    height: 2.8vw;
+    border: none;
+    background-color: #37c6ff;
+    color: #1b33b6;
+    font-size: 1.3vw;
+    font-family: inherit;
+    font-weight: 600;
+    border-radius: 0.8vw;
+    margin-top: 2.1vw;
+    margin-bottom: 0;
+}
+
+#submitButton:hover {
+    cursor: pointer;
+    background-color: #1b33b6;
+    color: #37c6ff;
+}
+
+.formLink {
+    display: block;
+    padding-top: 1.6vw;
+    font-size: 1.3vw;
+    text-decoration: none;
+    color: #37c6ff;
+    font-weight: 600;
+}
+
+.formLink:hover {
+    color: #1b33b6;
+}
+
+.errors {
+    font-size: 1.3vw;
+    color: white;
+}

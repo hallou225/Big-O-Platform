@@ -1,0 +1,34 @@
+{% load static %}
+<div class="col-md-2 bg-light border text-center" id="sidebar">
+  <nav class="navbar" id="teacherSideBar">
+    <div class="container justify-content-center">      
+      <ul class="navbar-nav ">
+        <li class="nav-item">
+          <a class="nav-link" href="/student/profile"><img class="sidebarIcon" src="{% static 'images/profileIcon.svg' %}" alt=""></a>
+          <a class="nav-link" href="/student/profile">Profile</a>
+        </li>
+  
+        <li class="nav-item">
+          <a class="nav-link" href="/student"><img class="sidebarIcon" src="{% static '/images/pencilBLUE3Cropped.svg'%}" alt=""></a>
+          <a class="nav-link" href="/student">Classes</a>
+        </li>
+  
+        <li class="nav-item">
+          <a class="nav-link" href="/student/joinclass"><img class="sidebarIcon" src="{% static '/images/joinClass.png'%}" alt=""></a>
+          <a class="nav-link" href="/sutdent/joinclass">Join a Class</a>
+        </li>
+  
+        <li class="nav-item">
+          <a class="nav-link" href="/about"><img class="sidebarIcon" src="{% static '/images/aboutIcon.svg'%}" alt=""></a>
+          <a class="nav-link" href="/about">About</a>
+        </li>
+  
+        <li class="nav-item">
+          <a class="nav-link"href="{% url 'logout' %}"><img class="sidebarIcon" src="{% static '/images/logoutIcon.svg'%}" alt=""></a>
+          <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+  

@@ -21,10 +21,9 @@ import debug_toolbar
 urlpatterns = [
     path('admin/', admin.site.urls), 
     path("__debug__/", include("debug_toolbar.urls")),
-    path("", include('home.urls')),
-    path("signup/", include('signup.urls')),
-    path("signup2/", include('signup2.urls')),
-    path("createclass/", include('createclass.urls')),
+    path("", include('login.urls')),
     path("student/", include('student.urls')),
-    path("teacher/", include('teacher.urls'))
+    path("teacher/", include('teacher.urls')),
+    path("about/", include('about.urls')),
+    path("register/", include('register.urls')),
 ]
