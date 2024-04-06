@@ -131,6 +131,25 @@ class Item(models.Model):
     type = models.ForeignKey(ItemType, null=True, on_delete=models.SET_NULL)
     module = models.ForeignKey(Module, null=True, on_delete=models.SET_NULL)
 
+    def __str__(self) -> str:
+        child_item_type = None
+        child_item_name = None
+
+        # Check if the child item is a Page
+        page = self.page_set.first()
+        if page:
+            child_item_type = 'Page'
+            child_item_name = page.name
+
+        # If the child item is not a Page, check if it's an Algorithm
+        if not child_item_name:
+            algorithm = self.algorithm_set.first()
+            if algorithm:
+                child_item_type = 'Algorithm'
+                child_item_name = algorithm.name
+        
+        return f"M:{self.module.name} Item:{self.id}:{self.type}       ->     {child_item_name}"
+
 class Page(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
     content = models.CharField(max_length=2000, null=True) # Required Field
