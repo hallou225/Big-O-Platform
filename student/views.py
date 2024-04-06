@@ -89,9 +89,71 @@ def studentClass(request, class_pk):
         return redirect("/login")
         
     student_class = Class.objects.get(id=class_pk)
-    modules = student_class.module_set.all()
+    student_modules = student_class.module_set.all()
 
-    context = {"student_class": student_class, "modules": modules}
+    items = Item.objects.none()
+    algorithms = Algorithm.objects.none()
+    pages = Page.objects.none()
+
+    for module in student_modules:
+        module_items = Item.objects.filter(module=module)
+        items = items.union(module_items)
+
+    for item in items:
+        item_pages = Page.objects.filter(item=item)
+        pages = pages.union(item_pages)
+        
+        item_algorithms = Algorithm.objects.filter(item=item)
+        algorithms = algorithms.union(item_algorithms)
+
+    print("items: ", items)
+    for item in items:
+        print("item.module: ", item.module)
+    
+    print()
+
+    print("algorithms: ", algorithms)
+    for algorithm in algorithms:
+        print("algorithm: ", algorithm)
+    
+    print()
+
+    print("pages: ", pages)
+    for page in pages:
+        print("page: ", page)
+    
+    print()
+
+    for module in student_modules:
+        print("module.name: ", module.name)
+        for item in items:
+            if module.name == item.module.name:
+                print("item.module: ", item.module)
+            
+    #     items = module.item_set.all()
+    #     print("Items: ", items)
+    #     for item in items:
+
+    #         module_items[module.id]["items"].append({
+    #         'item_id': item.id,
+    #         'item_name': item.name,
+    #         'item_type': str(item.type),
+    #         "module_name": module.name,
+    #     })
+
+    #     print("item.type: ", type(str(item.type)))
+
+    #     print("Item id: ", item.id)
+    #     print("Item name: ", item.name)
+    
+    # print("module_items: ", module_items)
+
+    '''context = {"student_class": student_class, "modules": student_modules,
+               "module_number": student_modules.count(), "modulesDict": modulesDict,
+               "itemsDict": itemsDict, "pages": pages, "algorithms": algorithms}'''
+    context = {"student_class": student_class, "modules": student_modules,
+               "module_number": student_modules.count(), "items": items,
+               "algorithms": algorithms, "pages": pages}
     return render(request, 'studentClass.html', context)
 
 @login_required(login_url="/login")
@@ -147,6 +209,71 @@ def studentModule(request, class_pk, module_pk):
 
     student_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
+    
     context = {"student_class": student_class, "module": module}
 
     return render(request, 'studentModule.html', context)
+
+@login_required(login_url="/login")
+def algorithm(request, class_pk, module_pk, algorithm_pk):
+    print("Student Views: def algorithm(request):")
+    if not isStudent(request):
+        return redirect("/login")
+
+    student_class = Class.objects.get(id=class_pk)
+    module = Module.objects.get(id=module_pk)
+    algorithm = Algorithm.objects.get(id=algorithm_pk)
+    
+    lines = algorithm.line_set.all()
+    print("lines: ", lines)
+
+    for line in lines:
+        print("line: ", line.code, "|", line.answer, "|", line.hint)
+
+    print("algorithm_pk: ", algorithm_pk)
+
+    context = {"student_class": student_class, "module": module, "algorithm": algorithm,
+               "lines": lines}
+
+    return render(request, 'studentAlgorithm.html', context)
+
+@login_required(login_url="/login")
+def page(request, class_pk, module_pk, page_pk):
+    print("Student Views: def page(request):")
+    if not isStudent(request):
+        return redirect("/login")
+
+    student_class = Class.objects.get(id=class_pk)
+    module = Module.objects.get(id=module_pk)
+    page = Page.objects.get(id=page_pk)
+
+    context = {"student_class": student_class, "module": module, "page": page}
+
+    return render(request, 'studentPage.html', context)
+
+@login_required(login_url="/login")
+def item(request, class_pk, module_pk, item_pk):
+    print("Student Views: def item(request):")
+    if not isStudent(request):
+        return redirect("/login")
+
+    student_class = Class.objects.get(id=class_pk)
+    module = Module.objects.get(id=module_pk)
+    item = Item.objects.get(id=item_pk)
+
+    print("item_pk: ", item_pk)
+
+    context = {"student_class": student_class, "module": module, "item": item}
+
+    print("-------item.type: ", item.type)
+
+    if str(item.type) == "Algorithm":
+        #algorithm = Algorithm.objects.get(id=item_pk)
+        #context = {"student_class": student_class, "module": module, "algorithm": algorithm}
+        return render(request, 'studentAlgorithm.html', context)
+    elif str(item.type) == "Page":
+        #page = Page.objects.get(id=item_pk)
+        #context = {"student_class": student_class, "module": module, "page": page}
+        return render(request, 'studentPage.html', context)
+
+    # return render(request, 'studentItem.html', context)

@@ -117,27 +117,31 @@ class Module(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class ItemType(models.Model):
+    type = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.type
+
+    class Meta:
+        verbose_name = 'ItemType'
+        verbose_name_plural = 'ItemTypes'
+
+class Item(models.Model):
+    type = models.ForeignKey(ItemType, null=True, on_delete=models.SET_NULL)
+    module = models.ForeignKey(Module, null=True, on_delete=models.SET_NULL)
+
+class Page(models.Model):
+    name = models.CharField(max_length=100, null=True) # Required Field
+    content = models.CharField(max_length=2000, null=True) # Required Field
+    item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL) # The module this algorithm
+
+    def __str__(self) -> str:
+        return self.name
+
 class Algorithm(models.Model):
-    name      = models.CharField(max_length=100, null=True)                          # Required Field
-    module = models.ForeignKey(Module, null=True, on_delete=models.SET_NULL)  # The module this algorithm  belongs to
-    """
-    
-    codes = models.ArrayField(
-        models.CharField(max_length=100), 
-        blank=True,
-        null=True
-    )
-    answers = models.ArrayField(
-        models.CharField(max_length=100), 
-        blank=True,
-        null=True
-    )
-    hints = models.ArrayField(
-        models.CharField(max_length=100), 
-        blank=True,
-        null=True
-    )
-    """
+    name = models.CharField(max_length=100, null=True) # Required Field
+    item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL) # The module this algorithm  belongs to
     
     def __str__(self) -> str:
         return self.name
