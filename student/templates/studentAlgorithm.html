@@ -20,22 +20,15 @@
 {% endblock %}
 
 {% block content %}
+<h1>{{module.name}}</h1>
+<h3>{{algorithm.name}}</h3>
 <div class="row">
     <div class="col border">Put Answer Here...</div>
     <div class="col border">
-        {% for line in lines|remove_newlines %}
-            <pre><code>{{line.code}}</code></pre>
+        {% for line in lines %}
+            <pre class="mb-0"><code class="language-python">{{line.code }}</code></pre>
         {% endfor %}
     </div>
-    <h1>{{module.name}}</h1>
-    <!-- File upload form -->
-    <h3>{{algorithm.name}}</h3>
-</div>
-
-    <!-- Div for main content of page -->
-    <div id="mainContent">
-<div class="row">
-
 </div>
 {% endblock %}
 
