@@ -21,9 +21,15 @@
 
 {% block content %}
 <div class="row">
+    <div class="col border">Put Answer Here...</div>
+    <div class="col border">
+        {% for line in lines|remove_newlines %}
+            <pre><code>{{line.code}}</code></pre>
+        {% endfor %}
+    </div>
     <h1>{{module.name}}</h1>
     <!-- File upload form -->
-    <h3>Module Content eventually...</h3>
+    <h3>{{algorithm.name}}</h3>
 </div>
 
     <!-- Div for main content of page -->
@@ -33,5 +39,10 @@
 </div>
 {% endblock %}
 
+
 {% block jsscript %} 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    hljs.highlightAll();
+</script>
 {% endblock %}

@@ -55,47 +55,41 @@
 
         <div class="col border bg-light">          
 
-            <table class="table">
-                <tr>
-                    <th>Module</th>
-                    <th>View</th>
-                    <th>Update</th>
-                    <th>Delete</th>
-                </tr>
-
-                {% for module in modules %}
-                <tr>
-                    <td>{{ module.name  }}</td>    
-                    <td><a class="moduleButton" href="{% url 'studentModule' student_class.id module.id %}">View</a></td>       
-                </tr>             
-                {% endfor %}
-            </table>
-            
             <div class="accordion" id="accordionExample">
-              {% for module_id, module_info in module_items.items %}
+              {% for module in modules %}
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{module_id}}" aria-expanded="true" aria-controls="collapse{{module_id}}">
-                      {{module_info.module_name}}
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{module.id}}" aria-expanded="true" aria-controls="collapse{{module.id}}">
+                      {{module.name}}
                     </button>
                   </h2>
-                  <div id="collapse{{module_id}}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    {% for item in module_info.items %}
-                      <h5>Item ID: {{ item.item_id }} - Item Name: {{ item.item_name }} - Item Type: {{ item.item_type }}</h5>
-                      <div class="accordion-body">
-                        {% if item.item_type == "Algorithm" %}
-                          <a href="{% url 'studentAlgorithm' student_class.id module_id item.item_id %}">{{item.item_name}}</a>
-                        {% else %}
-                          <a href="{% url 'studentPage' student_class.id module_id item.item_id %}">{{item.item_name}}</a>
-                        {% endif %}
-                      </div>
-                  {% endfor %}
+                  <div id="collapse{{module.id}}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    {% for item in items %}
+                      {% if module.name == item.module.name %}
+
+                        {% for algorithm in algorithms %}
+                          {% if item.id == algorithm.item.id %}
+                            <div class="accordion-body">
+                              <a href="{% url 'studentAlgorithm' student_class.id module.id algorithm.id %}">{{algorithm.name}}</a>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+
+                        {% for page in pages %}
+                          {% if item.id == page.item.id %}
+                            <div class="accordion-body">
+                              <a href="{% url 'studentPage' student_class.id module.id page.id %}">{{page.name}}</a>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+
+                      {% endif %}
+                    {% endfor %}
+                  </div>
                 </div>
-              </div>
+
               {% endfor %}
             </div>
-
-            <h3>{{module_items}}</h3>
 
         </div>
     </div>

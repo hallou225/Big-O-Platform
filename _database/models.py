@@ -128,12 +128,8 @@ class ItemType(models.Model):
         verbose_name_plural = 'ItemTypes'
 
 class Item(models.Model):
-    name = models.CharField(max_length=100, null=True) # Required Field
     type = models.ForeignKey(ItemType, null=True, on_delete=models.SET_NULL)
     module = models.ForeignKey(Module, null=True, on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return self.name
 
 class Page(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
