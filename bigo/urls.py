@@ -26,4 +26,5 @@ urlpatterns = [
     path("teacher/", include('teacher.urls')),
     path("about/", include('about.urls')),
     path("register/", include('register.urls')),
+    path('markdownx/', include('markdownx.urls')),
 ]

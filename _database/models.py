@@ -152,7 +152,7 @@ class Item(models.Model):
 
 class Page(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
-    content = models.CharField(max_length=2000, null=True) # Required Field
+    content = models.TextField(max_length=2000, null=True) # Required Field
     item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL) # The module this algorithm
 
     def __str__(self) -> str:
