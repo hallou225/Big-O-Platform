@@ -276,11 +276,21 @@ def modules(request, class_pk):
     items = Item.objects.none()
     algorithms = Algorithm.objects.none()
     pages = Page.objects.none()
-
+    empty_modules = Module.objects.none()
     for module in teacher_modules:
+        # return all items of this module
         module_items = Item.objects.filter(module=module)
-        items = items.union(module_items)
+        
+        # if items are returned append to the items query set
+        if module_items.exists():            
+            items = items.union(module_items)
+        else: # else, if no items are returned, add the module to the empty_modules queryset
+            empty_modules = empty_modules | Module.objects.filter(id=module.id)
 
+    print("All items: ", items)
+    print("empty_modules", empty_modules)
+    print()
+    # create a query set for the pages and algorithms that matches the items in the items queryset
     for item in items:
         item_pages = Page.objects.filter(item=item)
         pages = pages.union(item_pages)
@@ -288,12 +298,7 @@ def modules(request, class_pk):
         item_algorithms = Algorithm.objects.filter(item=item)
         algorithms = algorithms.union(item_algorithms)
 
-    print()
-    print("items: ", items)
-    for item in items:
-        print("item.module: ", item.module)
-    
-    print()
+
     print("algorithms: ", algorithms)
     for algorithm in algorithms:
         print("algorithm: ", algorithm)
@@ -304,10 +309,7 @@ def modules(request, class_pk):
         print("page: ", page)
     
     
-    print()
 
-    
-    
     # for module in teacher_modules:
     #     print("module.name: ", module.name)
     #     for item in items:
@@ -364,6 +366,7 @@ def modules(request, class_pk):
     context = {
         "teacher_class": teacher_class,
         "modules": teacher_modules,
+        "empty_modules": empty_modules,
         "module_number": teacher_modules.count(),
         "items": items,
         "algorithms": algorithms,

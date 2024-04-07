@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 <style>
-
   .accordion-item {
     border:1px solid black;
     border-top: none;
@@ -87,6 +86,7 @@
                     aria-controls="collapse{{module.id}}">
                     {{module.name}}
             </button>
+            
         </h2>
         <div id="collapse{{module.id}}" class="accordion-collapse collapse show"
              aria-labelledby="collapse{{module.id}}" style="">
@@ -95,22 +95,45 @@
 
                {% for algorithm in algorithms %}
                  {% if item.id == algorithm.item.id %}
-                   <div class="accordion-body">
-                     <a href="{% url 'teacherViewAlgorithm' teacher_class.id algorithm.id %}">{{algorithm.name}}</a>
-                   </div>
+                   
+                   <div class="list-group accordion-body p-0">
+                      <a class="list-group-item list-group-item-action" 
+                      href="{% url 'teacherViewAlgorithm' teacher_class.id algorithm.id %}">
+                        <span class="text-danger">A: </span>
+                        {{algorithm.name}}
+                      </a>
+                  </div>
                  {% endif %}
                {% endfor %}
 
                {% for page in pages %}
                  {% if item.id == page.item.id %}
-                   <div class="accordion-body">
-                     <a href="{% url 'teacherViewPage' teacher_class.id page.id %}">{{page.name}}</a>
-                   </div>
+                   <div class="list-group accordion-body p-0">
+                    <a class="list-group-item list-group-item-action" 
+                      href="{% url 'teacherViewPage' teacher_class.id page.id %}">
+                      <span class="text-primary">P: </span>
+                      {{page.name}}
+                    </a>
+                  </div>
                  {% endif %}
                {% endfor %}
 
              {% endif %}
            {% endfor %}
+
+           
+           {% for m in empty_modules %}
+           {% if m.id == module.id %}
+
+              <div class="list-group accordion-body p-0">
+                <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">
+                  <span class="text-secondary">E: </span>
+                  Empty Module
+                </a>
+              </div>
+
+            {% endif %}
+          {% endfor %}
         </div>
     </div>
   
