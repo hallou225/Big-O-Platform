@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block css %}    
+<link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<style>
+
+  .accordion-item {
+    border:1px solid black;
+    border-top: none;
+    margin-bottom: 40px;
+  }
+  .accordion-body{
+  }
+  .accordion-button.collapsed {
+    background-color: rgb(219, 219, 219);
+  }
+  .accordion-button {
+    margin:0;
+    border-top: 1px solid black;
+  }
+</style>
+{% endblock %}
+
+{% block javascript %}    
+<script src="{% static '/js/module.js'%}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block path %}   
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
+{% endblock %}
+
+{% block content %}
+<div class="container ">
+ 
+  <div class="d-flex bd-highlight mb-0">
+
+    <div class="p-2 bd-highlight">{{teacher_class.class_name}}</div>
+  
+    <div class="ms-auto p-2 bd-highlight">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid bg-transparent">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item dropdown pb-0">
+                <a class="nav-link dropdown-toggle border" style="padding:10px;" href="#" id="navbarDropdown"
+                  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Create
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="">Lesson</a></li>
+                  <li><a class="dropdown-item" href="">Algorithm</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+  
+    </div>
+  </div>
+  
+    <div class="container">
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-primary mb-3 ml-10" id="toggleAccordion" aria-expanded="False">Collapse All</button>
+      </div>
+    </div>
+  <div class="accordion" id="accordionPanelsStayOpenExample">
+    {% for module in modules %}
+    <!-- Button to toggle visibility of all accordion items -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-heading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{module.id}}" aria-expanded="true"
+                    aria-controls="collapse{{module.id}}">
+                    {{module.name}}
+            </button>
+        </h2>
+        <div id="collapse{{module.id}}" class="accordion-collapse collapse show"
+             aria-labelledby="collapse{{module.id}}" style="">
+             {% for item in items %}
+             {% if module.name == item.module.name %}
+
+               {% for algorithm in algorithms %}
+                 {% if item.id == algorithm.item.id %}
+                   <div class="accordion-body">
+                     <a href="{% url 'teacherViewAlgorithm' teacher_class.id algorithm.id %}">{{algorithm.name}}</a>
+                   </div>
+                 {% endif %}
+               {% endfor %}
+
+               {% for page in pages %}
+                 {% if item.id == page.item.id %}
+                   <div class="accordion-body">
+                     <a href="{% url 'teacherViewPage' teacher_class.id page.id %}">{{page.name}}</a>
+                   </div>
+                 {% endif %}
+               {% endfor %}
+
+             {% endif %}
+           {% endfor %}
+        </div>
+    </div>
+  
+    {% endfor %}
+  </div> <!-- end of accordion -->
+
+</div><!-- end of container div -->
+
+
+
+<script>
+  document.getElementById('toggleAccordion').addEventListener('click', function () {
+      var accordionItems = document.querySelectorAll('.accordion-item');
+      var button = document.getElementById('toggleAccordion');
+      var expandAll = button.getAttribute('aria-expanded') === 'false';
+
+      accordionItems.forEach(function (item) {
+          var button = item.querySelector('.accordion-button');
+          var collapse = item.querySelector('.accordion-collapse');
+
+          if (expandAll) {
+              collapse.classList.add('show');
+              button.setAttribute('aria-expanded', 'true');
+              button.classList.remove('collapsed');
+          } else {
+              collapse.classList.remove('show');
+              button.setAttribute('aria-expanded', 'false');
+              button.classList.add('collapsed');
+          }
+      });
+
+      button.setAttribute('aria-expanded', expandAll ? 'true' : 'false');
+      button.innerText = expandAll ? 'Collapse All' : 'Expand All';
+  });
+</script>
+
+
+{% endblock %}
+
+
+{% block testblock %}
+
+{% endblock %}
+
+
+{% block endscript %}
+<script>
+
+</script>
+{% endblock %}
