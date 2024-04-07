@@ -140,6 +140,7 @@ class Item(models.Model):
         if page:
             child_item_type = 'Page'
             child_item_name = page.name
+            child_item_id = page.id
 
         # If the child item is not a Page, check if it's an Algorithm
         if not child_item_name:
@@ -147,8 +148,10 @@ class Item(models.Model):
             if algorithm:
                 child_item_type = 'Algorithm'
                 child_item_name = algorithm.name
+                child_item_id = algorithm.id
         
-        return f"M:{self.module.name} Item:{self.id}:{self.type}       ->     {child_item_name}"
+        return f"{self.module.name}: {self.type}->{child_item_name}"
+        #return f"[{self.module.id}]: {self.module.name} [{self.id}]: {self.type}  [{child_item_id}]: {child_item_name}"
 
 class Page(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
