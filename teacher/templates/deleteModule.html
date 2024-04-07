@@ -14,19 +14,21 @@
 {% block path %}  
             <a class="nav-item nav-link path" href="/teacher">Home</a>
             <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
-            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/deleteClass">Delete Class</a>
+            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/deleteModule/{{module.id}}">Delete Module {{module.id}}</a>
 {% endblock %}
 
 {% block content %}
 <div class="card">
     <div class="card-header bg-danger text-white">
-        Delete class
+        Delete Module
     </div>
     <div class="card-body bg-warning text-dark">
         <h5 class="card-title">Warning</h5>
-        <p class="card-text">Are you sure you want to delete your class: <span class="fw-bolder">{{teacher_class.class_name}} </span>?</p>
-        <p class="card-text">CAUTION: Proceeding will delete your class and all related data.</p>
-        <form class="bg-transparent" method="POST" action="{% url 'deleteClass' teacher_class.id %}">
+        <p class="card-text">Are you sure you want to delete your Module: <span class="fw-bolder"> {{module.name}} </span>?</p>
+        <p class="card-text">CAUTION: Proceeding will delete your module and all related data.</p>
+
+
+        <form class="bg-transparent" method="POST" action="{% url 'deleteModule' teacher_class.id module.id %}">
             {% csrf_token %}
 
             <a href="{% url 'teacherClass' teacher_class.id %}"  class="btn btn-primary">Cancel</a>
