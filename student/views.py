@@ -247,7 +247,7 @@ def page(request, class_pk, module_pk, page_pk):
     student_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
     page = Page.objects.get(id=page_pk)
-    page.content = markdown(page.content)
+    page.content = markdown(page.content, extensions=['extra'])
 
     context = {"student_class": student_class, "module": module, "page": page}
 
