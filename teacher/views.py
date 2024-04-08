@@ -264,7 +264,7 @@ def updateModule(request, class_pk, module_pk):
 
 @login_required(login_url="/login")
 def modules(request, class_pk):
-    print("\nTeacher Views: def module(request):\n------------------- current ----------------------------")
+    print("\nTeacher Views: def module(request):\n------------------- modules ----------------------------")
     if not isTeacher(request):
         return redirect("/login")
 
@@ -381,7 +381,7 @@ def modules(request, class_pk):
 
 @login_required(login_url="/login")
 def teacherViewAlgorithm(request, class_pk, algorithm_pk):
-    print("\nTeacher Views: def module(request):\n------------------------ second -----------------------")
+    print("\nTeacher Views: def module(request):\n------------------------ teacherViewAlgorithm -----------------------")
     if not isTeacher(request):
         return redirect("/login")
     
@@ -389,11 +389,37 @@ def teacherViewAlgorithm(request, class_pk, algorithm_pk):
 
 @login_required(login_url="/login")
 def teacherViewPage(request, class_pk, page_pk):
-    print("\nTeacher Views: def module(request):\n------------------------ third -----------------------")
+    print("\nTeacher Views: def module(request):\n------------------------ teacherViewPage -----------------------")
     if not isTeacher(request):
         return redirect("/login")
     
     return render(request, '_template.html')
+
+@login_required(login_url="/login")
+def deletePage(request, class_pk, module_pk, page_pk):
+    print("\nTeacher Views: def deletePage(request):\n------------------------ deletePage -----------------------")
+    if not isTeacher(request):
+        return redirect("/login")
+    
+    context = {
+    "class_pk": class_pk,
+    "module_pk": module_pk,
+    "page_pk": page_pk
+    }
+    return render(request, 'deletePage.html', context)
+
+@login_required(login_url="/login")
+def deleteAlgorithm(request, class_pk, module_pk, algorithm_pk):
+    print("\nTeacher Views: def deleteAlgorithm(request):\n------------------------ deleteAlgorithm -----------------------")
+    if not isTeacher(request):
+        return redirect("/login")
+    
+    context = {
+    "class_pk": class_pk,
+    "module_pk": module_pk,
+    "algorithm_pk":algorithm_pk
+    }
+    return render(request, 'deleteAlgorithm.html', context)
 
 
 
@@ -404,22 +430,18 @@ def teacherViewPage(request, class_pk, page_pk):
 
 @login_required(login_url="/login")
 def module(request, class_pk, module_pk):
-    print("\nTeacher Views: def module(request):\n-----------------------------------------------")
+    print("\nTeacher Views: def module(request):\n----------------- current ------------------------------")
     if not isTeacher(request):
         return redirect("/login")
 
 
     
     teacher_class = Class.objects.get(id=class_pk)
-    teacher_modules = teacher_class.module_set.all()
+    module = Module.objects.get(id=module_pk)
+    items = Item.objects.filter(module=module.id)
 
-    items = Item.objects.none()
     algorithms = Algorithm.objects.none()
     pages = Page.objects.none()
-
-    for module in teacher_modules:
-        module_items = Item.objects.filter(module=module)
-        items = items.union(module_items)
 
     for item in items:
         item_pages = Page.objects.filter(item=item)
@@ -446,65 +468,10 @@ def module(request, class_pk, module_pk):
     
     print()
 
-    
-    
-    # for module in teacher_modules:
-    #     print("module.name: ", module.name)
-    #     for item in items:
-    #         if module.name == item.module.name:
-    #             print("Type: ", item.type)
-    #             if str(item.type) == "Algorithm":
-    #                 #i = Algorithm.objects.get(item=item.module.id)                 
-    #                 i = Algorithm.objects.filter(item=item.id)
-    #                 A.append(i)
-    #                 print(i)
-    #                 print("this is an algorithm\n")     
-
-    #             elif str(item.type) == "Page":     
-    #                 i = Page.objects.get(item=item.id)
-    #                 P.append(i)
-    #                 print(i)
-    #                 print("this is a page: \n")          
-                
-    #             print("Algorithms ", A)
-    #             print("Pages: ", P)
-            
-
-    # teacher_class = Class.objects.get(id=class_pk)
-    # module = Module.objects.get(id=module_pk)
-
-    # algorithm_lines = {}
-    # for item in module.item_set.all():
-    #     if item.type == "Algorithm":
-    #         if algorithm.name not in algorithm_lines:
-    #             algorithm_lines[algorithm.name] = []
-    #         for line in algorithm.line_set.all():
-    #             algorithm_lines[algorithm.name].append({
-    #             'code': line.code,
-    #             'answer': line.answer,
-    #             'hint': line.hint
-    #         })
-    # for algorithm_name, lines in algorithm_lines.items():
-    #     #print(f"Algorithm: {algorithm_name}")
-    #     output = f"""
-    #             <p>{algorithm_name}</p>
-    #              """
-    #     for line in lines:
-    #         output += f"""
-    #             <p>{line["code"]}</p>
-    #             <p>{line["answer"]}</p>
-    #             <p>{line["hint"]}</p>
-    #              """
-                
-    #         print(output)
-    #     if item.type == "Pages":
-    #         print("page:", item.name)
-        
-
     context = {
-        "student_class": teacher_class,
-        "modules": teacher_modules,
-        "module_number": teacher_modules.count(),
+        
+        "teacher_class": teacher_class,
+        "module": module,
         "items": items,
         "algorithms": algorithms,
         "pages": pages

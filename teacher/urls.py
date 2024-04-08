@@ -8,6 +8,7 @@ urlpatterns = [
     path("profile/updateTeacherAccount/", views.updateTeacherAccount, name="updateTeacherAccount"),
     path("profile/deleteTeacherAccount/", views.deleteTeacherAccount, name="deleteTeacherAccount"),
     path("class/<str:class_pk>/", views.teacherClass, name="teacherClass"),
+    path("createClass/", views.createClass, name="createClass"),
     path("class/<str:class_pk>/deleteClass/", views.deleteClass, name="deleteClass"),
     path("class/<str:class_pk>/updateClass/", views.updateClass, name="updateClass"),  
     path("class/<str:class_pk>/createModule/", views.createModule, name="createModule"),
@@ -17,7 +18,9 @@ urlpatterns = [
     path("class/<str:class_pk>/updateModule/<str:module_pk>/", views.updateModule, name="updateModule"),
     path("class/<str:class_pk>/module/<str:module_pk>/algorithm/", views.algorithm, name="algorithm"),
     path("class/<str:class_pk>/module/<str:module_pk>/createAlgorithm", views.createAlgorithm, name="createAlgorithm"),
+    path("class/<str:class_pk>/module/<str:module_pk>/deleteAlgorithm/<str:algorithm_pk>", views.deleteAlgorithm, name="deleteAlgorithm"),
     path("class/<str:class_pk>/module/<str:module_pk>/createPage", views.createPage, name="createPage"),
+    path("class/<str:class_pk>/module/<str:module_pk>/deletePage/<str:page_pk>", views.deletePage, name="deletePage"),
 
 
     path("class/<str:class_pk>/modules/", views.modules, name="modules"),
