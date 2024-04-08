@@ -20,23 +20,30 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col border">Put Answer Here...</div>
-    <div class="col border">
-        {% for line in lines|remove_newlines %}
-            <pre><code>{{line.code}}</code></pre>
+<h1>{{module.name}}</h1>
+<h3>{{algorithm.name}}</h3>
+<form id="algorithmAnswerForm" action="" method="POST">
+    {% csrf_token %}
+
+    <table id="algorithmTable" style="border: 1px solid black; width: 100%;">
+        <col style="width: 50%;">
+        <col style="width: 50%;">
+    
+        <tr>
+            <th style="border: 1px solid black;">Line of Code</th>
+            <th style="border: 1px solid black;">Answer</th>
+        </tr>
+    
+        {% for line in lines %}
+        <tr>
+            <td style="border: 1px solid black;"><code class="language-python">{{line.code}}</code></td>
+            <td style="border: 1px solid black;">Answer...</td>
+        </tr>
         {% endfor %}
-    </div>
-    <h1>{{module.name}}</h1>
-    <!-- File upload form -->
-    <h3>{{algorithm.name}}</h3>
-</div>
+    </table>
 
-    <!-- Div for main content of page -->
-    <div id="mainContent">
-<div class="row">
-
-</div>
+    <input type="submit" value="AlgorithmAnswerFormSubmit">
+</form>
 {% endblock %}
 
 
