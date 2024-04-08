@@ -22,10 +22,10 @@
 {% block content %}
 <h1>{{module.name}}</h1>
 <h3>{{algorithm.name}}</h3>
-<form id="algorithmAnswerForm" action="" method="POST">
+<form id="algorithmAnswerForm" action="" method="POST" class="p-2">
     {% csrf_token %}
 
-    <table id="algorithmTable" style="border: 1px solid black; width: 100%;">
+    <table id="algorithmTable" class="mb-2" style="border: 1px solid black; width: 100%; background-color: white;">
         <col style="width: 50%;">
         <col style="width: 50%;">
     
@@ -36,13 +36,36 @@
     
         {% for line in lines %}
         <tr>
-            <td style="border: 1px solid black;"><code class="language-python">{{line.code}}</code></td>
-            <td style="border: 1px solid black;">Answer...</td>
+            <td style="border: 1px solid black;">
+                <code class="language-python">{{line.code}}</code>
+            </td>
+            
+            <td style="border: 1px solid black;">
+                <select name="answers[]" class="w-100">
+                    <option value="">Select an option...</option>
+                    <option value="O(1)">O(1)</option>
+                    <option value="O(log n)">O(log n)</option>
+                    <option value="O(n)">O(n)</option>
+                    <option value="O(n log n)">O(n log n)</option>
+                    <option value="O(n^2)">O(n^2)</option>
+                    <option value="O(n^3)">O(n^3)</option>
+                    <option value="O(2^n)">O(2^n)</option>
+                    <option value="O(n!)">O(n!)</option>
+                </select>
+            </td>
         </tr>
         {% endfor %}
     </table>
 
-    <input type="submit" value="AlgorithmAnswerFormSubmit">
+    <input type="submit" value="Submit Answers" class="btn btn-primary">
+
+    <div class="row mt-2">
+        {% for lineNum, score in scores %}
+            <p>{{lineNum}}: {{score}}/1</p>
+        {% endfor %}
+    </div>
+
+    <h4>Total Score: {{algorithm_score}}</h4>
 </form>
 {% endblock %}
 
