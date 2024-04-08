@@ -233,8 +233,30 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
 
     print("algorithm_pk: ", algorithm_pk)
 
+    # Retrieving the answers submitted by the student
+    scores = {}
+    algorithm_score = 0
+    if request.method == 'POST':
+        answers = request.POST.getlist('answers[]')
+        print("answers:", answers)
+
+        for i in range(len(lines)):
+            print(f"Line {i}:")
+            print(f"Student's Answer: {answers[i]}")
+            print(f"Correct Answer: {lines[i].answer}")
+
+            # If student answers (the current line in iteration) correctly
+            if answers[i] == lines[i].answer:
+                scores[f"Line {i}"] = 1     # Correct
+                algorithm_score += 1
+            else:
+                scores[f"Line {i}"] = 0     # Incorrect
+        
+        print(f"scores: {scores}")  # Scores for each line
+        print(f"algorithm_score: {algorithm_score}")   # Total score for algorithm
+
     context = {"student_class": student_class, "module": module, "algorithm": algorithm,
-               "lines": lines}
+               "lines": lines, "scores": scores.items(), "algorithm_score": algorithm_score}
 
     return render(request, 'studentAlgorithm.html', context)
 
