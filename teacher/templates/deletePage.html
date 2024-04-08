@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}    
+    <!-- 
+        <link rel="stylesheet" type="text/css" href="{% static '/css/teacher.css'%}">
+    --> 
+{% endblock %}
+
+{% block javascript %}    
+    <script src="{% static '/js/teacher.js'%}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block path %}  
+<a class="nav-item nav-link path" href="/teacher">Home</a>
+<a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+<a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
+<a class="nav-item nav-link path activePath" href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}/DeletePage/{{page_pk}}">Create Page</a>
+{% endblock %}
+
+
+
+
+
+{% block content %}    
+
+
+<h1> Delete Page Template</h1>
+
+{% endblock %}
