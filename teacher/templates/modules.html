@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block css %}    
+<link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<style>
+  .accordion-item {
+    border:1px solid rgb(165, 165, 165);
+    border-top: none;
+    margin-bottom: 20px;
+  }
+  .accordion-body{
+  }
+  .accordion-button.collapsed {
+    background-color: rgb(219, 219, 219);
+  }
+  
+  .accordion {
+    border-radius:none;
+  }
+  #accordionPanels {
+    border-radius:none;
+  }
+  .accordion-button {
+    margin:0;
+    border-top: 1px solid rgb(165, 165, 165);
+    border-bottom: 1px solid rgb(165, 165, 165);
+    border-radius: unset;
+    font-weight:bold;
+  }
+  .accordion-button:hover {
+    background-color: #007bff; 
+    color:white;
+  }
+
+  a.list-group-item{
+    font-weight: bold;
+    border-radius:none;
+  }
+  a.list-group-item:hover{
+    background-color:#c7c5c5;
+  }
+  .accordionSubBtn {
+    display: inline-block;
+    padding: 2px 5px; /* Adjust padding as needed */
+    text-decoration: none;
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Button text color */
+    border: 1px solid #000000; /* Button border */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    margin-left: 0.3vw;
+    font-size:medium;
+  }
+  .accordionSubBtn:hover {
+    background-color: #102a5d; 
+    border-color: #000000; 
+}
+.accordionSubBtnDel {
+  display: inline-block;
+  padding: 2px 5px; /* Adjust padding as needed */
+  text-decoration: none;
+  background-color: #ff5e5e; /* Button background color */
+  color: #fff; /* Button text color */
+  border: 1px solid #000000; /* Button border */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+  margin-left: 0.3vw;
+  font-size:medium;
+}
+.accordionSubBtnDel:hover{
+  background-color:#7d0303;
+  color:white;
+}
+.dropdown-menu {
+  background-color:#000000;
+  padding:0;
+  margin:0;
+}
+.dropdown-item{
+  color:rgb(255, 255, 255);
+}
+.dropdown-item:hover{
+  background-color:#7d0303;
+  color:white;
+}
+</style>
+{% endblock %}
+
+{% block javascript %}    
+<script src="{% static '/js/module.js'%}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+{% block path %}   
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
+{% endblock %}
+
+{% block content %}
+<div class="container ">
+
+  <div class="d-flex bd-highlight mb-0">
+  
+    <div class="p-2 bd-highlight"><h3>Class Name: {{teacher_class.class_name}}</h3></div>
+  
+    <div class="ms-auto p-2 bd-highlight">
+      <a class="btn btn-secondary col-auto" href="/teacher/class/{{teacher_class.id }}/createModule/">Create Module</a>
+    </div>
+  </div>
+
+{% if not items and not empty_modules %}
+<div class="d-flex justify-content-center">
+  <h4 class="text-danger">This class has no modules</h4>
+</div>
+{% else %}
+  <div class="container">
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-primary mb-3 ml-10" id="toggleAccordion" aria-expanded="False">Collapse All</button>
+    </div>
+  </div>
+
+  <div class="accordion" id="accordionPanels">
+    {% for module in modules %}
+    <!-- Button to toggle visibility of all accordion items -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-heading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{module.id}}" aria-expanded="true"
+                    aria-controls="collapse{{module.id}}">
+                    {{module.name}}
+            </button>
+            
+        </h2>
+        <div id="collapse{{module.id}}" class="accordion-collapse collapse show"
+              aria-labelledby="collapse{{module.id}}" style="">
+            {% for item in items %}
+            {% if module.name == item.module.name %}
+
+            <div class="list-group accordion-body p-0">
+                  {% for algorithm in algorithms %}
+                  {% if item.id == algorithm.item.id %}
+                      <a class="list-group-item " 
+                      style="border-radius:unset"
+                        href="{% url 'teacherViewAlgorithm' teacher_class.id algorithm.id %}">
+                        <span class="text-danger">A: </span>
+                        {{algorithm.name}}
+                      </a>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% for page in pages %}
+                  {% if item.id == page.item.id %}
+                    <a class="list-group-item" 
+                       style="border-radius:unset"
+                      href="{% url 'teacherViewPage' teacher_class.id page.id %}">
+                      <span class="text-primary">P: </span>
+                      {{page.name}}
+                    </a>
+                  {% endif %}
+                  {% endfor %}
+
+                </div>
+            {% endif %}
+            {% endfor %}
+
+            {% if module in empty_modules %}
+              <div class="list-group accordion-body p-0">
+                <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">
+                  <span class="text-secondary">E: Empty Module</span>
+                </a>
+              </div>
+            {% endif %}
+          
+          <!-- nav bar to create class, algorithm, and delete button for that module-->
+          <div class="accordion-body p-0 ">
+
+            <nav class="navbar navbar-expand-sm navbar-light">
+              <div class="container-fluid bg-transparent">
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                      aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <!-- <li class="nav-item dropdown pb-0">
+                          <a 
+                              href="{% url 'module' teacher_class.id module.id %}"
+                              class="accordionSubBtn nav-link " role="button"
+                              style="">
+                              Manage
+                          </a>
+                          </li> -->
+                          
+                        <li class="nav-item dropdown pb-0">
+                          <a 
+                          href="{% url 'createPage' teacher_class.id module.id %}"
+                              class="accordionSubBtn " role="button"
+                              style="">
+                              + Page
+                          </a>
+                          </li>
+                          
+                        <li class="nav-item dropdown pb-0">
+                          <a 
+                          href="{% url 'createAlgorithm' teacher_class.id module.id %}"
+                              class="accordionSubBtn" role="button"
+                              style="">
+                              + Algorithm
+                          </a>
+                          </li>
+
+                          {% if module in empty_modules %}
+                          <!-- <p>empty module</p> -->
+                          {% else %}
+                          <!-- Delete button -->
+                          <li class="nav-item dropdown pb-0">
+                              <a 
+                                  href="#" 
+                                  class="accordionSubBtnDel dropdown-toggle btn-danger" id="navbarDropdown" role="button"
+                                  data-bs-toggle="dropdown" aria-expanded="false" 
+                                  style="">
+                                  Delete
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  {% for item in items %}
+                                  {% if module.name == item.module.name %}
+
+                                      {% for algorithm in algorithms %}
+                                        {% if item.id == algorithm.item.id %}
+                                      <li><a class="dropdown-item"
+                                        href="{% url 'deleteAlgorithm' teacher_class.id module.id algorithm.id %}">
+                                        <span class="text-danger">A: </span>{{algorithm.name}}
+                                          </a>
+                                      </li>
+                                      {% endif %}
+                                      {% endfor %}
+
+                                      {% for page in pages %}
+                                        {% if item.id == page.item.id %}
+                                      <li><a class="dropdown-item"
+                                      href="{% url 'deletePage' teacher_class.id module.id page.id %}">
+                                      <span class="text-primary">P: </span>{{page.name}}
+                                        </a>
+                                      </li>
+                                      {% endif %}
+                                      {% endfor %}
+
+                                  {% endif %}
+                                  {% endfor %}
+
+                              </ul>
+                          </li>
+                          {% endif %}
+                      </ul>
+                  </div>
+              </div>
+            </nav>
+
+          </div>
+        </div>
+    </div>
+  
+    {% endfor %}
+  </div> <!-- end of accordion -->
+{% endif %}
+
+</div><!-- end of container div -->
+
+
+
+<script>
+  document.getElementById('toggleAccordion').addEventListener('click', function () {
+      var accordionItems = document.querySelectorAll('.accordion-item');
+      var button = document.getElementById('toggleAccordion');
+      var expandAll = button.getAttribute('aria-expanded') === 'false';
+
+      accordionItems.forEach(function (item) {
+          var button = item.querySelector('.accordion-button');
+          var collapse = item.querySelector('.accordion-collapse');
+
+          if (expandAll) {
+              collapse.classList.add('show');
+              button.setAttribute('aria-expanded', 'true');
+              button.classList.remove('collapsed');
+          } else {
+              collapse.classList.remove('show');
+              button.setAttribute('aria-expanded', 'false');
+              button.classList.add('collapsed');
+          }
+      });
+
+      button.setAttribute('aria-expanded', expandAll ? 'true' : 'false');
+      button.innerText = expandAll ? 'Collapse All' : 'Expand All';
+  });
+</script>
+
+
+{% endblock %}
+
+
+{% block testblock %}
+
+{% endblock %}
+
+
+{% block endscript %}
+<script>
+
+</script>
+{% endblock %}

@@ -50,7 +50,7 @@
                 </table>
             </div>
 
-            <div class="row justify-content-center">             
+            <div class="row justify-content-center mb-2">             
                 <a class="btn btn-primary col-3" href="{% url 'updateClass' teacher_class.id %}">Edit</a>
                 <a class="btn btn-danger col-3" style="margin-left:10px;" href="{% url 'deleteClass' teacher_class.id %}">Delete </a>
             </div>   
@@ -70,14 +70,15 @@
                 <tr>
                     <td>{{ module.name  }}</td>    
                     <td><a class="moduleButton" href="{% url 'module' teacher_class.id module.id %}">View</a></td> 
-                    <td>Update</td>
-                    <td>delete</td>            
+                    <td><a class="moduleButton" href="{% url 'updateModule' teacher_class.id module.id %}">Update</a></td>     
+                    <td><a class="moduleButton" href="{% url 'deleteModule' teacher_class.id module.id %}">Delete</a></td>       
                 </tr>             
                 {% endfor %}
             </table>
 
-            <div class="row justify-content-center">  
-                <a class="btn btn-primary col-4" href="/teacher/class/{{teacher_class.id }}/createModule/">Create a Module</a>                       
+            <div class="row justify-content-center mb-2">  
+                <a class="btn btn-primary col-4" href="/teacher/class/{{teacher_class.id }}/modules/">View modules</a>   
+                <a class="btn btn-primary col-4 ms-3" href="/teacher/class/{{teacher_class.id }}/createModule/">Create a Module</a>                      
             </div>   
         </div>
     </div>
@@ -110,4 +111,33 @@
     </div>
 
 </div>
+{% endblock %}
+
+
+
+{% block testblock %} 
+modal
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Delete
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Module</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

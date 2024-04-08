@@ -4,7 +4,11 @@
 {% block css %}    
     <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-
+    <style>
+        #code-status {
+            width: 40px;
+        }
+    </style>
 {% endblock %}
 
 {% block javascript %}    
@@ -18,74 +22,100 @@
 {% block path %}   
             <a class="nav-item nav-link path" href="/teacher">Home</a>
             <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
-            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}">{{module.name}}</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
             <a class="nav-item nav-link path activePath" href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}/createAlgorithm">Create Algorithm</a>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-        <!-- Button positioned to the right -->
-            <div class="d-flex justify-content-between">
-                <h5>{{module.name}} Create Algorithm</h5>
-            </div>
-        </div>
+<!-- information header -->
+<div class="d-flex bd-highlight mb-0">
+    <div class="p-2 bd-highlight">
+        <h3>Module Name: {{module.name}}</h3>
+    </div>
+
+    <div class="ms-auto p-2 bd-highlight">
+        <a class="btn btn-secondary col-auto" href="{% url 'createPage' teacher_class.id module.id %}">
+            Create Page
+        </a>
     </div>
 </div>
+<div class="d-flex justify-content-center">
+    <h5>Create Algorithm</h5>
+</div>
 
-<div class="row">
-    <h1>{{module.name}}</h1>
+<!-- row for algorithm and answer key upload-->
+<div class="row mt-3">
     <!-- File upload form -->
     <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
 
-        
+
         <table class="table table-hover">
             <tr>
-                <th>  </th>
+                <th> </th>
                 <th>Action</th>
             </tr>
 
             <tr>
-                <td><h5>Upload an Algorithm</h5></td>        
-                <td><input type="file" id="algorithmUpload" name="algorithmUpload"></td>   
-            </tr> 
+                <td>
+                    <h5>Upload an Algorithm</h5>
+                </td>
+                <td><input type="file" id="algorithmUpload" name="algorithmUpload"></td>
+            </tr>
 
             <tr>
-                <td><h5>Upload an Answer Key</h5></td>        
-                <td><input type="file" id="answerkeyUpload" name="answerkeyUpload"></td>                  
-            </tr>  
-            <tr>       
-                <td><input type="submit" id="uploadButton" value="Upload"></td>                  
-            </tr>             
+                <td>
+                    <h5>Upload an Answer Key</h5>
+                </td>
+                <td><input type="file" id="answerkeyUpload" name="answerkeyUpload"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" id="uploadButton" value="Upload"></td>
+            </tr>
         </table>
     </form>
 </div>
 
-<div class="row">
-    {% for algorithm_name, lines in algorithm_lines_items %}
-        <p><a class="moduleButton" href="{https://www.google.com}">{{algorithm_name}}</a></p>
-    {% endfor %}
-
-
+<!-- row for displaying the content of the uploaded algorithm/answer-->
+<div class="row border-bottom p-2 mb-4">
+    {% if algorithm_file_lines %}
+    <div class="col">
+        <h3>Algorithm: {{algorithm_line_count}} line(s)</h3>
+        {% for line in algorithm_file_lines|remove_newlines %}
+        <pre><code class="language-java">{{ line }}</code></pre>
+        {% endfor %}
+    </div>
+    <div class="col">
+        <h3>Answer Key: {{answerkey_line_count}} line(s)</h3>
+        {% for line in answerkey_file_lines %}
+            <pre><code>{{ line.decode }}</code></pre>
+        {% endfor %} 
+    </div>    
+    {% endif %} 
 </div>
 
-    <!-- Div for main content of page -->
-    <div id="mainContent">
+<!-- table row to display the algorithm, answer, hints side by side and submit -->
 <div class="row">
     {% if algorithm_line_count != answerkey_line_count %}
-            <p style="color:red">NB: Error - Lines Mismatch</p>
-            <p>the algorithm content lines does not match the answer key content lines<br>
-            Please check the files and reupload.
-            </p>
-    {% endif %}
+    <p>Line Requirement: <span class="text-success"><img id="code-status" src="/static/images/Failure.png" alt=""></span></p>
+    <p class="bg-dark text-danger ">
+        NB:
+        the algorithm content lines does not match the answer key content lines
+        Please check the files and reupload.
+    </p>
     
-{% if algorithm_file_lines and algorithm_line_count == answerkey_line_count  %}
+    <br>
+
+    {% else %}
+    <p>Line Requirement: <span class="text-success"><img id="code-status" src="/static/images/Success.png" class="img-thumbnail" alt=""></span></p>
+
+    {% endif %}
+
+    {% if algorithm_file_lines and algorithm_line_count == answerkey_line_count %}
     <form id="algorithmForm" action="" method="POST">
         {% csrf_token %}
         <table id="algorithmTable" style="border:1px; border-color:black">
-            
+
             <col style="width: 4%;">
             <col style="width: 50%;">
             <col style="width: 46%;">
@@ -98,46 +128,54 @@
             </tr>
 
             {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
-            
+
             {% if code|strip_length == 0 and answer.decode|strip_length == 0 %}
-                <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td><pre><code>{{ code }}</pre</code></td>
-                        <td> <pre><code>  {{ answer.decode }} </code></pre></td>
-                        <td> <input type="text"> </td>
-                </tr>
-            
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <pre><code>{{ code }}</pre</code></td>
+                    <td> <pre><code>  {{ answer.decode }} </code></pre>
+                </td>
+                <td> <input type="text"> </td>
+            </tr>
+
             {% elif code|strip_length != 0 and answer.decode|strip_length != 0 %}
-                <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td><pre><code>{{ code }}</pre</code></td>
-                        <td> <pre><code>  {{ answer.decode }} </code></pre></td>
-                        <td> <input type="text"> </td>
-                </tr>
-            
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <pre><code>{{ code }}</pre</code></td>
+                    <td> <pre><code>  {{ answer.decode }} </code></pre>
+                </td>
+                <td> <input type="text"> </td>
+            </tr>
+
             {% elif code|strip_length == 0 and answer.decode|strip_length != 0 %}
-                <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td style="color:red"><pre><code>empty code</pre</code></td>
-                        <td> <pre><code>  {{ answer.decode }} </code></pre></td>
-                        <td> <input type="text"> </td>
-                        <input type="hidden" id="mismatch" value="True">
-                </tr>
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td style="color:red">
+                    <pre><code>empty code</pre</code></td>
+                    <td> <pre><code>  {{ answer.decode }} </code></pre>
+                </td>
+                <td> <input type="text"> </td>
+                <input type="hidden" id="mismatch" value="True">
+            </tr>
 
             {% elif code|strip_length != 0 and answer.decode|strip_length == 0 %}
-                <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td><pre><code>{{ code }}</pre</code></td>
-                        <td style="color:red"> <pre><code>  empty answer </code></pre></td>
-                        <td> <input type="text"> </td>
-                        <input type="hidden" id="mismatch" value="True">
-                </tr>
-            {% endif %}   
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <pre><code>{{ code }}</pre</code></td>
+                    <td style="color:red"> <pre><code>  empty answer </code></pre>
+                </td>
+                <td> <input type="text"> </td>
+                <input type="hidden" id="mismatch" value="True">
+            </tr>
+            {% endif %}
             {% endfor %}
         </table>
         <input type="submit" value="AlgorithmFormSubmit">
     </form>
-{% endif %}
+    {% endif %}
 </div>
 {% endblock %}
 
@@ -146,7 +184,7 @@
 {% block jsscript %} 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
-    // hljs.highlightAll();
+    hljs.highlightAll();
         // Define the function to check if the element exists
         function checkElementExists() {
         var mismatchElement = document.getElementById('mismatch');
