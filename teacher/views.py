@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from bigo.forms import *
+from django.forms import inlineformset_factory
 from django.contrib.auth import get_user_model
 from django.utils.datastructures import MultiValueDictKeyError
 from django.urls import reverse
@@ -430,7 +431,7 @@ def deleteAlgorithm(request, class_pk, module_pk, algorithm_pk):
 
 @login_required(login_url="/login")
 def module(request, class_pk, module_pk):
-    print("\nTeacher Views: def module(request):\n----------------- current ------------------------------")
+    print("\nTeacher Views: def module(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
 
@@ -485,10 +486,14 @@ def module(request, class_pk, module_pk):
 
 @login_required(login_url="/login")
 def createAlgorithm(request, class_pk, module_pk):
-    print("\ncreateAlgorithm Views: def createAlgorithm(request):\n-----------------------------------------------")
+    print("\ncreateAlgorithm Views: def createAlgorithm(request):\n------------------- current ----------------------------")
     if not isTeacher(request):
         return redirect("/login")
-
+    
+    
+    LinesFormSet = inlineformset_factory(Algorithm, Line, fields=('code', 'answer', 'hint'))
+    # algorithm = Algorithm.objects.get(id=algorithm_pk)
+    # formset = LinesFormSet(instance=algorithm)
     teacher_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
     context = {"teacher_class": teacher_class, "module": module}
