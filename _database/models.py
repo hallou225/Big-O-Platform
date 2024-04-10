@@ -162,7 +162,7 @@ class Page(models.Model):
         return self.name
 
 class Algorithm(models.Model):
-    name = mode3wls.CharField(max_length=100, null=True) # Required Field
+    name = models.CharField(max_length=100, null=True) # Required Field
     item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL) # The module this algorithm  belongs to
     
     def __str__(self) -> str:
