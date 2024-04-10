@@ -4,8 +4,8 @@
     text-align: center;
 }
 .nav-item {
-    padding-bottom: 1.5vw;
-    font-size: 1.2vw;
+    /* padding-bottom: 1.5vw; */
+    /* font-size: 1.2vw; */
 }
 
 .nav-item:hover .nav-link {
@@ -14,8 +14,8 @@
 }
 
 .nav-item:hover .sidebarIcon {
-    width: 3.4vw;
-    height: 3.4vw;
+    /* width: 3.4vw; */
+    /* height: 3.4vw; */
 }
 
 .nav-link {

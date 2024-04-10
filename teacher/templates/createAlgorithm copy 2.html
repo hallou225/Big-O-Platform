@@ -9,15 +9,19 @@
         width: 40px;
     }
 
+    .bs-border-radius {
+        border-radius: unset;
+    }
 
     input.form-control {
+        border-radius: unset;
+        border: 1px solid red;
+        padding: 5px;
         margin: 0;
     }
 
-    pre {
-        margin:0;
-        padding:0;
-    }
+
+
 
     #algorithmTable2 {
         font-family: monospace;
@@ -33,7 +37,6 @@
     }
 
     #algorithmTable td, tr, th {
-        border:1px solid black;
     }
     input {
         border-radius: unset;
@@ -47,6 +50,40 @@
         text-align: center;
     } 
 
+
+/* 
+    .tdinput {
+        color: rgb(0, 0, 0);
+        background-color: red;
+        width: 100%;
+        height: 100%;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border: none;
+        padding: 5px;
+        font-size: inherit;
+    }
+
+
+
+
+    #algorithmTable td, tr, th {
+        border:1px solid red;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    th, td {
+        text-align: left;
+    }
+
+    pre {
+        margin: 0px;
+        padding: 0px;
+    }
+
+ */
 
 </style>
 {% endblock %}
@@ -83,8 +120,9 @@
     <h5>Create Algorithm</h5>
 </div>
 
-<!--  file upload form for  algorithm and answer key -->
+<!--  upload form for  algorithm and answer key -->
 <div class="row mt-3">
+    <!-- File upload form -->
     <form method="POST" action="" enctype="multipart/form-data" class="bg-transparent border border-light">
         {% csrf_token %}
 
@@ -100,6 +138,31 @@
         <div class="text-center mt-4 mb-2">
             <button type="submit" class="btn btn-primary" id="uploadButton">Upload</button>
         </div>
+        
+<!-- 
+        <table class="table table-hover">
+            <tr>
+                <th> </th>
+                <th>Action</th>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5>Upload an Algorithm</h5>
+                </td>
+                <td><input type="file" id="algorithmUpload" name="algorithmUpload"></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h5>Upload an Answer Key</h5>
+                </td>
+                <td><input type="file" id="answerkeyUpload" name="answerkeyUpload"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" id="uploadButton" value="Upload"></td>
+            </tr>
+        </table> -->
     </form>
 </div>
 
@@ -138,19 +201,128 @@
 
     {% endif %}
 
+    {% if algorithm_file_lines and algorithm_line_count == answerkey_line_count %}
 </div>
 
 <!-- submission form -->
-{% if algorithm_file_lines and algorithm_line_count == answerkey_line_count %}
-<form id="algorithmForm" action="" method="POST" class="mb-4 p-2">
+<div class="row">
+
+    <h2>Option 1 - Form inside OL List</h2>
+<form id="submitAlgorithm" method="POST" class="bg-transparent border border-dark mb-4 p-2">
     {% csrf_token %}
-    <table id="algorithmTable" border="0" cellspacing="0" cellpadding="0">
+    <ol class="list-group list-group-numbered">
+        
+        {% for algorithmLine, answerLine in algorithm %}        
+        <li class="list-group-item d-flex justify-content-between align-items-start border border-danger">
+            <div class="container">
+                <div class="row justify-content-start">
+            
+                    <div class="col-8 border p-0 ms-0 ms-2">
+                        <input type="text" class="form-control" placeholder="" value="{{algorithmLine}}">
+                    </div>
+            
+                    <div class="col border p-0 m-0">
+                        <input type="text" class="form-control" placeholder="" value="{{answerLine.decode}}">
+                    </div>
+            
+                    <div class="col border p-0 m-0">
+                        <input type="text" class="form-control" placeholder="Hint">
+                    </div>
+                </div>
+            
+            </div>
+        </li>
+        {% endfor %}
+
+        <li class="list-group-item d-flex justify-content-between align-items-start border border-danger">
+            <div class="container">
+                <div class="row justify-content-start">
+            
+                    <div class="col-8 border p-0 ms-0 ms-2">
+                        <input type="text" class="form-control" placeholder="">
+                    </div>
+            
+                    <div class="col border p-0 m-0">
+                        <input type="text" class="form-control" placeholder="">
+                    </div>
+            
+                    <div class="col border p-0 m-0">
+                        <input type="text" class="form-control" placeholder="Hint">
+                    </div>
+                </div>
+            
+            </div>
+        </li>
+
+    </ol>
+    
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary" id="submitAlgorithmBtn">Submit</button>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-1 border p-0 m-0" style="width:5.1%;">
+        <input type="text" class="form-control"aria-label="Disabled input example" disabled readonly  placeholder="1">
+    </div>
+    <div class="col-7 border p-0 m-0">
+        <input type="text" class="form-control" placeholder="" value="Code" >
+    </div>
+    <div class="col-1 border p-0 m-0">
+        <input type="text" class="form-control" placeholder="" value="Answer">
+    </div>
+    <div class="col-3 border p-0 m-0">
+        <input type="text" class="form-control" placeholder="Hint" value="Hint">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-1 border p-0 m-0" style="width:5.1%;">
+        <input type="text" class="form-control" aria-label="Disabled input example" disabled readonly  placeholder="999">
+    </div>
+    <div class="col-7 border p-0 m-0">
+        <input type="text" class="form-control" placeholder="" value="Code" >
+    </div>
+    <div class="col-1 border p-0 m-0">
+        <input type="text" class="form-control" placeholder="" value="Answer">
+    </div>
+    <div class="col-3 border p-0 m-0">
+        <input type="text" class="form-control" placeholder="Hint" value="Hint">
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<h2>Option 2 - Form inside a table</h2>
+    <form id="algorithmForm" action="" method="POST">
+        {% csrf_token %}
+        <table style="margin-left: auto; margin-right: auto; width: 100%; border:1px solid black;" border="0" cellspacing="0"
+        cellpadding="0">
         <tbody>
+            <!-- <col style="width: 4%;">
+            <col style="width: 60%;">
+            <col style="width: 10%;">
+            <col style="width: 26%;"> -->
+            
             <col style="width: 2%">
             <col style="width: auto;">
             <col style="width: auto;">
             <col style="width: auto;">
-
+            
 
             <tr>
                 <th id="tableNumber">No</th>
@@ -165,76 +337,55 @@
             <tr>
                 <td class="tnumber">{{ forloop.counter }}</td>
                 <td>
-                    <pre><code>{{ code }}</pre></code>
+                    <pre><code>{{ code }}</pre</code></td>
+                    <!-- <td> <pre><code>{{ answer.decode }}</code></pre> -->
+                    <td> <pre><code>{{ answer.decode }}</code></pre>
                 </td>
-                </td>
-                <td>
-                    <pre><code>{{ answer.decode }}</pre></code>
-                </td>
-                </td>
-                <td>
-                    <input type="text" value="Hint" style="width:100%; height:100%;">
-                </td>
+                <td> <input type="text" class="hint tdinput"> </td>
             </tr>
 
             {% elif code|strip_length != 0 and answer.decode|strip_length != 0 %}
             <tr>
                 <td class="tnumber">{{ forloop.counter }}</td>
                 <td>
-                    <pre><code>{{ code }}</pre></code>
+                    <pre><code>{{ code }}</pre</code></td>
+                    <td> <pre><code>  {{ answer.decode }} </code></pre>
                 </td>
-                </td>
-                <td>
-                    <pre><code>{{ answer.decode }}</pre></code>
-                </td>
-                </td>
-                <td>
-                    <input type="text" value="Hint" style="width:100%; height:100%;">
-                </td>
+                <td> <input type="text" class="hint tdinput"> </td>
             </tr>
 
             {% elif code|strip_length == 0 and answer.decode|strip_length != 0 %}
             <tr>
                 <td class="tnumber">{{ forloop.counter }}</td>
                 <td style="color:red">
-                    Missing code
+                    <pre><code>empty code</pre</code></td>
+                    <td> <pre><code>  {{ answer.decode }} </code></pre>
                 </td>
-                <td>
-                    <pre><code>{{ answer.decode }}</pre></code>
-                </td>
-                </td>
-                <td>
-                    <input type="text" value="Hint" style="width:100%; height:100%;">
-                </td>
+                <td> <input type="text" class="hint tdinput"> </td>
+                <input type="hidden" id="mismatch" value="True" class="hint tdinput">
             </tr>
-
-
 
             {% elif code|strip_length != 0 and answer.decode|strip_length == 0 %}
             <tr>
                 <td class="tnumber">{{ forloop.counter }}</td>
                 <td>
-                    <pre><code>{{ code }}</pre></code>
+                    <pre><code>{{ code }}</pre</code></td>
+                    <td style="color:red"><pre><code>  empty answer</code></pre>
                 </td>
-                </td>
-                <td style="color:red">
-                    Missing answer
-                </td>
-                <td>
-                    <input type="text" value="Hint" style="width:100%; height:100%;">
-                </td>
+                <td> <input type="text" class="hint tdinput"> </td>
+                <input type="hidden" id="mismatch" value="True" class="hint tdinput">
             </tr>
             {% endif %}
             {% endfor %}
+        </table>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary" id="submitAlgorithmBtn">Submit</button>
+        </div>
+    </form>
+    {% endif %}
+</div>
 
-        </tbody>
-    </table>
 
-
-    <div class="text-center mt-4">
-        <button type="submit" class="btn btn-primary" id="submitAlgorithmBtn">Submit</button>
-    </div>
-</form>
 
 
 
@@ -305,7 +456,7 @@
         <td>
             <input type="text" value="{{code}}" style="width:100%; height:100%;">
         </td>
-        <td>
+        <td style=>
             <input type="text" value="Empty Answer" style="width:100%; height:100%;" class="has-error">
         </td>
         <td>
@@ -317,7 +468,8 @@
 
 </tbody>
 </table>
-{% endif %}
+
+
 
 
 {% endblock %}
