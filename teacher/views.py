@@ -196,23 +196,6 @@ def createModule(request, class_pk):
     return render(request, 'createModule.html', context)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @login_required(login_url="/login")
 def deleteModule(request, class_pk, module_pk):
     print("\nTeacher deleteModule: def deleteModule(request):\n-----------------------------------------------")
@@ -555,70 +538,127 @@ def createAlgorithm(request, class_pk, module_pk):
     print("\ncreateAlgorithm Views: def createAlgorithm(request):\n------------------- current ----------------------------")
     if not isTeacher(request):
         return redirect("/login")
-    
-    
-    LinesFormSet = inlineformset_factory(Algorithm, Line, fields=('code', 'answer', 'hint'))
-    # algorithm = Algorithm.objects.get(id=algorithm_pk)
-    # formset = LinesFormSet(instance=algorithm)
+
     teacher_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
     context = {"teacher_class": teacher_class, "module": module}
 
-    try:
-        algorithm_file = request.FILES['algorithmUpload']
-        algorithm_file_name = algorithm_file.name
-        algorithm_file_size = algorithm_file.size
-        algorithm_file_content_type = algorithm_file.content_type
-        algorithm_file_lines = algorithm_file.open().readlines()
-        algorithm_file.close()
+    invalidCodeLine = False
 
-        algorithm_file_lines = [line.decode("utf-8") for line in algorithm_file_lines]
-
-        answerkey_file = request.FILES['answerkeyUpload']
-        answerkey_file_name = answerkey_file.name
-        answerkey_file_size = answerkey_file.size
-        answerkey_file_content_type = answerkey_file.content_type
-        answerkey_file_lines = answerkey_file.open().readlines()
-        answerkey_file.close()
-
-        # Debugging Messages:
-        print("Name of algorithm file: ", algorithm_file_name)
-        print("Size of algorithm file: ", algorithm_file_size)
+    # Extracting table data from the HTML form
+    lines = []
+    answers = []
+    hints = []
         
-        algorithm_line_count = sum(1 for line in algorithm_file_lines)        
-        print("number of line ", algorithm_line_count)
+    if request.method == "POST" and request.POST.getlist('submitAlgorithmForm'):
+        print(f"POST = {request.POST}")
+        table = request.POST.getlist('table_data')
+        print("TABLE = ", table)
 
-        print("Content Type of algorithm file: ", algorithm_file_content_type)
-        print("Was the algorithm file closed? ", algorithm_file.closed)
+        formattedTable = []
+        for item in table:
+            formattedItem = eval(item)
+            formattedTable.append(formattedItem)
+        formattedTable = formattedTable[0]
+        print("FORMATTED_TABLE = ", formattedTable)
 
-        print("Name of answerkey file: ", answerkey_file_name)
-        print("Size of answerkey file: ", answerkey_file_size)        
-        answerkey_line_count = sum(1 for line in answerkey_file_lines)        
-        print("number of line ", answerkey_line_count)
-        print("Content Type of answerkey file: ", answerkey_file_content_type)
-        print("Was the answerkey file closed? ", answerkey_file.closed)
+        lines = ""
+        answers = ""
+        hints = ""
 
-        '''
-        context.update({"file": file, "file_name": file_name,
-        "file_size": file_size, "file_content_type": file_content_type,
-        "file_lines": file_lines})
-        '''
+        for i in range(len(formattedTable)):
+            print("Line: ", formattedTable[i])
+            lines += formattedTable[i]["code"] + "\n"
+            answers += formattedTable[i]["answer"] + "\n"
+            hints += formattedTable[i]["hint"] + "\n"
         
-        algorithm = zip(algorithm_file_lines, answerkey_file_lines)
-        
-        print("------------------> ", algorithm_file_lines)
-        context.update({
-            "algorithm_file_lines": algorithm_file_lines,
-            "algorithm_line_count": algorithm_line_count,
-            "answerkey_file_lines": answerkey_file_lines,
-            "answerkey_line_count": answerkey_line_count,
-            "algorithm": algorithm
-        })
+        print(f"Lines:\n{lines}")
+        print(f"Answers:\n{answers}")
+        print(f"Hints:\n{hints}]")
 
-    except MultiValueDictKeyError:
-        print("No file was chosen.")
+        item = Item.objects.create(
+            type = ItemType.objects.get(type="Algorithm"),
+            module = Module.objects.get(id=module_pk),
+        )
+
+        algorithmName = request.POST.getlist('algorithm_name')[0]
+
+        algorithm = Algorithm.objects.create(
+            name = algorithmName,
+            item = item,
+            lines = lines.rstrip("\n"),
+            answers = answers.rstrip("\n"),
+            hints = hints.rstrip("\n"),
+        )
+    
+    elif request.method == "POST" and request.POST.getlist('fileUploadForm'):
+        print("fileUpload")
+
+        try:
+            algorithm_file = request.FILES['algorithmUpload']
+            algorithm_file_name = algorithm_file.name
+            algorithm_file_size = algorithm_file.size
+            algorithm_file_content_type = algorithm_file.content_type
+            algorithm_file_lines = algorithm_file.open().readlines()
+            algorithm_file.close()
+
+            algorithm_file_lines = [line.decode("utf-8") for line in algorithm_file_lines]
+
+            answerkey_file = request.FILES['answerkeyUpload']
+            answerkey_file_name = answerkey_file.name
+            answerkey_file_size = answerkey_file.size
+            answerkey_file_content_type = answerkey_file.content_type
+            answerkey_file_lines = answerkey_file.open().readlines()
+            answerkey_file.close()
+
+            # Debugging Messages:
+            print("Name of algorithm file: ", algorithm_file_name)
+            print("Size of algorithm file: ", algorithm_file_size)
+            
+            algorithm_line_count = sum(1 for line in algorithm_file_lines)        
+            print("number of line ", algorithm_line_count)
+
+            print("Content Type of algorithm file: ", algorithm_file_content_type)
+            print("Was the algorithm file closed? ", algorithm_file.closed)
+
+            print("Name of answerkey file: ", answerkey_file_name)
+            print("Size of answerkey file: ", answerkey_file_size)        
+            answerkey_line_count = sum(1 for line in answerkey_file_lines)        
+            print("number of line ", answerkey_line_count)
+            print("Content Type of answerkey file: ", answerkey_file_content_type)
+            print("Was the answerkey file closed? ", answerkey_file.closed)
+
+            algorithm = zip(algorithm_file_lines, answerkey_file_lines)
+            print(f"algorithm_file_lines: {algorithm_file_lines}")
+
+            for code, answer in algorithm:
+                print(f"code: {len(code)} - answer: {len(answer.decode())}")
+
+                if len(code) == 1 and len(answer.decode()) != 1:
+                    invalidCodeLine = True
+                    print("Missing code")
+                elif len(code) != 1 and len(answer.decode()) == 1:
+                    invalidCodeLine = True
+                    print("Missing answer")
+            
+            context.update({
+                "algorithm_file_lines": algorithm_file_lines,
+                "algorithm_line_count": algorithm_line_count,
+                "answerkey_file_lines": answerkey_file_lines,
+                "answerkey_line_count": answerkey_line_count,
+                "algorithm": algorithm,
+                "invalidCodeLine": invalidCodeLine,
+            })
+
+            if request.method == "POST":
+                print(request.POST)
+
+        except MultiValueDictKeyError:
+            print("No file was chosen.")
 
     return render(request, 'createAlgorithm.html', context)
+
+
 
 @login_required(login_url="/login")
 def createPage(request, class_pk, module_pk):
@@ -629,59 +669,6 @@ def createPage(request, class_pk, module_pk):
     teacher_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
     context = {"teacher_class": teacher_class, "module": module}
-
-    try:
-        algorithm_file = request.FILES['algorithmUpload']
-        algorithm_file_name = algorithm_file.name
-        algorithm_file_size = algorithm_file.size
-        algorithm_file_content_type = algorithm_file.content_type
-        algorithm_file_lines = algorithm_file.open().readlines()
-        algorithm_file.close()
-
-        algorithm_file_lines = [line.decode("utf-8") for line in algorithm_file_lines]
-
-        answerkey_file = request.FILES['answerkeyUpload']
-        answerkey_file_name = answerkey_file.name
-        answerkey_file_size = answerkey_file.size
-        answerkey_file_content_type = answerkey_file.content_type
-        answerkey_file_lines = answerkey_file.open().readlines()
-        answerkey_file.close()
-
-        # Debugging Messages:
-        print("Name of algorithm file: ", algorithm_file_name)
-        print("Size of algorithm file: ", algorithm_file_size)
-        
-        algorithm_line_count = sum(1 for line in algorithm_file_lines)        
-        print("number of line ", algorithm_line_count)
-
-        print("Content Type of algorithm file: ", algorithm_file_content_type)
-        print("Was the algorithm file closed? ", algorithm_file.closed)
-
-        print("Name of answerkey file: ", answerkey_file_name)
-        print("Size of answerkey file: ", answerkey_file_size)        
-        answerkey_line_count = sum(1 for line in answerkey_file_lines)        
-        print("number of line ", answerkey_line_count)
-        print("Content Type of answerkey file: ", answerkey_file_content_type)
-        print("Was the answerkey file closed? ", answerkey_file.closed)
-
-        '''
-        context.update({"file": file, "file_name": file_name,
-        "file_size": file_size, "file_content_type": file_content_type,
-        "file_lines": file_lines})
-        '''
-        
-        algorithm = zip(algorithm_file_lines, answerkey_file_lines)
-        
-        context.update({
-            "algorithm_file_lines": algorithm_file_lines,
-            "algorithm_line_count": algorithm_line_count,
-            "answerkey_file_lines": answerkey_file_lines,
-            "answerkey_line_count": answerkey_line_count,
-            "algorithm": algorithm
-        })
-
-    except MultiValueDictKeyError:
-        print("No file was chosen.")
 
     return render(request, 'createPage.html', context)
 

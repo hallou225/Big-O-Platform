@@ -19,7 +19,7 @@
         padding:0;
     }
 
-    #algorithmTable2 {
+    #algorithmTable {
         font-family: monospace;
         background-color:none;
         margin-left: auto;
@@ -46,6 +46,14 @@
     td.tnumber {
         text-align: center;
     } 
+
+    .validLine {
+        background-color: green;
+    }
+
+    .invalidLine {
+        background-color: red;
+    }
 
 
 </style>
@@ -97,9 +105,12 @@
             <input class="form-control form-control-lg" type="file" id="answerkeyUpload" name="answerkeyUpload">
         </div>
 
+        <input type="hidden" name="fileUploadForm">
+
         <div class="text-center mt-4 mb-2">
             <button type="submit" class="btn btn-primary" id="uploadButton">Upload</button>
         </div>
+
     </form>
 </div>
 
@@ -144,81 +155,80 @@
 {% if algorithm_file_lines and algorithm_line_count == answerkey_line_count %}
 <form id="algorithmForm" action="" method="POST" class="mb-4 p-2">
     {% csrf_token %}
+
+    <input type="text" id="algorithmNameInput" value="" placeholder="Enter Algorithm Name..."">
+
     <table id="algorithmTable" border="0" cellspacing="0" cellpadding="0">
         <tbody>
             <col style="width: 2%">
             <col style="width: auto;">
             <col style="width: auto;">
             <col style="width: auto;">
-
-
+            
+        
             <tr>
                 <th id="tableNumber">No</th>
                 <th id="tableCode">Code</th>
                 <th id="tableAnswer">Answer</th>
                 <th id="tableHint">Hint</th>
             </tr>
-
+        
             {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
-
+        
             {% if code|strip_length == 0 and answer.decode|strip_length == 0 %}
-            <tr>
+            <tr class="validLine">
                 <td class="tnumber">{{ forloop.counter }}</td>
                 <td>
-                    <pre><code>{{ code }}</pre></code>
-                </td>
+                    <input class="lineCode" type="text" value="{{code}}" style="width:100%; height:100%;">
                 </td>
                 <td>
-                    <pre><code>{{ answer.decode }}</pre></code>
-                </td>
+                    <input class="lineAnswer" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
                 </td>
                 <td>
                     <input type="text" value="Hint" style="width:100%; height:100%;">
                 </td>
             </tr>
-
+            
             {% elif code|strip_length != 0 and answer.decode|strip_length != 0 %}
-            <tr>
+            <tr class="validLine">
                 <td class="tnumber">{{ forloop.counter }}</td>
                 <td>
-                    <pre><code>{{ code }}</pre></code>
-                </td>
+                    <input class="lineCode" type="text" value="{{code}}" style="width:100%; height:100%;">
                 </td>
                 <td>
-                    <pre><code>{{ answer.decode }}</pre></code>
-                </td>
+                    <input class="lineAnswer" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
                 </td>
                 <td>
                     <input type="text" value="Hint" style="width:100%; height:100%;">
                 </td>
             </tr>
-
+        
             {% elif code|strip_length == 0 and answer.decode|strip_length != 0 %}
-            <tr>
+            <tr class="invalidLine">
                 <td class="tnumber">{{ forloop.counter }}</td>
-                <td style="color:red">
-                    Missing code
+                <td>
+                    <!-- Empty Code -->
+                    <input class="lineCode" type="text" value="" style="width:100%; height:100%;">
                 </td>
                 <td>
-                    <pre><code>{{ answer.decode }}</pre></code>
-                </td>
+                    <input class="lineAnswer" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
                 </td>
                 <td>
                     <input type="text" value="Hint" style="width:100%; height:100%;">
                 </td>
             </tr>
-
-
-
+        
+        
+        
             {% elif code|strip_length != 0 and answer.decode|strip_length == 0 %}
-            <tr>
+            <tr class="invalidLine">
                 <td class="tnumber">{{ forloop.counter }}</td>
                 <td>
-                    <pre><code>{{ code }}</pre></code>
+                    <input class="lineCode" type="text" value="{{code}}" style="width:100%; height:100%;">
                 </td>
-                </td>
-                <td style="color:red">
-                    Missing answer
+                <td>
+                    <!-- Empty Answer -->
+                    <input class="lineAnswer" type="text" value="" style="width:100%; height:100%;" class="has-error">
                 </td>
                 <td>
                     <input type="text" value="Hint" style="width:100%; height:100%;">
@@ -226,103 +236,145 @@
             </tr>
             {% endif %}
             {% endfor %}
-
+        
         </tbody>
     </table>
 
+    <input type="hidden" name="submitAlgorithmForm">
 
-    <div class="text-center mt-4">
-        <button type="submit" class="btn btn-primary" id="submitAlgorithmBtn">Submit</button>
-    </div>
-</form>
-
-
-
-<table id="algorithmTable2" border="0" cellspacing="0" cellpadding="0">
-<tbody>
-    <col style="width: 2%">
-    <col style="width: auto;">
-    <col style="width: auto;">
-    <col style="width: auto;">
-    
-
-    <tr>
-        <th id="tableNumber">No</th>
-        <th id="tableCode">Code</th>
-        <th id="tableAnswer">Answer</th>
-        <th id="tableHint">Hint</th>
-    </tr>
-
-    {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
-
-    {% if code|strip_length == 0 and answer.decode|strip_length == 0 %}
-    <tr>
-        <td class="tnumber">{{ forloop.counter }}</td>
-        <td>
-            <input type="text" value="{{code}}" style="width:100%; height:100%;">
-        </td>
-        <td>
-            <input type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
-        </td>
-        <td>
-            <input type="text" value="Hint" style="width:100%; height:100%;">
-        </td>
-    </tr>
-    
-    {% elif code|strip_length != 0 and answer.decode|strip_length != 0 %}
-    <tr>
-        <td class="tnumber">{{ forloop.counter }}</td>
-        <td>
-            <input type="text" value="{{code}}" style="width:100%; height:100%;">
-        </td>
-        <td>
-            <input type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
-        </td>
-        <td>
-            <input type="text" value="Hint" style="width:100%; height:100%;">
-        </td>
-    </tr>
-
-    {% elif code|strip_length == 0 and answer.decode|strip_length != 0 %}
-    <tr>
-        <td class="tnumber">{{ forloop.counter }}</td>
-        <td>
-            <input type="text" value="Empty Code" style="width:100%; height:100%;">
-        </td>
-        <td>
-            <input type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
-        </td>
-        <td>
-            <input type="text" value="Hint" style="width:100%; height:100%;">
-        </td>
-    </tr>
-
-
-
-    {% elif code|strip_length != 0 and answer.decode|strip_length == 0 %}
-    <tr>
-        <td class="tnumber">{{ forloop.counter }}</td>
-        <td>
-            <input type="text" value="{{code}}" style="width:100%; height:100%;">
-        </td>
-        <td>
-            <input type="text" value="Empty Answer" style="width:100%; height:100%;" class="has-error">
-        </td>
-        <td>
-            <input type="text" value="Hint" style="width:100%; height:100%;">
-        </td>
-    </tr>
+    {% if invalidCodeLine == True %}
+        <p id="invalidLineMessage" class="text-danger">Please fix invalid lines.</p>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary" id="submitAlgorithmButton" disabled="true" onclick="parseTable()">Submit</button>
+        </div>
+    {% else %}
+    <p id="invalidLineMessage" class="text-success">All lines are now valid.</p>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary" id="submitAlgorithmButton" onclick="parseTable()">Submit</button>
+        </div>
     {% endif %}
-    {% endfor %}
-
-</tbody>
-</table>
+</form>
 {% endif %}
 
+<script>
+
+    // Function to parse table and append to JSON
+    function parseTable() {
+
+        // Get the form element
+        var form = document.getElementById('algorithmForm');
+
+        // Create input fields for table data
+        var table = document.getElementById('algorithmTable');
+        var formData = [];
+
+        // Loop through table rows
+        for (var i = 1; i < table.rows.length; i++) { // Start from index 1 to skip header row
+            var row = table.rows[i];
+
+            if (row.classList.contains("invalidLine")) {
+                // alert("This row has an invalid line");
+            }
+
+            var rowData = {};
+
+            // Get input values from each row
+            rowData.code = row.cells[1].getElementsByTagName('input')[0].value;
+            rowData.answer = row.cells[2].getElementsByTagName('input')[0].value;
+            rowData.hint = row.cells[3].getElementsByTagName('input')[0].value;
+
+            // Add row data to form data
+            formData.push(rowData);
+        }
+
+        // Create hidden input field to store JSON data
+        var jsonDataInput = document.createElement('input');
+        jsonDataInput.type = 'hidden';
+        jsonDataInput.name = 'table_data';
+        jsonDataInput.value = JSON.stringify(formData);
+
+        // Append hidden input field to the form
+        form.appendChild(jsonDataInput);
+
+        var algorithmName = document.createElement('input');
+        algorithmName.type = 'hidden';
+        algorithmName.name = 'algorithm_name';
+        algorithmName.value = document.getElementById("algorithmNameInput").value;
+        form.appendChild(algorithmName);
+
+        // Submit the form
+        // form.submit();
+
+    }
+
+
+
+
+
+    // Add event listeners to inputs in the table rows
+    var inputs = document.querySelectorAll('#algorithmTable input');
+
+    inputs.forEach(input => {
+        input.addEventListener("input", validateLine); // Add event listener for input event
+
+    });
+
+    function validateLine() {
+        // Get the parent row of the input
+        var row = this.closest('tr');
+
+        // Check if both inputs in the row are empty
+        var codeInput = row.querySelector('.lineCode');
+        var answerInput = row.querySelector('.lineAnswer');
+
+        var submitAlgorithmButton = document.getElementById("submitAlgorithmButton");
+
+        // If either input is empty, change the row color to red, otherwise revert to default
+        if (codeInput.value.trim().length === 0 && answerInput.value.trim().length !== 0) {
+            // row.style.backgroundColor = 'red';
+            row.classList.remove("validLine");
+            row.classList.add("invalidLine");
+            submitAlgorithmButton.disabled = true;
+            document.getElementById("invalidLineMessage").innerHTML = "Please fix invalid lines.";
+            row.classList.add("text-danger");
+            console.log("Changing to red1");
+        } else if (codeInput.value.trim().length !== 0 && answerInput.value.trim().length === 0) {
+            // row.style.backgroundColor = 'red';
+            row.classList.remove("validLine");
+            row.classList.add("invalidLine");
+            submitAlgorithmButton.disabled = true;
+            document.getElementById("invalidLineMessage").innerHTML = "Please fix invalid lines.";
+            row.classList.add("text-danger");
+            console.log("Changing to red2");
+        } else {
+            // row.style.backgroundColor = 'green'; // Revert to default color
+            row.classList.remove("invalidLine");
+            row.classList.add("validLine");
+            console.log("Changing to green");
+        }
+
+        var table = document.getElementById('algorithmTable');
+        var tableStatus = "valid";
+        for (var i = 1; i < table.rows.length; i++) {
+            var row = table.rows[i];
+            if (row.classList.contains("invalidLine")) {
+                tableStatus = "invalid";
+                document.getElementById("invalidLineMessage").innerHTML = "Please fix invalid lines.";
+                row.classList.add("text-danger");
+            }
+        }
+
+        if (tableStatus === "valid") {
+            submitAlgorithmButton.disabled = false;
+            document.getElementById("invalidLineMessage").innerHTML = "All lines are now valid.";
+            row.classList.add("text-success");
+        }
+
+    }
+
+</script>
 
 {% endblock %}
-
-
 
 {% block jsscript %} 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -333,48 +385,6 @@
         var mismatchElement = document.getElementById('mismatch');
         return mismatchElement !== null;
     }
-
-    // Add event listener for the form submit event
-    document.getElementById('algorithmForm').addEventListener('submit', function(event) {
-        // Check if the element with id 'mismatch' exists
-        if (checkElementExists()) {
-            // Prevent the default form submission behavior
-            event.preventDefault();
-            // Perform additional actions if needed
-            alert('The algorithm and answer keys files have mismatch lines');
-        }
-        else {
-            event.preventDefault(); // Prevent default form submission
-        
-            var table = document.getElementById('algorithmTable');
-            var formData = [];
-            
-            // Loop through table rows
-            for (var i = 1; i < table.rows.length; i++) { // Start from index 1 to skip header row
-                var row = table.rows[i];
-                var rowData = {};
-                // rowData.name = row.cells[0].innerText;
-                rowData.code = row.cells[1].innerText;
-                rowData.answer = row.cells[2].innerText;
-                rowData.hint = row.cells[3].innerText;
-                formData.push(rowData);
-            }
-            
-            // Create hidden input field to store JSON data
-            var jsonDataInput = document.createElement('input');
-            jsonDataInput.type = 'hidden';
-            jsonDataInput.name = 'table_data';
-            jsonDataInput.value = JSON.stringify(formData);
-            this.appendChild(jsonDataInput);
-            
-            // Submit the form
-            //this.submit();
-
-        }
-    });
-
-
-
 
 </script>
 {% endblock %}
