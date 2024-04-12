@@ -166,12 +166,15 @@ class Page(models.Model):
 class Algorithm(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
     item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL) # The module this algorithm  belongs to
+    lines = models.TextField(max_length=2000, null=True)
+    answers = models.TextField(max_length=2000, null=True)
+    hints = models.TextField(max_length=2000, null=True)
     
     def __str__(self) -> str:
         return self.name
 
 
-class Line(models.Model):
+'''class Line(models.Model):
     code      = models.CharField(max_length=100, null=True)                          # Required Field
     answer    = models.CharField(max_length=100, null=True)                          # Required Field
     hint      = models.CharField(max_length=100, null=True, blank=True)                          # Required Field
@@ -180,4 +183,4 @@ class Line(models.Model):
     # algorithm_id
 
     def __str__(self) -> str:
-        return self.algorithm.name +"-"+ str(self.id)
+        return self.algorithm.name +"-"+ str(self.id)'''
