@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
+import uuid
 
 # Create your models here.
 
@@ -111,6 +112,7 @@ class Class(models.Model):
 class Module(models.Model):
     name      = models.CharField(max_length=100, null=True)                          # Required Field
     parent_class = models.ForeignKey(Class, null=True, on_delete=models.SET_NULL)  # The class this module belongs to
+    order = models.IntegerField(blank=False, default=100_000)                       # for ordering
     # number_of_question
     # algorithm_id
 

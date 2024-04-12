@@ -249,126 +249,189 @@ def updateModule(request, class_pk, module_pk):
     context = {"form": form, "teacher_class": teacher_class}
     return render(request, 'updateModule.html', context)
 
+
+@login_required(login_url="/login")
+def updateModuleOrder(request, class_pk, module_pk):
+    print("\nTeacher Views: def updateModule(request):\n--------------------------------------------")
+    if not isTeacher(request):
+        return redirect("/login")
+
+    #Get the teacher class 
+    teacher_class = Class.objects.get(id=class_pk)
+    #Get all the teacher's module 
+    teacher_modules = teacher_class.module_set.all()
+    print("Teacher's Module: ", teacher_modules)
+    #Get the module that matches the module_pk
+    print(f"pk: {module_pk}")
+    module =  teacher_modules.get(id=module_pk)
+    print(" ->", module.id, module.name, module.parent_class)
+
+    form = CreateModuleForm(instance=module)
+
+    if request.method == "POST":
+        form = CreateModuleForm(request.POST, instance=module)
+        if form.is_valid():
+            form.save()
+            return redirect("/teacher/class/" + class_pk)
+
+    teacher_class = Class.objects.get(id=class_pk)    
+    context = {"form": form, "teacher_class": teacher_class}
+    return render(request, 'updateModule.html', context)
+
+
 @login_required(login_url="/login")
 def modules(request, class_pk):
-    print("\nTeacher Views: def module(request):\n------------------- modules ----------------------------")
+    print("\nTeacher Views: def module(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
 
 
-    
     teacher_class = Class.objects.get(id=class_pk)
     teacher_modules = teacher_class.module_set.all()
 
-    items = Item.objects.none()
-    algorithms = Algorithm.objects.none()
-    pages = Page.objects.none()
-    empty_modules = Module.objects.none()
-    for module in teacher_modules:
-        # return all items of this module
-        module_items = Item.objects.filter(module=module)
+    if request.method == 'POST':
+        orderDict = request.POST.get('orderDict') 
+        print("Dictionary of new order: ")
+        print("--------------- *** ---------------")
+        print("order object: ", orderDict)
+
+        #return HttpResponse(orderDict)
+        context = {
+            "teacher_class": teacher_class
+        }
         
-        # if items are returned append to the items query set
-        if module_items.exists():            
-            items = items.union(module_items)
-        else: # else, if no items are returned, add the module to the empty_modules queryset
-            empty_modules = empty_modules | Module.objects.filter(id=module.id)
-
-    print("All items: ", items)
-    print("empty_modules", empty_modules)
-    print()
-    # create a query set for the pages and algorithms that matches the items in the items queryset
-    for item in items:
-        item_pages = Page.objects.filter(item=item)
-        pages = pages.union(item_pages)
-        
-        item_algorithms = Algorithm.objects.filter(item=item)
-        algorithms = algorithms.union(item_algorithms)
-
-
-    print("algorithms: ", algorithms)
-    for algorithm in algorithms:
-        print("algorithm: ", algorithm)
     
-    print()
-    print("pages: ", pages)
-    for page in pages:
-        print("page: ", page)
-    
-    
-
-    # for module in teacher_modules:
-    #     print("module.name: ", module.name)
-    #     for item in items:
-    #         if module.name == item.module.name:
-    #             print("Type: ", item.type)
-    #             if str(item.type) == "Algorithm":
-    #                 #i = Algorithm.objects.get(item=item.module.id)                 
-    #                 i = Algorithm.objects.filter(item=item.id)
-    #                 A.append(i)
-    #                 print(i)
-    #                 print("this is an algorithm\n")     
-
-    #             elif str(item.type) == "Page":     
-    #                 i = Page.objects.get(item=item.id)
-    #                 P.append(i)
-    #                 print(i)
-    #                 print("this is a page: \n")          
-                
-    #             print("Algorithms ", A)
-    #             print("Pages: ", P)
+        if orderDict:
+            try:
+                # Convert string representation to dictionary
+                orderDict = json.loads(orderDict)  
+                # Parse the order dictionary and update every module that matches the obj_id
+                for obj_id, new_order in orderDict.items():  
+                    obj = Module.objects.get(pk=obj_id)
+                    obj.order = new_order
+                    obj.save()
+                    
+                url = reverse("modules", kwargs={"class_pk":teacher_class.id})
+                return redirect(url)   
+                #return JsonResponse({'success': True})
             
+            except Module.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Object not found'})
+            except Exception as e:
+                return JsonResponse({'success': False, 'error': str(e)})
+        else:
+            return JsonResponse({'success': False, 'error': 'No data provided'})
+    else:
 
-    # teacher_class = Class.objects.get(id=class_pk)
-    # module = Module.objects.get(id=module_pk)
-
-    # algorithm_lines = {}
-    # for item in module.item_set.all():
-    #     if item.type == "Algorithm":
-    #         if algorithm.name not in algorithm_lines:
-    #             algorithm_lines[algorithm.name] = []
-    #         for line in algorithm.line_set.all():
-    #             algorithm_lines[algorithm.name].append({
-    #             'code': line.code,
-    #             'answer': line.answer,
-    #             'hint': line.hint
-    #         })
-    # for algorithm_name, lines in algorithm_lines.items():
-    #     #print(f"Algorithm: {algorithm_name}")
-    #     output = f"""
-    #             <p>{algorithm_name}</p>
-    #              """
-    #     for line in lines:
-    #         output += f"""
-    #             <p>{line["code"]}</p>
-    #             <p>{line["answer"]}</p>
-    #             <p>{line["hint"]}</p>
-    #              """
-                
-    #         print(output)
-    #     if item.type == "Pages":
-    #         print("page:", item.name)
         
 
-    context = {
-        "teacher_class": teacher_class,
-        "modules": teacher_modules,
-        "empty_modules": empty_modules,
-        "module_number": teacher_modules.count(),
-        "items": items,
-        "algorithms": algorithms,
-        "pages": pages
-    }
-    
-    # context = {"teacher_class": teacher_class, "module": module, "algorithm_lines_items": algorithm_lines.items()}
+        items = Item.objects.none()
+        algorithms = Algorithm.objects.none()
+        pages = Page.objects.none()
+        empty_modules = Module.objects.none()
+        for module in teacher_modules:
+            # return all items of this module
+            module_items = Item.objects.filter(module=module)
+            
+            # if items are returned append to the items query set
+            if module_items.exists():            
+                items = items.union(module_items)
+            else: # else, if no items are returned, add the module to the empty_modules queryset
+                empty_modules = empty_modules | Module.objects.filter(id=module.id)
 
-    return render(request, 'modules.html', context)
+        print("All items: ", items)
+        print("empty_modules", empty_modules)
+        print()
+        # create a query set for the pages and algorithms that matches the items in the items queryset
+        for item in items:
+            item_pages = Page.objects.filter(item=item)
+            pages = pages.union(item_pages)
+            
+            item_algorithms = Algorithm.objects.filter(item=item)
+            algorithms = algorithms.union(item_algorithms)
+
+
+        print("algorithms: ", algorithms)
+        for algorithm in algorithms:
+            print("algorithm: ", algorithm)
+        
+        print()
+        print("pages: ", pages)
+        for page in pages:
+            print("page: ", page)
+        
+        # for module in teacher_modules:
+        #     print("module.name: ", module.name)
+        #     for item in items:
+        #         if module.name == item.module.name:
+        #             print("Type: ", item.type)
+        #             if str(item.type) == "Algorithm":
+        #                 #i = Algorithm.objects.get(item=item.module.id)                 
+        #                 i = Algorithm.objects.filter(item=item.id)
+        #                 A.append(i)
+        #                 print(i)
+        #                 print("this is an algorithm\n")     
+
+        #             elif str(item.type) == "Page":     
+        #                 i = Page.objects.get(item=item.id)
+        #                 P.append(i)
+        #                 print(i)
+        #                 print("this is a page: \n")          
+        #             print("Algorithms ", A)
+        #             print("Pages: ", P)
+
+        # teacher_class = Class.objects.get(id=class_pk)
+        # module = Module.objects.get(id=module_pk)
+
+        # algorithm_lines = {}
+        # for item in module.item_set.all():
+        #     if item.type == "Algorithm":
+        #         if algorithm.name not in algorithm_lines:
+        #             algorithm_lines[algorithm.name] = []
+        #         for line in algorithm.line_set.all():
+        #             algorithm_lines[algorithm.name].append({
+        #             'code': line.code,
+        #             'answer': line.answer,
+        #             'hint': line.hint
+        #         })
+        # for algorithm_name, lines in algorithm_lines.items():
+        #     #print(f"Algorithm: {algorithm_name}")
+        #     output = f"""
+        #             <p>{algorithm_name}</p>
+        #              """
+        #     for line in lines:
+        #         output += f"""
+        #             <p>{line["code"]}</p>
+        #             <p>{line["answer"]}</p>
+        #             <p>{line["hint"]}</p>
+        #              """
+                    
+        #         print(output)
+        #     if item.type == "Pages":
+        #         print("page:", item.name)
+        
+        # Order the list of modules by order
+        teacher_modules = teacher_modules.order_by('order')
+        context = {
+            "teacher_class": teacher_class,
+            "modules": teacher_modules,
+            "empty_modules": empty_modules,
+            "module_number": teacher_modules.count(),
+            "items": items,
+            "algorithms": algorithms,
+            "pages": pages
+        }
+        
+        
+        # context = {"teacher_class": teacher_class, "module": module, "algorithm_lines_items": algorithm_lines.items()}
+
+        return render(request, 'modules.html', context)
 
 
 
 @login_required(login_url="/login")
 def teacherViewAlgorithm(request, class_pk, algorithm_pk):
-    print("\nTeacher Views: def module(request):\n------------------------ teacherViewAlgorithm -----------------------")
+    print("\nTeacher Views: def teacherViewAlgorithm(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
     
@@ -376,7 +439,7 @@ def teacherViewAlgorithm(request, class_pk, algorithm_pk):
 
 @login_required(login_url="/login")
 def teacherViewPage(request, class_pk, page_pk):
-    print("\nTeacher Views: def module(request):\n------------------------ teacherViewPage -----------------------")
+    print("\nTeacher Views: def teacherViewPage(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
     
@@ -384,7 +447,7 @@ def teacherViewPage(request, class_pk, page_pk):
 
 @login_required(login_url="/login")
 def deletePage(request, class_pk, module_pk, page_pk):
-    print("\nTeacher Views: def deletePage(request):\n------------------------ deletePage -----------------------")
+    print("\nTeacher Views: def deletePage(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
     
@@ -397,7 +460,7 @@ def deletePage(request, class_pk, module_pk, page_pk):
 
 @login_required(login_url="/login")
 def deleteAlgorithm(request, class_pk, module_pk, algorithm_pk):
-    print("\nTeacher Views: def deleteAlgorithm(request):\n------------------------ deleteAlgorithm -----------------------")
+    print("\nTeacher Views: def deleteAlgorithm(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
     
