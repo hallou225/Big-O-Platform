@@ -590,6 +590,8 @@ def createAlgorithm(request, class_pk, module_pk):
             answers = answers.rstrip("\n"),
             hints = hints.rstrip("\n"),
         )
+
+        return redirect(reverse("modules", kwargs={"class_pk": class_pk}))
     
     elif request.method == "POST" and request.POST.getlist('fileUploadForm'):
         print("fileUpload")
