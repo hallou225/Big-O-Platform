@@ -28,15 +28,16 @@
     }
 
     th {
-        background-color: #bde50b;
+        background-color: #0e6efd;
         border:1px solid black;
+        color: white;
     }
 
     #algorithmTable td, tr, th {
         border:1px solid black;
     }
     input {
-        border-radius: unset;
+        /* border-radius: unset; */
         padding:4px;
     }
     input:focus {
@@ -156,14 +157,21 @@
 <form id="algorithmForm" action="" method="POST" class="mb-4 p-2">
     {% csrf_token %}
 
-    <input type="text" id="algorithmNameInput" value="" placeholder="Enter Algorithm Name..."">
+    <div class="row justify-content-center">
+        <div class="col-auto col-form-label">
+            <label class="mb-2">Algorithm Name</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" id="algorithmNameInput" class="mb-2" value="" placeholder="Enter Algorithm Name..." required>
+        </div>
+    </div>
 
     <table id="algorithmTable" border="0" cellspacing="0" cellpadding="0">
         <tbody>
             <col style="width: 2%">
-            <col style="width: auto;">
-            <col style="width: auto;">
-            <col style="width: auto;">
+            <col style="width: 50%;">
+            <col style="width: 20%;">
+            <col style="width: 27%;">
             
         
             <tr>
@@ -177,7 +185,7 @@
         
             {% if code|strip_length == 0 and answer.decode|strip_length == 0 %}
             <tr class="validLine">
-                <td class="tnumber">{{ forloop.counter }}</td>
+                <td class="tnumber text-white">{{ forloop.counter }}</td>
                 <td>
                     <input class="lineCode" type="text" value="{{code}}" style="width:100%; height:100%;">
                 </td>
@@ -191,7 +199,7 @@
             
             {% elif code|strip_length != 0 and answer.decode|strip_length != 0 %}
             <tr class="validLine">
-                <td class="tnumber">{{ forloop.counter }}</td>
+                <td class="tnumber text-white">{{ forloop.counter }}</td>
                 <td>
                     <input class="lineCode" type="text" value="{{code}}" style="width:100%; height:100%;">
                 </td>
@@ -205,7 +213,7 @@
         
             {% elif code|strip_length == 0 and answer.decode|strip_length != 0 %}
             <tr class="invalidLine">
-                <td class="tnumber">{{ forloop.counter }}</td>
+                <td class="tnumber text-white">{{ forloop.counter }}</td>
                 <td>
                     <!-- Empty Code -->
                     <input class="lineCode" type="text" value="" style="width:100%; height:100%;">
@@ -222,7 +230,7 @@
         
             {% elif code|strip_length != 0 and answer.decode|strip_length == 0 %}
             <tr class="invalidLine">
-                <td class="tnumber">{{ forloop.counter }}</td>
+                <td class="tnumber text-white">{{ forloop.counter }}</td>
                 <td>
                     <input class="lineCode" type="text" value="{{code}}" style="width:100%; height:100%;">
                 </td>
@@ -331,23 +339,18 @@
 
         // If either input is empty, change the row color to red, otherwise revert to default
         if (codeInput.value.trim().length === 0 && answerInput.value.trim().length !== 0) {
-            // row.style.backgroundColor = 'red';
             row.classList.remove("validLine");
             row.classList.add("invalidLine");
             submitAlgorithmButton.disabled = true;
             document.getElementById("invalidLineMessage").innerHTML = "Please fix invalid lines.";
-            row.classList.add("text-danger");
             console.log("Changing to red1");
         } else if (codeInput.value.trim().length !== 0 && answerInput.value.trim().length === 0) {
-            // row.style.backgroundColor = 'red';
             row.classList.remove("validLine");
             row.classList.add("invalidLine");
             submitAlgorithmButton.disabled = true;
             document.getElementById("invalidLineMessage").innerHTML = "Please fix invalid lines.";
-            row.classList.add("text-danger");
             console.log("Changing to red2");
         } else {
-            // row.style.backgroundColor = 'green'; // Revert to default color
             row.classList.remove("invalidLine");
             row.classList.add("validLine");
             console.log("Changing to green");
@@ -360,14 +363,16 @@
             if (row.classList.contains("invalidLine")) {
                 tableStatus = "invalid";
                 document.getElementById("invalidLineMessage").innerHTML = "Please fix invalid lines.";
-                row.classList.add("text-danger");
+                document.getElementById("invalidLineMessage").classList.remove("text-success");
+                document.getElementById("invalidLineMessage").classList.add("text-danger");
             }
         }
 
         if (tableStatus === "valid") {
             submitAlgorithmButton.disabled = false;
             document.getElementById("invalidLineMessage").innerHTML = "All lines are now valid.";
-            row.classList.add("text-success");
+            document.getElementById("invalidLineMessage").classList.remove("text-danger");
+            document.getElementById("invalidLineMessage").classList.add("text-success");
         }
 
     }
