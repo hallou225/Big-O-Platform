@@ -218,45 +218,62 @@ def studentModule(request, class_pk, module_pk):
 @login_required(login_url="/login")
 def algorithm(request, class_pk, module_pk, algorithm_pk):
     print("Student Views: def algorithm(request):")
-    if not isStudentHenri(request):
+    if not isStudent(request):
         return redirect("/login")
 
     student_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
-    algorithmHenri = Algorithm.objects.get(id=algorithm_pk)
+    algorithm = Algorithm.objects.get(id=algorithm_pk)
     
-    lines = algorithm.line_set.all()
-    print("lines: ", lines)
+    codes = algorithm.lines.split("\n")
+    answers = algorithm.answers.split("\n")
+    hints = algorithm.hints.split("\n")
 
-    for line in lines:
-        print("line: ", line.code, "|", line.answer, "|", line.hint)
+    formatted_codes = []
+    for code in codes:
+        formatted_codes.append( code.rstrip('\r') )
+    codes = formatted_codes
 
-    print("algorithm_pk: ", algorithm_pk)
+    formatted_answers = []
+    for answer in answers:
+        formatted_answers.append( answer.rstrip('\r') )
+    answers = formatted_answers
+
+    formatted_hints = []
+    for hint in hints:
+        formatted_hints.append( hint.rstrip('\r') )
+    hints = formatted_hints
 
     # Retrieving the answers submitted by the student
     scores = {}
     algorithm_score = 0
+    lineStatus = []
     if request.method == 'POST':
-        answers = request.POST.getlist('answers[]')
-        print("answers:", answers)
+        studentAnswers = request.POST.getlist('answers[]')
 
-        for i in range(len(lines)):
-            print(f"Line {i}:")
-            print(f"Student's Answer: {answers[i]}")
-            print(f"Correct Answer: {lines[i].answer}")
-
+        for i in range(len(codes)):
             # If student answers (the current line in iteration) correctly
-            if answers[i] == lines[i].answer:
-                scores[f"Line {i}"] = 1     # Correct
+            if answers[i] == studentAnswers[i]:
+                scores[f"Line {i+1}"] = 1     # Correct
+                lineStatus.append(True)
                 algorithm_score += 1
+                if i == 4:
+                    print("Correct")
+                    print(f"studentAnswers[i]: {studentAnswers[i]}")
+                    print(f"answers[i]: {answers[i]}")
             else:
-                scores[f"Line {i}"] = 0     # Incorrect
-        
-        print(f"scores: {scores}")  # Scores for each line
-        print(f"algorithm_score: {algorithm_score}")   # Total score for algorithm
+                scores[f"Line {i+1}"] = 0     # Incorrect
+                lineStatus.append(False)
+                if i == 4:
+                    print("Incorrect")
+                    print(f"studentAnswers[i]: {studentAnswers[i]}")
+                    print(f"answers[i]: {answers[i]}")
 
-    contextHenri = {"student_class": student_class, "module": module, "algorithm": algorithm,
-               "lines": lines, "scores": scores.items(), "algorithm_score": algorithm_score}
+    results = zip(lineStatus, codes, answers, hints)
+
+    context = {"student_class": student_class, "module": module, "algorithm": algorithm,
+               "codes": codes, "answers": answers, "scores": scores.items(), 
+               "algorithm_score": algorithm_score, "lineStatus": lineStatus, "results": results}
 
     return render(request, 'studentAlgorithm.html', context)
 
