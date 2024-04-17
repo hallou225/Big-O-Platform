@@ -218,12 +218,12 @@ def studentModule(request, class_pk, module_pk):
 @login_required(login_url="/login")
 def algorithm(request, class_pk, module_pk, algorithm_pk):
     print("Student Views: def algorithm(request):")
-    if not isStudent(request):
+    if not isStudentHenri(request):
         return redirect("/login")
 
     student_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
-    algorithm = Algorithm.objects.get(id=algorithm_pk)
+    algorithmHenri = Algorithm.objects.get(id=algorithm_pk)
     
     lines = algorithm.line_set.all()
     print("lines: ", lines)
@@ -255,7 +255,7 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
         print(f"scores: {scores}")  # Scores for each line
         print(f"algorithm_score: {algorithm_score}")   # Total score for algorithm
 
-    context = {"student_class": student_class, "module": module, "algorithm": algorithm,
+    contextHenri = {"student_class": student_class, "module": module, "algorithm": algorithm,
                "lines": lines, "scores": scores.items(), "algorithm_score": algorithm_score}
 
     return render(request, 'studentAlgorithm.html', context)
