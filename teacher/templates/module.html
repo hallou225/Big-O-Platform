@@ -8,7 +8,8 @@
 {% endblock %}
 
 {% block javascript %}    
-    <script src="{% static '/js/module.js'%}"></script>
+    <script src="{% static '/js/modules.js'%}"></script>
+    <script src="{% static 'js/Sortable.min.js' %}"></script>
 {% endblock %}
 
 {% block sidebar %}
@@ -29,79 +30,151 @@
 
         <div class="row">
             <div class="col">
-                {{module.name}}
+                <h3>{{module.name}}</h3>
             </div>
 
             <div class="col-2">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="container-fluid bg-transparent">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item dropdown pb-0">
-                                    <a class="nav-link dropdown-toggle border" style="padding:10px;" href="#"
-                                        id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                        Create
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a class="dropdown-item" href="">Lesson</a></li>
-                                        <li><a class="dropdown-item" href="">Algorithm</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+              Prev | Next
             </div>
         </div>
-        <div class="row">
-            <div class="col border bg-light">
-                <!-- begin accordion-->
-                <div class="accordion" id="accordionExample">
-                    {% for module in modules %}
-                      <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{module.id}}" aria-expanded="true" aria-controls="collapse{{module.id}}">
-                            {{module.name}}
-                          </button>
-                        </h2>
-                        <div id="collapse{{module.id}}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                          {% for item in items %}
-                            {% if module.name == item.module.name %}
-      
-                              {% for algorithm in algorithms %}
-                                {% if item.id == algorithm.item.id %}
-                                  <div class="accordion-body">
-                                    <a href="{% url 'studentAlgorithm' student_class.id module.id algorithm.id %}">{{algorithm.name}}</a>
-                                  </div>
-                                {% endif %}
-                              {% endfor %}
-      
-                              {% for page in pages %}
-                                {% if item.id == page.item.id %}
-                                  <div class="accordion-body">
-                                    <a href="{% url 'studentPage' student_class.id module.id page.id %}">{{page.name}}</a>
-                                  </div>
-                                {% endif %}
-                              {% endfor %}
-      
-                            {% endif %}
-                          {% endfor %}
-                        </div>
-                      </div>
-      
-                    {% endfor %}
-                  </div>
-                  <!-- end accordion-->
 
-            </div>
+        <hr> <!-- ----------------------------------------------------------------   -->
+
+    </div>
+    
+    <!-- Module content -->
+    <div class="row">
+      <p><span class="text-warning">module</span> {{module}}</p>
+      <p><span class="text-warning">items:</span> {{items}}</p>
+      <p><span class="text-warning">algorithms:</span> {{algorithm}}</p>
+      <p><span class="text-warning">pages:</span> {{pages}}</p>
+      <hr>
+
+      
+
+      <div id="" class=">
+        {% for item in items %}
+        {% if module.name == item.module.name %}
+        <div class="list-group p-0">
+          {% for algorithm in algorithms %}
+          {% if item.id == algorithm.item.id %}
+          <!-- <div class="row">
+                    <a class="list-group-item " 
+                    style="border-radius:unset; width:80%" -->
+          <a class="list-group-item " style="border-radius:unset;"
+            href="{% url 'teacherViewAlgorithm' teacher_class.id algorithm.id %}">
+            <span class="text-danger">A: </span>
+            {{algorithm.name}}
+          </a>
+          <!-- <button style="width:20%">D</button>
+                  </div> -->
+      
+          {% endif %}
+          {% endfor %}
+      
+          {% for page in pages %}
+          {% if item.id == page.item.id %}
+          <a class="list-group-item" style="border-radius:unset" href="{% url 'teacherViewPage' teacher_class.id page.id %}">
+            <span class="text-primary">P: </span>
+            {{page.name}}
+          </a>
+          {% endif %}
+          {% endfor %}
+      
         </div>
+        {% endif %}
+        {% endfor %}
+      
+        {% if module in empty_modules %}
+        <div class="list-group accordion-body p-0">
+          <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">
+            <span class="text-secondary">E: Empty Module</span>
+          </a>
+        </div>
+        {% endif %}
+      
+        <!-- nav bar to create class, algorithm, and delete button for that module-->
+        <div class="accordion-body p-0 ">
+      
+          <nav class="navbar navbar-expand-sm navbar-light">
+            <div class="container-fluid bg-transparent">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item dropdown pb-0">
+                    <a href="{% url 'module' teacher_class.id module.id %}" class="accordionSubBtn nav-link " role="button"
+                      style="">
+                      Manage
+                    </a>
+                  </li>
+                  <!-- Add Page -->
+                  <li class="nav-item dropdown pb-0">
+                    <a href="{% url 'createPage' teacher_class.id module.id %}" class="accordionSubBtn " role="button"
+                      style="">
+                      + Page
+                    </a>
+                  </li>
+      
+                  <!-- Add Algorithm -->
+                  <li class="nav-item dropdown pb-0">
+                    <a href="{% url 'createAlgorithm' teacher_class.id module.id %}" class="accordionSubBtn" role="button"
+                      style="">
+                      + Algorithm
+                    </a>
+                  </li>
+      
+                  <!-- Delete an algorithm or page -->
+                  {% if module in empty_modules %}
+                  {% else %}
+                  <!-- Delete button -->
+                  <li class="nav-item dropdown pb-0">
+                    <a href="#" class="accordionSubBtnDel dropdown-toggle btn-danger" id="navbarDropdown" role="button"
+                      data-bs-toggle="dropdown" aria-expanded="false" style="">
+                      Delete
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      {% for item in items %}
+                      {% if module.name == item.module.name %}
+      
+                      {% for algorithm in algorithms %}
+                      {% if item.id == algorithm.item.id %}
+                      <li><a class="dropdown-item" href="{% url 'deleteAlgorithm' teacher_class.id module.id algorithm.id %}">
+                          <span class="text-danger">A: </span>{{algorithm.name}}
+                        </a>
+                      </li>
+                      {% endif %}
+                      {% endfor %}
+      
+                      {% for page in pages %}
+                      {% if item.id == page.item.id %}
+                      <li><a class="dropdown-item" href="{% url 'deletePage' teacher_class.id module.id page.id %}">
+                          <span class="text-primary">P: </span>{{page.name}}
+                        </a>
+                      </li>
+                      {% endif %}
+                      {% endfor %}
+      
+                      {% endif %}
+                      {% endfor %}
+      
+                    </ul>
+                  </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </nav>
+      
+        </div>
+      </div>
+
+
+
+
+
     </div>
 </div>
 {% endblock %}
@@ -111,50 +184,14 @@
 {% block jsscript %} 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
-    // hljs.highlightAll();
-        // Define the function to check if the element exists
-        function checkElementExists() {
-        var mismatchElement = document.getElementById('mismatch');
-        return mismatchElement !== null;
+  // Initialize Sortable.js for the accordion
+  new Sortable(document.getElementById('accordionPanels'), {
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    onEnd: function (evt) {
+      // Update the order of the accordion items after dragging
+      updateAccordionOrder();
     }
-
-    // Add event listener for the form submit event
-    document.getElementById('algorithmForm').addEventListener('submit', function(event) {
-        // Check if the element with id 'mismatch' exists
-        if (checkElementExists()) {
-            // Prevent the default form submission behavior
-            event.preventDefault();
-            // Perform additional actions if needed
-            alert('The algorithm and answer keys files have mismatch lines');
-        }
-        else {
-            event.preventDefault(); // Prevent default form submission
-        
-            var table = document.getElementById('algorithmTable');
-            var formData = [];
-            
-            // Loop through table rows
-            for (var i = 1; i < table.rows.length; i++) { // Start from index 1 to skip header row
-                var row = table.rows[i];
-                var rowData = {};
-                // rowData.name = row.cells[0].innerText;
-                rowData.code = row.cells[1].innerText;
-                rowData.answer = row.cells[2].innerText;
-                rowData.hint = row.cells[3].innerText;
-                formData.push(rowData);
-            }
-            
-            // Create hidden input field to store JSON data
-            var jsonDataInput = document.createElement('input');
-            jsonDataInput.type = 'hidden';
-            jsonDataInput.name = 'table_data';
-            jsonDataInput.value = JSON.stringify(formData);
-            this.appendChild(jsonDataInput);
-            
-            // Submit the form
-            //this.submit();
-
-        }
-    });
+  });
 </script>
 {% endblock %}

@@ -2,97 +2,17 @@
 {% load static %}
 {% load custom_filters %}
 {% block css %}    
-<link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<link rel="stylesheet" type="text/css" href="{% static '/css/modules.css'%}">
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"> -->
+<link rel="stylesheet"  href="{% static '/css/hljs.default.min.css' %}" ">
 <style>
-  .accordion-item {
-    border:1px solid rgb(165, 165, 165);
-    border-top: none;
-    margin-bottom: 20px;
-  }
-  .accordion-body{
-  }
-  .accordion-button.collapsed {
-    background-color: rgb(219, 219, 219);
-  }
-  
-  .accordion {
-    border-radius:none;
-  }
-  #accordionPanels {
-    border-radius:none;
-  }
-  .accordion-button {
-    margin:0;
-    border-top: 1px solid rgb(165, 165, 165);
-    border-bottom: 1px solid rgb(165, 165, 165);
-    border-radius: unset;
-    font-weight:bold;
-  }
-  .accordion-button:hover {
-    background-color: #007bff; 
-    color:white;
-  }
-
-  a.list-group-item{
-    font-weight: bold;
-    border-radius:none;
-  }
-  a.list-group-item:hover{
-    background-color:#c7c5c5;
-  }
-  .accordionSubBtn {
-    display: inline-block;
-    padding: 2px 5px; /* Adjust padding as needed */
-    text-decoration: none;
-    background-color: #007bff; /* Button background color */
-    color: #fff; /* Button text color */
-    border: 1px solid #000000; /* Button border */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-    margin-left: 0.3vw;
-    font-size:medium;
-  }
-  .accordionSubBtn:hover {
-    background-color: #102a5d; 
-    border-color: #000000; 
-}
-.accordionSubBtnDel {
-  display: inline-block;
-  padding: 2px 5px; /* Adjust padding as needed */
-  text-decoration: none;
-  background-color: #ff5e5e; /* Button background color */
-  color: #fff; /* Button text color */
-  border: 1px solid #000000; /* Button border */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-  margin-left: 0.3vw;
-  font-size:medium;
-}
-.accordionSubBtnDel:hover{
-  background-color:#7d0303;
-  color:white;
-}
-.dropdown-menu {
-  background-color:#000000;
-  padding:0;
-  margin:0;
-}
-.dropdown-item{
-  color:rgb(255, 255, 255);
-}
-.dropdown-item:hover{
-  background-color:#7d0303;
-  color:white;
-}
-
 
 </style>
 {% endblock %}
 
 {% block javascript %}    
-<script src="{% static '/js/module.js'%}"></script>
-<script src="{% static 'js/external/Sortable.min.js' %}"></script>
+<script src="{% static '/js/modules.js'%}"></script>
+<script src="{% static 'js/Sortable.min.js' %}"></script>
 {% endblock %}
 
 {% block sidebar %}

@@ -281,7 +281,7 @@ def updateModuleOrder(request, class_pk, module_pk):
 
 @login_required(login_url="/login")
 def modules(request, class_pk):
-    print("\nTeacher Views: def module(request):\n-----------------------------------------------")
+    print("\nTeacher Views: def modules(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
 
