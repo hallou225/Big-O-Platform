@@ -16,6 +16,7 @@ def isStudent(request):
             print("redirect to /login")
             return False
 
+
 @login_required(login_url="/login")
 def student(request):
     print("Student Views: def student(request):")
@@ -39,6 +40,7 @@ def student(request):
     }
     return render(request, 'student.html', context)
 
+
 @login_required(login_url="/login")
 def studentProfile(request):
     print("Student Views: def studentProfile(request):")
@@ -47,8 +49,8 @@ def studentProfile(request):
     
     student = request.user
     context = {"student": student}
-
     return render(request, 'student_profile.html', context)
+
 
 @login_required(login_url="/login")
 def deleteStudentAccount(request):
@@ -63,8 +65,8 @@ def deleteStudentAccount(request):
         return redirect("/login")
 
     context = {"student": student}
-
     return render(request, 'deleteStudentAccount.html', context)
+
 
 @login_required(login_url="/login")
 def updateStudentAccount(request):
@@ -83,6 +85,7 @@ def updateStudentAccount(request):
  
     context = {"form": form, "student": student}
     return render(request, 'updateStudentAccount.html', context)
+
 
 @login_required(login_url="/login")
 def studentClass(request, class_pk):
@@ -137,6 +140,7 @@ def studentClass(request, class_pk):
                 "algorithms": algorithms, "pages": pages}
     return render(request, 'studentClass.html', context)
 
+
 @login_required(login_url="/login")
 def joinclass(request):
     print("Student Views: def joinclass(request):")
@@ -168,6 +172,7 @@ def joinclass(request):
     context = {"form": form, "errorMessage": errorMessage}
     return render(request, 'joinclass.html', context)
 
+
 def leaveClass(request, class_pk):
     print("Student Views: def leaveClass(request):")
     if not isStudent(request):
@@ -182,6 +187,7 @@ def leaveClass(request, class_pk):
     context = {"student_class": student_class}
     return render(request, 'leaveClass.html', context)
 
+
 @login_required(login_url="/login")
 def studentModule(request, class_pk, module_pk):
     print("Student Views: def studentModule(request):")
@@ -192,8 +198,8 @@ def studentModule(request, class_pk, module_pk):
     module = Module.objects.get(id=module_pk)
     
     context = {"student_class": student_class, "module": module}
-
     return render(request, 'studentModule.html', context)
+
 
 @login_required(login_url="/login")
 def algorithm(request, class_pk, module_pk, algorithm_pk):
@@ -208,16 +214,12 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
     answers = algorithm.answers.split("\n")
     hints = algorithm.hints.split("\n")
 
-
     # Retrieving the answers submitted by the student and calculate the grade
     score = 0
     lineStatus = []
     studentAnswers = []
     if request.method == 'POST':
         studentAnswers = request.POST.getlist('answers[]')
-
-        print(f"student answers: {studentAnswers}")
-
         for i in range(len(codes)):
             # If student answers (the current line in iteration) correctly
             if answers[i] == studentAnswers[i]:  # Correct
@@ -226,7 +228,6 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
             else:                              # Incorrect
                 lineStatus.append(False)
     
-
     results = zip(lineStatus, codes, studentAnswers, hints)
     # print("\n zip result \n")
     # for s, c, sa, h in results:
@@ -241,7 +242,6 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
     context = {"student_class": student_class, "module": module, "algorithm": algorithm,
             "codes": codes, "answers": answers, 
             "score": score, "percentage": percentage , "lineStatus": lineStatus, "results": results}
-
     return render(request, 'studentAlgorithm.html', context)
 
 
