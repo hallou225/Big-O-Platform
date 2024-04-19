@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from bigo.forms import *
+from django.http import HttpResponse
 from markdownx.utils import markdown
 
 # Create your views here.
@@ -14,6 +15,7 @@ def isStudent(request):
         else:
             print("redirect to /login")
             return False
+
 
 @login_required(login_url="/login")
 def student(request):
@@ -38,6 +40,7 @@ def student(request):
     }
     return render(request, 'student.html', context)
 
+
 @login_required(login_url="/login")
 def studentProfile(request):
     print("Student Views: def studentProfile(request):")
@@ -46,8 +49,8 @@ def studentProfile(request):
     
     student = request.user
     context = {"student": student}
-
     return render(request, 'student_profile.html', context)
+
 
 @login_required(login_url="/login")
 def deleteStudentAccount(request):
@@ -62,8 +65,8 @@ def deleteStudentAccount(request):
         return redirect("/login")
 
     context = {"student": student}
-
     return render(request, 'deleteStudentAccount.html', context)
+
 
 @login_required(login_url="/login")
 def updateStudentAccount(request):
@@ -82,6 +85,7 @@ def updateStudentAccount(request):
  
     context = {"form": form, "student": student}
     return render(request, 'updateStudentAccount.html', context)
+
 
 @login_required(login_url="/login")
 def studentClass(request, class_pk):
@@ -131,31 +135,11 @@ def studentClass(request, class_pk):
             if module.name == item.module.name:
                 print("item.module: ", item.module)
             
-    #     items = module.item_set.all()
-    #     print("Items: ", items)
-    #     for item in items:
-
-    #         module_items[module.id]["items"].append({
-    #         'item_id': item.id,
-    #         'item_name': item.name,
-    #         'item_type': str(item.type),
-    #         "module_name": module.name,
-    #     })
-
-    #     print("item.type: ", type(str(item.type)))
-
-    #     print("Item id: ", item.id)
-    #     print("Item name: ", item.name)
-    
-    # print("module_items: ", module_items)
-
-    '''context = {"student_class": student_class, "modules": student_modules,
-               "module_number": student_modules.count(), "modulesDict": modulesDict,
-               "itemsDict": itemsDict, "pages": pages, "algorithms": algorithms}'''
     context = {"student_class": student_class, "modules": student_modules,
-               "module_number": student_modules.count(), "items": items,
-               "algorithms": algorithms, "pages": pages}
+                "module_number": student_modules.count(), "items": items,
+                "algorithms": algorithms, "pages": pages}
     return render(request, 'studentClass.html', context)
+
 
 @login_required(login_url="/login")
 def joinclass(request):
@@ -188,6 +172,7 @@ def joinclass(request):
     context = {"form": form, "errorMessage": errorMessage}
     return render(request, 'joinclass.html', context)
 
+
 def leaveClass(request, class_pk):
     print("Student Views: def leaveClass(request):")
     if not isStudent(request):
@@ -202,6 +187,7 @@ def leaveClass(request, class_pk):
     context = {"student_class": student_class}
     return render(request, 'leaveClass.html', context)
 
+
 @login_required(login_url="/login")
 def studentModule(request, class_pk, module_pk):
     print("Student Views: def studentModule(request):")
@@ -212,8 +198,8 @@ def studentModule(request, class_pk, module_pk):
     module = Module.objects.get(id=module_pk)
     
     context = {"student_class": student_class, "module": module}
-
     return render(request, 'studentModule.html', context)
+
 
 @login_required(login_url="/login")
 def algorithm(request, class_pk, module_pk, algorithm_pk):
@@ -224,41 +210,40 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
     student_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
     algorithm = Algorithm.objects.get(id=algorithm_pk)
-    
-    lines = algorithm.line_set.all()
-    print("lines: ", lines)
+    codes = algorithm.lines.split("\n")
+    answers = algorithm.answers.split("\n")
+    hints = algorithm.hints.split("\n")
 
-    for line in lines:
-        print("line: ", line.code, "|", line.answer, "|", line.hint)
-
-    print("algorithm_pk: ", algorithm_pk)
-
-    # Retrieving the answers submitted by the student
-    scores = {}
-    algorithm_score = 0
+    # Retrieving the answers submitted by the student and calculate the grade
+    score = 0
+    lineStatus = []
+    studentAnswers = []
     if request.method == 'POST':
-        answers = request.POST.getlist('answers[]')
-        print("answers:", answers)
-
-        for i in range(len(lines)):
-            print(f"Line {i}:")
-            print(f"Student's Answer: {answers[i]}")
-            print(f"Correct Answer: {lines[i].answer}")
-
+        studentAnswers = request.POST.getlist('answers[]')
+        for i in range(len(codes)):
             # If student answers (the current line in iteration) correctly
-            if answers[i] == lines[i].answer:
-                scores[f"Line {i}"] = 1     # Correct
-                algorithm_score += 1
-            else:
-                scores[f"Line {i}"] = 0     # Incorrect
-        
-        print(f"scores: {scores}")  # Scores for each line
-        print(f"algorithm_score: {algorithm_score}")   # Total score for algorithm
+            if answers[i] == studentAnswers[i]:  # Correct
+                score += 1
+                lineStatus.append(True)
+            else:                              # Incorrect
+                lineStatus.append(False)
+    
+    results = zip(lineStatus, codes, studentAnswers, hints)
+    # print("\n zip result \n")
+    # for s, c, sa, h in results:
+    #     print(f"| {s} | {c} | {sa} | {h} |")
+
+    total = len(codes)
+    percentage = (score / total) * 100
+    percentage = round(percentage, 2)
+    score = f"{score}/{total}"
+    percentage = f"{percentage}%"
 
     context = {"student_class": student_class, "module": module, "algorithm": algorithm,
-               "lines": lines, "scores": scores.items(), "algorithm_score": algorithm_score}
-
+            "codes": codes, "answers": answers, 
+            "score": score, "percentage": percentage , "lineStatus": lineStatus, "results": results}
     return render(request, 'studentAlgorithm.html', context)
+
 
 @login_required(login_url="/login")
 def page(request, class_pk, module_pk, page_pk):
@@ -272,32 +257,4 @@ def page(request, class_pk, module_pk, page_pk):
     page.content = markdown(page.content, extensions=['extra'])
 
     context = {"student_class": student_class, "module": module, "page": page}
-
     return render(request, 'studentPage.html', context)
-
-@login_required(login_url="/login")
-def item(request, class_pk, module_pk, item_pk):
-    print("Student Views: def item(request):")
-    if not isStudent(request):
-        return redirect("/login")
-
-    student_class = Class.objects.get(id=class_pk)
-    module = Module.objects.get(id=module_pk)
-    item = Item.objects.get(id=item_pk)
-
-    print("item_pk: ", item_pk)
-
-    context = {"student_class": student_class, "module": module, "item": item}
-
-    print("-------item.type: ", item.type)
-
-    if str(item.type) == "Algorithm":
-        #algorithm = Algorithm.objects.get(id=item_pk)
-        #context = {"student_class": student_class, "module": module, "algorithm": algorithm}
-        return render(request, 'studentAlgorithm.html', context)
-    elif str(item.type) == "Page":
-        #page = Page.objects.get(id=item_pk)
-        #context = {"student_class": student_class, "module": module, "page": page}
-        return render(request, 'studentPage.html', context)
-
-    # return render(request, 'studentItem.html', context)

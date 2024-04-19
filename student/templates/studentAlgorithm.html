@@ -3,6 +3,46 @@
 {% load custom_filters %}
 {% block css %}    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+
+    <style>
+        #algorithmTable {
+            font-family: monospace;
+            background-color:none;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+
+        th {
+            background-color: #0e6efd;
+            border:1px solid black;
+            color: white;
+        }
+
+        #algorithmTable td, tr, th {
+            border:1px solid black;
+        }
+        
+        td.tnumber {
+            text-align: center;
+        } 
+
+        .validLine {
+            background-color: green;
+        }
+
+        .invalidLine {
+            background-color: red;
+        }
+
+        pre {
+            margin-bottom: 0;
+        }
+
+        td {
+            padding: 5px;
+        }
+    </style>
 {% endblock %}
 
 {% block javascript %}    
@@ -25,48 +65,129 @@
 <form id="algorithmAnswerForm" action="" method="POST" class="p-2">
     {% csrf_token %}
 
-    <table id="algorithmTable" class="mb-2" style="border: 1px solid black; width: 100%; background-color: white;">
+    <!-- row for displaying the content of the uploaded algorithm/answer-->
+    <div class="row border-bottom p-2 mb-4">
+        <h1> for debugging purposes - remove when done</h1>
+        <div class="col">
+            <h3>Algorithm:</h3>
+            {% for code in codes %}
+                <pre><code class="language-java">{{ code }}<br></code></pre>
+            {% endfor %}
+        </div>
+        <div class="col">
+            <h3>Answer Key:</h3>
+            {% for answer in answers %}
+                <pre><code>{{ answer }}<br></code></pre>
+            {% endfor %} 
+        </div>    
+    </div>
+
+    <table id="algorithmTable" class="mb-2">
+        <col style="width: 2%;">
         <col style="width: 50%;">
         <col style="width: 50%;">
     
         <tr>
-            <th style="border: 1px solid black;">Line of Code</th>
-            <th style="border: 1px solid black;">Answer</th>
+            <th id="tableNumber">No</th>
+            <th>Line of Code</th>
+            <th>Answer</th>
         </tr>
     
-        {% for line in lines %}
+        {% for code in codes %}
         <tr>
-            <td style="border: 1px solid black;">
-                <code class="language-python">{{line.code}}</code>
+            <td class="tnumber">{{ forloop.counter }}</td>
+
+            <td>
+                <pre><code class="language-java">{{ code }}</code></pre>
             </td>
             
-            <td style="border: 1px solid black;">
-                <select name="answers[]" class="w-100">
-                    <option value="">Select an option...</option>
-                    <option value="O(1)">O(1)</option>
-                    <option value="O(log n)">O(log n)</option>
-                    <option value="O(n)">O(n)</option>
-                    <option value="O(n log n)">O(n log n)</option>
-                    <option value="O(n^2)">O(n^2)</option>
-                    <option value="O(n^3)">O(n^3)</option>
-                    <option value="O(2^n)">O(2^n)</option>
-                    <option value="O(n!)">O(n!)</option>
-                </select>
+            <td>
+                {% if code != '' %}
+                    <select name="answers[]" class="w-100">
+                        <option value="">Select an option...</option>
+                        <option value="O(1)">O(1)</option>
+                        <option value="O(log n)">O(log n)</option>
+                        <option value="O(n)">O(n)</option>
+                        <option value="O(n log n)">O(n log n)</option>
+                        <option value="O(n^2)">O(n^2)</option>
+                        <option value="O(n^3)">O(n^3)</option>
+                        <option value="O(2^n)">O(2^n)</option>
+                        <option value="O(n!)">O(n!)</option>
+                    </select>
+                {% else %}
+                    <select name="answers[]" class="w-100 d-none">
+                        <option value=""></option>
+                    </select>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
     </table>
+    
+    <div class="text-center mt-4 mb-2">
+        <button type="submit" class="btn btn-primary" id="uploadButton">Submit Answers</button>
+    </div>
+</form>
 
-    <input type="submit" value="Submit Answers" class="btn btn-primary">
+<hr>
 
-    <div class="row mt-2">
-        {% for lineNum, score in scores %}
-            <p>{{lineNum}}: {{score}}/1</p>
-        {% endfor %}
+{% if lineStatus %}
+
+<!-- Submission details -->
+<div class="d-flex bd-highlight mb-0">
+    <div class="p-2 bd-highlight">
+        <h3>Submission Details</h3>
     </div>
 
-    <h4>Total Score: {{algorithm_score}}</h4>
-</form>
+    <div class="ms-auto p-2 bd-highlight">
+        <h3 class="text-end">Grade:  <span class="fw-bold">{{score}}</span>
+            <br>
+            <span>{{percentage}}</span></h3>
+        <br>
+    </div>
+</div>
+
+<!-- Submission table result-->
+    <table id="algorithmTable" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+            <col style="width: 2%">
+            <col style="width: 50%;">
+            <col style="width: 20%;">
+            <col style="width: 27%;">
+            
+        
+            <tr>
+                <th id="tableNumber">No</th>
+                <th id="tableCode">Code</th>
+                <th id="tableAnswer">Answer</th>
+                <th id="tableHint">Hint</th>
+            </tr>
+        
+            {% for status, code, answer, hint in results %}
+                <tr>
+                    {% if status %}
+                        <td class="tnumber validLine">{{ forloop.counter }}</td>
+                    {% else %}
+                        <td class="tnumber invalidLine">{{ forloop.counter }}</td>
+                    {% endif %}
+                    <td>
+                        <!-- <input class="lineCode" type="text" value="{{code}}" style="width:100%; height:100%;"> -->
+                        <pre><code class="language-java ">{{ code }}</code></pre>
+                    </td>
+                    <td>
+                        <!-- <input class="lineAnswer" type="text" value="{{answer}}" style="width:100%; height:100%;"> -->
+                        {{answer}}
+                    </td>
+                    <td>
+                        <!-- <input type="text" value="Hint" style="width:100%; height:100%;"> -->
+                        {{hint}}
+                    </td>
+                </tr>
+            {% endfor %}
+        
+        </tbody>
+    </table>
+{% endif %}
 {% endblock %}
 
 
