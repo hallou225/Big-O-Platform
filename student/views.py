@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from bigo.forms import *
+from django.http import HttpResponse
 from markdownx.utils import markdown
 
 # Create your views here.
@@ -131,30 +132,9 @@ def studentClass(request, class_pk):
             if module.name == item.module.name:
                 print("item.module: ", item.module)
             
-    #     items = module.item_set.all()
-    #     print("Items: ", items)
-    #     for item in items:
-
-    #         module_items[module.id]["items"].append({
-    #         'item_id': item.id,
-    #         'item_name': item.name,
-    #         'item_type': str(item.type),
-    #         "module_name": module.name,
-    #     })
-
-    #     print("item.type: ", type(str(item.type)))
-
-    #     print("Item id: ", item.id)
-    #     print("Item name: ", item.name)
-    
-    # print("module_items: ", module_items)
-
-    '''context = {"student_class": student_class, "modules": student_modules,
-               "module_number": student_modules.count(), "modulesDict": modulesDict,
-               "itemsDict": itemsDict, "pages": pages, "algorithms": algorithms}'''
     context = {"student_class": student_class, "modules": student_modules,
-               "module_number": student_modules.count(), "items": items,
-               "algorithms": algorithms, "pages": pages}
+                "module_number": student_modules.count(), "items": items,
+                "algorithms": algorithms, "pages": pages}
     return render(request, 'studentClass.html', context)
 
 @login_required(login_url="/login")
@@ -224,58 +204,46 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
     student_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
     algorithm = Algorithm.objects.get(id=algorithm_pk)
-    
     codes = algorithm.lines.split("\n")
     answers = algorithm.answers.split("\n")
     hints = algorithm.hints.split("\n")
 
-    formatted_codes = []
-    for code in codes:
-        formatted_codes.append( code.rstrip('\r') )
-    codes = formatted_codes
 
-    formatted_answers = []
-    for answer in answers:
-        formatted_answers.append( answer.rstrip('\r') )
-    answers = formatted_answers
-
-    formatted_hints = []
-    for hint in hints:
-        formatted_hints.append( hint.rstrip('\r') )
-    hints = formatted_hints
-
-    # Retrieving the answers submitted by the student
-    scores = {}
-    algorithm_score = 0
+    # Retrieving the answers submitted by the student and calculate the grade
+    score = 0
     lineStatus = []
+    studentAnswers = []
     if request.method == 'POST':
         studentAnswers = request.POST.getlist('answers[]')
 
+        print(f"student answers: {studentAnswers}")
+
         for i in range(len(codes)):
             # If student answers (the current line in iteration) correctly
-            if answers[i] == studentAnswers[i]:
-                scores[f"Line {i+1}"] = 1     # Correct
+            if answers[i] == studentAnswers[i]:  # Correct
+                score += 1
                 lineStatus.append(True)
-                algorithm_score += 1
-                if i == 4:
-                    print("Correct")
-                    print(f"studentAnswers[i]: {studentAnswers[i]}")
-                    print(f"answers[i]: {answers[i]}")
-            else:
-                scores[f"Line {i+1}"] = 0     # Incorrect
+            else:                              # Incorrect
                 lineStatus.append(False)
-                if i == 4:
-                    print("Incorrect")
-                    print(f"studentAnswers[i]: {studentAnswers[i]}")
-                    print(f"answers[i]: {answers[i]}")
+    
 
-    results = zip(lineStatus, codes, answers, hints)
+    results = zip(lineStatus, codes, studentAnswers, hints)
+    # print("\n zip result \n")
+    # for s, c, sa, h in results:
+    #     print(f"| {s} | {c} | {sa} | {h} |")
+
+    total = len(codes)
+    percentage = (score / total) * 100
+    percentage = round(percentage, 2)
+    score = f"{score}/{total}"
+    percentage = f"{percentage}%"
 
     context = {"student_class": student_class, "module": module, "algorithm": algorithm,
-               "codes": codes, "answers": answers, "scores": scores.items(), 
-               "algorithm_score": algorithm_score, "lineStatus": lineStatus, "results": results}
+            "codes": codes, "answers": answers, 
+            "score": score, "percentage": percentage , "lineStatus": lineStatus, "results": results}
 
     return render(request, 'studentAlgorithm.html', context)
+
 
 @login_required(login_url="/login")
 def page(request, class_pk, module_pk, page_pk):
@@ -289,32 +257,4 @@ def page(request, class_pk, module_pk, page_pk):
     page.content = markdown(page.content, extensions=['extra'])
 
     context = {"student_class": student_class, "module": module, "page": page}
-
     return render(request, 'studentPage.html', context)
-
-@login_required(login_url="/login")
-def item(request, class_pk, module_pk, item_pk):
-    print("Student Views: def item(request):")
-    if not isStudent(request):
-        return redirect("/login")
-
-    student_class = Class.objects.get(id=class_pk)
-    module = Module.objects.get(id=module_pk)
-    item = Item.objects.get(id=item_pk)
-
-    print("item_pk: ", item_pk)
-
-    context = {"student_class": student_class, "module": module, "item": item}
-
-    print("-------item.type: ", item.type)
-
-    if str(item.type) == "Algorithm":
-        #algorithm = Algorithm.objects.get(id=item_pk)
-        #context = {"student_class": student_class, "module": module, "algorithm": algorithm}
-        return render(request, 'studentAlgorithm.html', context)
-    elif str(item.type) == "Page":
-        #page = Page.objects.get(id=item_pk)
-        #context = {"student_class": student_class, "module": module, "page": page}
-        return render(request, 'studentPage.html', context)
-
-    # return render(request, 'studentItem.html', context)

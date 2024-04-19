@@ -8,6 +8,20 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.http import HttpResponse
 import json
+import re
+
+
+def clean_answer(text):
+    # Remove leading and trailing whitespaces and newlines
+    text = text.strip()
+
+    # Remove newlines
+    #text = text.replace('\n', '')
+
+    # Remove all spaces between words
+    text = re.sub(r'\s+', '', text)
+    return text
+
 
 # Create your views here.
 def isTeacher(request):
@@ -472,12 +486,6 @@ def deleteAlgorithm(request, class_pk, module_pk, algorithm_pk):
     return render(request, 'deleteAlgorithm.html', context)
 
 
-
-
-
-
-
-
 @login_required(login_url="/login")
 def module(request, class_pk, module_pk):
     print("\nTeacher Views: def module(request):\n-----------------------------------------------")
@@ -569,12 +577,28 @@ def createAlgorithm(request, class_pk, module_pk):
         for i in range(len(formattedTable)):
             print("Line: ", formattedTable[i])
             lines += formattedTable[i]["code"] + "\n"
-            answers += formattedTable[i]["answer"] + "\n"
-            hints += formattedTable[i]["hint"] + "\n"
+            
+            answer = formattedTable[i]["answer"]
+            answer = clean_answer(answer)
+            answers += answer + "\n"
+
+            hint = formattedTable[i]["hint"] 
+            hint += " "
+            hints += hint + "\n"
         
-        print(f"Lines:\n{lines}")
+        print(f"\n\nLines:\n{lines}")
         print(f"Answers:\n{answers}")
         print(f"Hints:\n{hints}]")
+
+        # return HttpResponse(
+        #     "Lines\n" + 
+        #     lines + 
+            
+        #     "\nAnswers\n" +
+        #      answers + 
+        #     "\nHints\n" + 
+        #      hints
+        #  )
 
         item = Item.objects.create(
             type = ItemType.objects.get(type="Algorithm"),

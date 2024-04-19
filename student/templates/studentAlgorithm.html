@@ -67,16 +67,17 @@
 
     <!-- row for displaying the content of the uploaded algorithm/answer-->
     <div class="row border-bottom p-2 mb-4">
+        <h1> for debugging purposes - remove when done</h1>
         <div class="col">
             <h3>Algorithm:</h3>
-            {% for code in codes|remove_newlines %}
-                <pre><code class="language-java">{{ code }}</code></pre>
+            {% for code in codes %}
+                <pre><code class="language-java">{{ code }}<br></code></pre>
             {% endfor %}
         </div>
         <div class="col">
             <h3>Answer Key:</h3>
             {% for answer in answers %}
-                <pre><code>{{ answer }}</code></pre>
+                <pre><code>{{ answer }}<br></code></pre>
             {% endfor %} 
         </div>    
     </div>
@@ -122,15 +123,31 @@
         </tr>
         {% endfor %}
     </table>
-
-    <input type="submit" value="Submit Answers" class="btn btn-primary">
+    
+    <div class="text-center mt-4 mb-2">
+        <button type="submit" class="btn btn-primary" id="uploadButton">Submit Answers</button>
+    </div>
 </form>
 
 <hr>
 
 {% if lineStatus %}
-    <h4>Total Score: {{algorithm_score}}</h4>
 
+<!-- Submission details -->
+<div class="d-flex bd-highlight mb-0">
+    <div class="p-2 bd-highlight">
+        <h3>Submission Details</h3>
+    </div>
+
+    <div class="ms-auto p-2 bd-highlight">
+        <h3 class="text-end">Grade:  <span class="fw-bold">{{score}}</span>
+            <br>
+            <span>{{percentage}}</span></h3>
+        <br>
+    </div>
+</div>
+
+<!-- Submission table result-->
     <table id="algorithmTable" border="0" cellspacing="0" cellpadding="0">
         <tbody>
             <col style="width: 2%">
