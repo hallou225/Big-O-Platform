@@ -182,22 +182,24 @@
             </tr>
         
             {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
-        
+            
             {% if code|strip_length == 0 and answer.decode|strip_length == 0 %}
+            <!--  No code, no answer - valid by default -->
             <tr class="validLine">
                 <td class="tnumber text-white">{{ forloop.counter }}</td>
-                <td>
-                    <input class="lineCode" type="text" value="{{code}}" style="width:100%; height:100%;">
+                <td class="bg-white">
+                    <input class="lineCode d-none" type="text" value="{{code}}" style="width:100%; height:100%;" >
                 </td>
-                <td>
-                    <input class="lineAnswer" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
+                <td class="bg-white">
+                    <input class="lineAnswer d-none" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
                 </td>
-                <td>
-                    <input type="text" value="Hint" style="width:100%; height:100%;">
+                <td class="bg-white">
+                    <input class="d-none" type="text" value="" placeholder="hint" style="width:100%; height:100%;" >
                 </td>
             </tr>
             
             {% elif code|strip_length != 0 and answer.decode|strip_length != 0 %}
+            <!--   code,  answer - valid by default -->
             <tr class="validLine">
                 <td class="tnumber text-white">{{ forloop.counter }}</td>
                 <td>
@@ -207,11 +209,12 @@
                     <input class="lineAnswer" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
                 </td>
                 <td>
-                    <input type="text" value="Hint" style="width:100%; height:100%;">
+                    <input type="text"  value="" placeholder="hint" style="width:100%; height:100%;">
                 </td>
             </tr>
         
             {% elif code|strip_length == 0 and answer.decode|strip_length != 0 %}
+            <!--   code, no answer - Invalid by default -->
             <tr class="invalidLine">
                 <td class="tnumber text-white">{{ forloop.counter }}</td>
                 <td>
@@ -222,13 +225,14 @@
                     <input class="lineAnswer" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
                 </td>
                 <td>
-                    <input type="text" value="Hint" style="width:100%; height:100%;">
+                    <input type="text"  value="" placeholder="hint"  style="width:100%; height:100%;">
                 </td>
             </tr>
         
         
         
             {% elif code|strip_length != 0 and answer.decode|strip_length == 0 %}
+            <!--  No code,  answer - Invalid by default -->
             <tr class="invalidLine">
                 <td class="tnumber text-white">{{ forloop.counter }}</td>
                 <td>
@@ -239,7 +243,7 @@
                     <input class="lineAnswer" type="text" value="" style="width:100%; height:100%;" class="has-error">
                 </td>
                 <td>
-                    <input type="text" value="Hint" style="width:100%; height:100%;">
+                    <input type="text"  value="" placeholder="hint" style="width:100%; height:100%;">
                 </td>
             </tr>
             {% endif %}
