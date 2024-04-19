@@ -174,8 +174,8 @@ class Algorithm(models.Model):
         return self.name
 
 class StudentAlgorithm(models.Model):
-    student_id = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
-    algorithm_id = models.ForeignKey(Algorithm, null=True, on_delete=models.SET_NULL)
+    student = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    algorithm = models.ForeignKey(Algorithm, null=True, on_delete=models.SET_NULL)
     answers = models.TextField(max_length=2000, null=True)
     score = models.CharField(max_length=20, null=True)
     percentage = models.CharField(max_length=20, null=True)
