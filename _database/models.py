@@ -158,14 +158,14 @@ class Item(models.Model):
 class Page(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
     content = models.TextField(max_length=2000, null=True) # Required Field
-    item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL) # The module this algorithm
+    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE) # The module this algorithm
 
     def __str__(self) -> str:
         return self.name
 
 class Algorithm(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
-    item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL) # The module this algorithm  belongs to
+    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE) # The module this algorithm  belongs to
     lines = models.TextField(max_length=2000, null=True)
     answers = models.TextField(max_length=2000, null=True)
     hints = models.TextField(max_length=2000, null=True)
