@@ -105,34 +105,6 @@
                 </a>
               </div>
             {% endif %}
-          
-          <!-- nav bar to create class, algorithm, and delete button for that module-->
-          <div class="accordion-body p-0 ">
-
-            <nav class="navbar navbar-expand-sm navbar-light">
-              <div class="container-fluid bg-transparent">
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                      aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown pb-0">
-                          <a 
-                              href="{% url 'studentModule' student_class.id module.id %}"
-                              class="accordionSubBtn nav-link " role="button"
-                              style="">
-                              Manage
-                          </a>
-                          </li>
-                          
-                      </ul>
-                  </div>
-              </div>
-            </nav>
-
-          </div>
         </div>
     </div>
   
@@ -159,66 +131,6 @@
 
 
 <script>
-  /*
-    Parse the accordion structure to retrieve the current ordering 
-    and create a new ordering dictionary 
-    and load that dictionary in the hidden input of the ordering form
-   */
-  var dictionary = {};
-  const saveOrderingButton = document.getElementById('saveOrdering');
-  const orderingForm = document.getElementById('orderingForm');
-  const formInputOrder = orderingForm.querySelector('#orderingInput');
-
-  function saveOrdering() {
-    var accordionItems = document.querySelectorAll('.accordion-item');
-    var accordionDictionary = {};
-
-    accordionItems.forEach(function (item) {
-      var header = item.querySelector('.moduleId');
-      var content = item.querySelector('.moduleOrder');
-      var key = header.textContent.trim();
-      var value = content.textContent.trim();
-      accordionDictionary[key] = value;
-    });
-
-    console.log("Accordion Dictionary:", accordionDictionary);
-    orderDict = JSON.stringify(accordionDictionary)
-    formInputOrder.value = orderDict
-
-    // Submit the form 
-    orderingForm.submit()
-  }
-  /* Add event listener to the save ordering button and call saveOrdering function above */
-  saveOrderingButton.addEventListener('click', saveOrdering);
-
-
-  // Initialize Sortable.js for the accordion
-  new Sortable(document.getElementById('accordionPanels'), {
-    animation: 150,
-    ghostClass: 'sortable-ghost',
-    onEnd: function (evt) {
-      // Update the order of the accordion items after dragging
-      updateAccordionOrder();
-    }
-  });
-
-  // Function to update the order of accordion items
-  function updateAccordionOrder() {
-    var accordionList = document.getElementById('accordion-list');
-    var accordionItems = document.querySelectorAll('.accordion-item');
-    var accordionOrder = [];
-
-    for (var i = 0; i < accordionItems.length; i++) {
-      var button = accordionItems[i].querySelector('.accordion-button');
-      var order = button.querySelector(".moduleOrder")
-      accordionOrder.push(button.textContent.trim());
-      order.innerHTML = i + 1;
-    }
-
-    console.log('New accordion order:', accordionOrder);
-    // Here you can perform any action with the updated order
-  }
-
   // Add click event listener to accordion headers to toggle visibility
   var accordionHeaders = document.querySelectorAll('.accordion-header');
   accordionHeaders.forEach(function (header) {
