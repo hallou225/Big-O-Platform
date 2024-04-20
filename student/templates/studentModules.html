@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block css %}    
+<!-- <link rel="stylesheet" type="text/css" href="{% static '/css/studentModules.css'%}"> -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"> -->
+<link rel="stylesheet"  href="{% static '/css/hljs.default.min.css' %}" ">
+<style>
+
+</style>
+{% endblock %}
+
+{% block javascript %}    
+<!-- <script src="{% static '/js/studentModules.js'%}"></script> -->
+<script src="{% static 'js/Sortable.min.js' %}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'student_sidebar.html' %}
+{% endblock %}
+
+{% block path %}   
+        <a class="nav-item nav-link path" href="/student">Home</a>
+        <a class="nav-item nav-link path" href="/student/class/{{student_class.id}}" >{{ student_class.class_name }}</a>
+        <a class="nav-item nav-link path activePath"href="/student/class/{{student_class.id}}/studentModules/">Modules</a>
+{% endblock %}
+
+{% block content %}
+<div class="container ">
+
+  <div class="d-flex bd-highlight mb-0">
+    <div class="p-2 bd-highlight"><h3>Class Name: {{student_class.class_name}}</h3></div>
+  </div>
+
+{% if not items and not empty_modules %}
+<div class="d-flex justify-content-center">
+  <h4 class="text-danger">This class has no modules</h4>
+</div>
+{% else %}
+
+<hr>
+
+    <!-- Button to toggle visibility of all accordion items -->
+  <div class="container">
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-primary mb-3 ml-10" id="toggleAccordion" aria-expanded="False">Collapse All</button>
+    </div>
+  </div>
+
+  <div class="accordion" id="accordionPanels">
+    {% for module in modules %}
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-heading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{module.id}}" aria-expanded="true"
+                    aria-controls="collapse{{module.id}}" style="width:100%;">
+                    <span class="moduleId d-none">{{module.id}}</span>
+                    <span class="moduleName">{{module.name}}</span>
+                    <span class="moduleOrder d-none">{{module.order}} </span>
+            </button>
+        </h2>
+        <!-- remove show class to hide content. -->
+        <div id="collapse{{module.id}}" class="accordion-collapse collapse show"
+              aria-labelledby="collapse{{module.id}}">
+            {% for item in items %}
+            {% if module.name == item.module.name %}
+
+            <div class="list-group accordion-body p-0">
+                  {% for algorithm in algorithms %}
+                  {% if item.id == algorithm.item.id %}
+                  <!-- <div class="row">
+                      <a class="list-group-item " 
+                      style="border-radius:unset; width:80%" -->                      
+                      <a class="list-group-item " 
+                      style="border-radius:unset;"
+                        href="{% url 'studentAlgorithm' student_class.id module.id algorithm.id %}">
+                        <span class="text-danger">A: </span>
+                        {{algorithm.name}}
+                      </a>
+                      <!-- <button style="width:20%">D</button>
+                    </div> -->
+                      
+                  {% endif %}
+                  {% endfor %}
+
+                  {% for page in pages %}
+                  {% if item.id == page.item.id %}
+                    <a class="list-group-item" 
+                      style="border-radius:unset"
+                      href="{% url 'studentPage' student_class.id module.id page.id %}">
+                      <span class="text-primary">P: </span>
+                      {{page.name}}
+                    </a>
+                  {% endif %}
+                  {% endfor %}
+
+                </div>
+            {% endif %}
+            {% endfor %}
+
+            {% if module in empty_modules %}
+              <div class="list-group accordion-body p-0">
+                <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">
+                  <span class="text-secondary">E: Empty Module</span>
+                </a>
+              </div>
+            {% endif %}
+          
+          <!-- nav bar to create class, algorithm, and delete button for that module-->
+          <div class="accordion-body p-0 ">
+
+            <nav class="navbar navbar-expand-sm navbar-light">
+              <div class="container-fluid bg-transparent">
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                      aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown pb-0">
+                          <a 
+                              href="{% url 'studentModule' student_class.id module.id %}"
+                              class="accordionSubBtn nav-link " role="button"
+                              style="">
+                              Manage
+                          </a>
+                          </li>
+                          
+                      </ul>
+                  </div>
+              </div>
+            </nav>
+
+          </div>
+        </div>
+    </div>
+  
+    {% endfor %}
+  </div> <!-- end of accordion -->
+
+  <form method="post" id="orderingForm" action="">
+    {% csrf_token %}
+    <input type="hidden" id="orderingInput" name="orderDict" value="">
+  </form>
+
+  
+    <!-- Button to save ordering visibility of all accordion items -->
+    <div class="container">
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-primary mb-3 ml-10" id="saveOrdering" aria-expanded="False">Save Ordering</button>
+      </div>
+    </div>
+
+{% endif %}
+
+</div><!-- end of container div -->
+
+
+
+<script>
+  /*
+    Parse the accordion structure to retrieve the current ordering 
+    and create a new ordering dictionary 
+    and load that dictionary in the hidden input of the ordering form
+   */
+  var dictionary = {};
+  const saveOrderingButton = document.getElementById('saveOrdering');
+  const orderingForm = document.getElementById('orderingForm');
+  const formInputOrder = orderingForm.querySelector('#orderingInput');
+
+  function saveOrdering() {
+    var accordionItems = document.querySelectorAll('.accordion-item');
+    var accordionDictionary = {};
+
+    accordionItems.forEach(function (item) {
+      var header = item.querySelector('.moduleId');
+      var content = item.querySelector('.moduleOrder');
+      var key = header.textContent.trim();
+      var value = content.textContent.trim();
+      accordionDictionary[key] = value;
+    });
+
+    console.log("Accordion Dictionary:", accordionDictionary);
+    orderDict = JSON.stringify(accordionDictionary)
+    formInputOrder.value = orderDict
+
+    // Submit the form 
+    orderingForm.submit()
+  }
+  /* Add event listener to the save ordering button and call saveOrdering function above */
+  saveOrderingButton.addEventListener('click', saveOrdering);
+
+
+  // Initialize Sortable.js for the accordion
+  new Sortable(document.getElementById('accordionPanels'), {
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    onEnd: function (evt) {
+      // Update the order of the accordion items after dragging
+      updateAccordionOrder();
+    }
+  });
+
+  // Function to update the order of accordion items
+  function updateAccordionOrder() {
+    var accordionList = document.getElementById('accordion-list');
+    var accordionItems = document.querySelectorAll('.accordion-item');
+    var accordionOrder = [];
+
+    for (var i = 0; i < accordionItems.length; i++) {
+      var button = accordionItems[i].querySelector('.accordion-button');
+      var order = button.querySelector(".moduleOrder")
+      accordionOrder.push(button.textContent.trim());
+      order.innerHTML = i + 1;
+    }
+
+    console.log('New accordion order:', accordionOrder);
+    // Here you can perform any action with the updated order
+  }
+
+  // Add click event listener to accordion headers to toggle visibility
+  var accordionHeaders = document.querySelectorAll('.accordion-header');
+  accordionHeaders.forEach(function (header) {
+    header.addEventListener('click', function () {
+      this.parentElement.classList.toggle('active');
+    });
+  });
+
+
+  // Expand - Collapse accordion items
+  document.getElementById('toggleAccordion').addEventListener('click', function () {
+    var accordionItems = document.querySelectorAll('.accordion-item');
+    var button = document.getElementById('toggleAccordion');
+    var expandAll = button.getAttribute('aria-expanded') === 'false';
+
+    accordionItems.forEach(function (item) {
+      var button = item.querySelector('.accordion-button');
+      var collapse = item.querySelector('.accordion-collapse');
+
+      if (expandAll) {
+        collapse.classList.add('show');
+        button.setAttribute('aria-expanded', 'true');
+        button.classList.remove('collapsed');
+      } else {
+        collapse.classList.remove('show');
+        button.setAttribute('aria-expanded', 'false');
+        button.classList.add('collapsed');
+      }
+    });
+
+    button.setAttribute('aria-expanded', expandAll ? 'true' : 'false');
+    button.innerText = expandAll ? 'Collapse All' : 'Expand All';
+  });
+</script>
+
+{% endblock %}
+
+{% block testblock %}
+
+{% endblock %}
+
+{% block endscript %}
+<script>
+</script>
+{% endblock %}
