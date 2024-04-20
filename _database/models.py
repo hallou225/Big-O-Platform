@@ -173,6 +173,12 @@ class Algorithm(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class StudentAlgorithm(models.Model):
+    student = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    algorithm = models.ForeignKey(Algorithm, null=True, on_delete=models.SET_NULL)
+    answers = models.TextField(max_length=2000, null=True)
+    score = models.CharField(max_length=20, null=True)
+    percentage = models.CharField(max_length=20, null=True)
 
 '''class Line(models.Model):
     code      = models.CharField(max_length=100, null=True)                          # Required Field

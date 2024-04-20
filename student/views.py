@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from bigo.forms import *
 from markdownx.utils import markdown
+import ast
 
 # Create your views here.
 
@@ -224,6 +225,44 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
     student_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
     algorithm = Algorithm.objects.get(id=algorithm_pk)
+<<<<<<< HEAD
+=======
+    codes = algorithm.lines.split("\n")
+    answers = algorithm.answers.split("\n")
+    hints = algorithm.hints.split("\n")
+
+    # Retrieving the answers submitted by the student and calculate the grade
+    score = 0
+    lineStatus = []
+    studentAnswers = []
+    if request.method == 'POST':
+        studentAnswers = request.POST.getlist('answers[]')
+        for i in range(len(codes)):
+            # If student answers (the current line in iteration) correctly
+            if answers[i] == studentAnswers[i]:  # Correct
+                score += 1
+                lineStatus.append(True)
+            else:                              # Incorrect
+                lineStatus.append(False)
+
+    # If there's a previous answer stored in the database for this student and this algorithm...
+    else:
+        try:
+            student_algorithm = StudentAlgorithm.objects.get(student=request.user.id, algorithm=algorithm_pk)
+            studentAnswers = ast.literal_eval(student_algorithm.answers)
+            print(f"type(studentAnswers): {type(studentAnswers)}")
+            print(f"studentAnswers: {studentAnswers}")
+            for i in range(len(codes)):
+                # If student answers (the current line in iteration) correctly
+                if answers[i] == studentAnswers[i]:  # Correct
+                    score += 1
+                    lineStatus.append(True)
+                else:                              # Incorrect
+                    lineStatus.append(False)
+        except:
+            pass
+        
+>>>>>>> bf1aabec1ccc33f0dca8c517e345ba7e6d2112c9
     
     lines = algorithm.line_set.all()
     print("lines: ", lines)
@@ -254,6 +293,47 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
         
         print(f"scores: {scores}")  # Scores for each line
         print(f"algorithm_score: {algorithm_score}")   # Total score for algorithm
+
+    ###################################### Save the student's submission in the database ######################################
+
+    # If the student has never submitted for this algorithm...
+
+    try:
+        student_algorithm = StudentAlgorithm.objects.get(student=request.user.id, algorithm=algorithm_pk)
+        # Student has ALREADY submitted for this algorithm...
+        print("STUDENT HAS ALREADY SUBMITTED FOR THIS ALGORITHM BEFORE")
+
+        # Storing answers, score, and percentage in the database
+        student_algorithm.answers = studentAnswers
+        student_algorithm.score = score
+        student_algorithm.percentage = percentage
+        student_algorithm.save()
+
+    except:
+        # Student has NEVER submitted for this algorithm before...
+        print("STUDENT HAS NEVER SUBMITTED BEFORE")
+
+        # Creating a new instance of the StudentAlgorithm model
+        student_algorithm = StudentAlgorithm(
+            student_id = request.user.id, algorithm_id = algorithm_pk,
+            answers = studentAnswers, score = score, percentage = percentage
+        )
+        student_algorithm.save()
+
+        # student_algorithm = StudentAlgorithm()
+        # student_algorithm.student_id = request.user.id
+        # student_algorithm.algorithm_id = algorithm_pk
+        # student_algorithm.answers = studentAnswers
+        # student_algorithm.score = score
+        # student_algorithm.percentage = percentage
+        # student_algorithm.save()
+
+        # student_algorithm = StudentAlgorithm.objects.create(
+        #     student_id = request.user.id, algorithm_id = algorithm_pk,
+        #     answers = studentAnswers, score = score, percentage = percentage
+        # )
+
+    ###########################################################################################################################
 
     context = {"student_class": student_class, "module": module, "algorithm": algorithm,
                "lines": lines, "scores": scores.items(), "algorithm_score": algorithm_score}
