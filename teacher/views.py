@@ -314,7 +314,6 @@ def modules(request, class_pk):
             "teacher_class": teacher_class
         }
         
-    
         if orderDict:
             try:
                 # Convert string representation to dictionary
@@ -336,9 +335,6 @@ def modules(request, class_pk):
         else:
             return JsonResponse({'success': False, 'error': 'No data provided'})
     else:
-
-        
-
         items = Item.objects.none()
         algorithms = Algorithm.objects.none()
         pages = Page.objects.none()
@@ -374,56 +370,6 @@ def modules(request, class_pk):
         for page in pages:
             print("page: ", page)
         
-        # for module in teacher_modules:
-        #     print("module.name: ", module.name)
-        #     for item in items:
-        #         if module.name == item.module.name:
-        #             print("Type: ", item.type)
-        #             if str(item.type) == "Algorithm":
-        #                 #i = Algorithm.objects.get(item=item.module.id)                 
-        #                 i = Algorithm.objects.filter(item=item.id)
-        #                 A.append(i)
-        #                 print(i)
-        #                 print("this is an algorithm\n")     
-
-        #             elif str(item.type) == "Page":     
-        #                 i = Page.objects.get(item=item.id)
-        #                 P.append(i)
-        #                 print(i)
-        #                 print("this is a page: \n")          
-        #             print("Algorithms ", A)
-        #             print("Pages: ", P)
-
-        # teacher_class = Class.objects.get(id=class_pk)
-        # module = Module.objects.get(id=module_pk)
-
-        # algorithm_lines = {}
-        # for item in module.item_set.all():
-        #     if item.type == "Algorithm":
-        #         if algorithm.name not in algorithm_lines:
-        #             algorithm_lines[algorithm.name] = []
-        #         for line in algorithm.line_set.all():
-        #             algorithm_lines[algorithm.name].append({
-        #             'code': line.code,
-        #             'answer': line.answer,
-        #             'hint': line.hint
-        #         })
-        # for algorithm_name, lines in algorithm_lines.items():
-        #     #print(f"Algorithm: {algorithm_name}")
-        #     output = f"""
-        #             <p>{algorithm_name}</p>
-        #              """
-        #     for line in lines:
-        #         output += f"""
-        #             <p>{line["code"]}</p>
-        #             <p>{line["answer"]}</p>
-        #             <p>{line["hint"]}</p>
-        #              """
-                    
-        #         print(output)
-        #     if item.type == "Pages":
-        #         print("page:", item.name)
-        
         # Order the list of modules by order
         teacher_modules = teacher_modules.order_by('order')
         context = {
@@ -435,9 +381,6 @@ def modules(request, class_pk):
             "algorithms": algorithms,
             "pages": pages
         }
-        
-        
-        # context = {"teacher_class": teacher_class, "module": module, "algorithm_lines_items": algorithm_lines.items()}
 
         return render(request, 'modules.html', context)
 
@@ -465,10 +408,28 @@ def deletePage(request, class_pk, module_pk, page_pk):
     if not isTeacher(request):
         return redirect("/login")
     
+    #Get the teacher class 
+    teacher_class = Class.objects.get(id=class_pk)
+    #Get the module of the item   
+    module =  Module.objects.get(id=module_pk)
+    #Get the page to delete 
+    page = Page.objects.get(id=page_pk)
+    # get the item of this page
+    item = Item.objects.get(id=page.item.id)
+    print(f"\n{item}\n{page}")
+
+    if request.method == "POST":
+        item.delete()
+        url = reverse("modules", kwargs={"class_pk": class_pk})
+        return redirect(url)
+    
     context = {
     "class_pk": class_pk,
     "module_pk": module_pk,
-    "page_pk": page_pk
+    "page_pk": page_pk,
+    "teacher_class": teacher_class,
+    "module": module,
+    "page": page
     }
     return render(request, 'deletePage.html', context)
 
@@ -478,12 +439,55 @@ def deleteAlgorithm(request, class_pk, module_pk, algorithm_pk):
     if not isTeacher(request):
         return redirect("/login")
     
+    #Get the teacher class 
+    teacher_class = Class.objects.get(id=class_pk)
+    #Get the module of the item   
+    module =  Module.objects.get(id=module_pk)
+    # Get the algorithm to delete 
+    algorithm = Algorithm.objects.get(id=algorithm_pk)
+    # get the item of this algorithm
+    item = Item.objects.get(id=algorithm.item.id)
+
+    if request.method == "POST":
+        item.delete()
+        url = reverse("modules", kwargs={"class_pk": class_pk})
+        return redirect(url)
+    
     context = {
     "class_pk": class_pk,
     "module_pk": module_pk,
-    "algorithm_pk":algorithm_pk
+    "algorithm_pk":algorithm_pk,
+    "teacher_class": teacher_class,
+    "module": module,
+    "algorithm":algorithm
     }
     return render(request, 'deleteAlgorithm.html', context)
+
+
+@login_required(login_url="/login")
+def deleteModule_template(request, class_pk, module_pk):
+    print("\nTeacher deleteModule: def deleteModule(request):\n-----------------------------------------------")
+    if not isTeacher(request):
+        return redirect("/login")
+    
+    #Get the teacher class 
+    teacher_class = Class.objects.get(id=class_pk)
+    #Get all the teacher's module 
+    teacher_modules = teacher_class.module_set.all()
+    print("Teacher's Module: ", teacher_modules)
+    #Get the module that matches the module_pk
+    print(f"pk: {module_pk}")
+    module =  teacher_modules.get(id=module_pk)
+    print(" ->", module.id, module.name, module.parent_class)
+
+    if request.method == "POST":
+        module.delete()
+        url = reverse("teacherClass", kwargs={"class_pk":teacher_class.id})
+        return redirect(url)
+
+    context = {"teacher_class": teacher_class, "module": module}
+    return render(request, 'deleteModule.html', context)
+
 
 
 @login_required(login_url="/login")
