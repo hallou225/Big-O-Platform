@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 import json
 import re
+from django.views.generic import UpdateView
 
 
 def clean_answer(text):
@@ -392,7 +393,23 @@ def teacherViewAlgorithm(request, class_pk, algorithm_pk):
     if not isTeacher(request):
         return redirect("/login")
     
-    return render(request, '_template.html')
+    algorithm = Algorithm.objects.get(id=algorithm_pk)
+    item = Item.objects.get(id=algorithm.item.id)
+    module = Module.objects.get(id=item.module.id)
+    module_pk = module.id
+    teacher_class = Class.objects.get(id=class_pk)
+
+    context = {
+        'class_pk': class_pk,
+        'module_pk': module_pk,
+        'algorithm_pk': algorithm_pk,
+        "teacher_class": teacher_class,
+        "module": module,
+        "algorithm": algorithm
+    }
+
+    return render(request, 'algorithm.html', context)
+
 
 @login_required(login_url="/login")
 def teacherViewPage(request, class_pk, page_pk):
@@ -400,22 +417,97 @@ def teacherViewPage(request, class_pk, page_pk):
     if not isTeacher(request):
         return redirect("/login")
     
-    return render(request, '_template.html')
+    page = Page.objects.get(id=page_pk)
+    item = Item.objects.get(id=page.item.id)
+    module = Module.objects.get(id=item.module.id)
+    module_pk = module.id
+    teacher_class = Class.objects.get(id=class_pk)
+
+    context = {
+        'class_pk': class_pk,
+        'module_pk': module_pk,
+        'page_pk': page_pk,
+        "teacher_class": teacher_class,
+        "module": module,
+        "page": page
+    }
+
+    return render(request, 'page.html', context)
+
+
 
 @login_required(login_url="/login")
-def deletePage(request, class_pk, module_pk, page_pk):
+def updateAlgorithm(request, class_pk, algorithm_pk):
+    print("\nTeacher Views: def teacherUpdateAlgorithm(request):\n-----------------------------------------------")
+    if not isTeacher(request):
+        return redirect("/login")
+    
+    algorithm = Algorithm.objects.get(id=algorithm_pk)
+    item = Item.objects.get(id=algorithm.item.id)
+    module = Module.objects.get(id=item.module.id)
+    module_pk = module.id
+    teacher_class = Class.objects.get(id=class_pk)
+
+    context = {
+        'class_pk': class_pk,
+        'module_pk': module_pk,
+        'algorithm_pk': algorithm_pk,
+        "teacher_class": teacher_class,
+        "module": module,
+        "algorithm": algorithm
+    }
+
+    return render(request, '_template.html', context)
+
+@login_required(login_url="/login")
+def updatePage(request, class_pk, page_pk):
+    print("\nTeacher Views: def teacherUpdatePage(request):\n-----------------------------------------------")
+    if not isTeacher(request):
+        return redirect("/login")
+    
+    page = Page.objects.get(id=page_pk)
+    item = Item.objects.get(id=page.item.id)
+    module = Module.objects.get(id=item.module.id)
+    module_pk = module.id
+    teacher_class = Class.objects.get(id=class_pk)
+
+    form = CreatePageForm(instance=page, initial={'item': item})
+    if request.method == 'POST':
+        form = CreatePageForm(request.POST, instance=page)
+        if form.is_valid():
+            form.save()
+            
+            # return to the view page 
+            url = reverse("teacherViewPage", kwargs={"class_pk": class_pk, "page_pk": page_pk})
+            return redirect(url)
+
+
+    context = {
+        'class_pk': class_pk,
+        'module_pk': module_pk,
+        'page_pk': page_pk,
+        "teacher_class": teacher_class,
+        "module": module,
+        "page": page,
+        "form":form
+    }
+
+    return render(request, 'updatePage.html', context)
+
+
+
+@login_required(login_url="/login")
+def deletePage(request, class_pk, page_pk):
     print("\nTeacher Views: def deletePage(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
     
-    #Get the teacher class 
-    teacher_class = Class.objects.get(id=class_pk)
-    #Get the module of the item   
-    module =  Module.objects.get(id=module_pk)
-    #Get the page to delete 
     page = Page.objects.get(id=page_pk)
-    # get the item of this page
     item = Item.objects.get(id=page.item.id)
+    module =  Module.objects.get(id=item.module.id)
+    module_pk = module.id
+    teacher_class = Class.objects.get(id=class_pk)
+
     print(f"\n{item}\n{page}")
 
     if request.method == "POST":
@@ -434,19 +526,16 @@ def deletePage(request, class_pk, module_pk, page_pk):
     return render(request, 'deletePage.html', context)
 
 @login_required(login_url="/login")
-def deleteAlgorithm(request, class_pk, module_pk, algorithm_pk):
+def deleteAlgorithm(request, class_pk, algorithm_pk):
     print("\nTeacher Views: def deleteAlgorithm(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
     
-    #Get the teacher class 
-    teacher_class = Class.objects.get(id=class_pk)
-    #Get the module of the item   
-    module =  Module.objects.get(id=module_pk)
-    # Get the algorithm to delete 
     algorithm = Algorithm.objects.get(id=algorithm_pk)
-    # get the item of this algorithm
     item = Item.objects.get(id=algorithm.item.id)
+    module =  Module.objects.get(id=item.module.id)
+    module_pk = module.id
+    teacher_class = Class.objects.get(id=class_pk)
 
     if request.method == "POST":
         item.delete()
@@ -496,8 +585,6 @@ def module(request, class_pk, module_pk):
     if not isTeacher(request):
         return redirect("/login")
 
-
-    
     teacher_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
     items = Item.objects.filter(module=module.id)
@@ -538,8 +625,6 @@ def module(request, class_pk, module_pk):
         "algorithms": algorithms,
         "pages": pages
     }
-    
-    # context = {"teacher_class": teacher_class, "module": module, "algorithm_lines_items": algorithm_lines.items()}
 
     return render(request, 'module.html', context)
 
@@ -547,7 +632,7 @@ def module(request, class_pk, module_pk):
 
 @login_required(login_url="/login")
 def createAlgorithm(request, class_pk, module_pk):
-    print("\ncreateAlgorithm Views: def createAlgorithm(request):\n------------------- current ----------------------------")
+    print("\ncreateAlgorithm Views: def createAlgorithm(request):\n-------------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
 
@@ -555,75 +640,16 @@ def createAlgorithm(request, class_pk, module_pk):
     module = Module.objects.get(id=module_pk)
     context = {"teacher_class": teacher_class, "module": module}
 
+    # for table code line validation
     invalidCodeLine = False
 
-    # Extracting table data from the HTML form
+    # variables for extracting table data from the HTML form
     lines = []
     answers = []
     hints = []
-        
-    if request.method == "POST" and request.POST.getlist('submitAlgorithmForm'):
-        print(f"POST = {request.POST}")
-        table = request.POST.getlist('table_data')
-        print("TABLE = ", table)
 
-        formattedTable = []
-        for item in table:
-            formattedItem = eval(item)
-            formattedTable.append(formattedItem)
-        formattedTable = formattedTable[0]
-        print("FORMATTED_TABLE = ", formattedTable)
-
-        lines = ""
-        answers = ""
-        hints = ""
-
-        for i in range(len(formattedTable)):
-            print("Line: ", formattedTable[i])
-            lines += formattedTable[i]["code"] + "\n"
-            
-            answer = formattedTable[i]["answer"]
-            answer = clean_answer(answer)
-            answers += answer + "\n"
-
-            hint = formattedTable[i]["hint"] 
-            hint += " "
-            hints += hint + "\n"
-        
-        print(f"\n\nLines:\n{lines}")
-        print(f"Answers:\n{answers}")
-        print(f"Hints:\n{hints}]")
-
-        # return HttpResponse(
-        #     "Lines\n" + 
-        #     lines + 
-            
-        #     "\nAnswers\n" +
-        #      answers + 
-        #     "\nHints\n" + 
-        #      hints
-        #  )
-
-        item = Item.objects.create(
-            type = ItemType.objects.get(type="Algorithm"),
-            module = Module.objects.get(id=module_pk),
-        )
-
-        algorithmName = request.POST.getlist('algorithm_name')[0]
-
-        algorithm = Algorithm.objects.create(
-            name = algorithmName,
-            item = item,
-            lines = lines.rstrip("\n"),
-            answers = answers.rstrip("\n"),
-            hints = hints.rstrip("\n"),
-        )
-
-        return redirect(reverse("modules", kwargs={"class_pk": class_pk}))
-    
-    elif request.method == "POST" and request.POST.getlist('fileUploadForm'):
+    if request.method == "POST" and request.POST.getlist('fileUploadForm'):
         print("fileUpload")
-
         try:
             algorithm_file = request.FILES['algorithmUpload']
             algorithm_file_name = algorithm_file.name
@@ -686,8 +712,68 @@ def createAlgorithm(request, class_pk, module_pk):
         except MultiValueDictKeyError:
             print("No file was chosen.")
 
-    return render(request, 'createAlgorithm.html', context)
+    elif request.method == "POST" and request.POST.getlist('submitAlgorithmForm'):
+        print(f"POST = {request.POST}")
+        table = request.POST.getlist('table_data')
+        print("TABLE = ", table)
 
+        formattedTable = []
+        for item in table:
+            formattedItem = eval(item)
+            formattedTable.append(formattedItem)
+        formattedTable = formattedTable[0]
+        print("FORMATTED_TABLE = ", formattedTable)
+
+        lines = ""
+        answers = ""
+        hints = ""
+
+        for i in range(len(formattedTable)):
+            print("Line: ", formattedTable[i])
+            lines += formattedTable[i]["code"] + "\n"
+            
+            answer = formattedTable[i]["answer"]
+            answer = clean_answer(answer)
+            answers += answer + "\n"
+
+            hint = formattedTable[i]["hint"] 
+            hint += " "
+            hints += hint + "\n"
+        
+        print(f"\n\nLines:\n{lines}")
+        print(f"Answers:\n{answers}")
+        print(f"Hints:\n{hints}]")
+
+        # return HttpResponse(
+        #     "Lines\n" + 
+        #     lines + 
+            
+        #     "\nAnswers\n" +
+        #      answers + 
+        #     "\nHints\n" + 
+        #      hints
+        #  )
+
+        # After the posted data for the algorithm are validated
+        # Create an Item for this algorithm
+        item = Item.objects.create(
+            type = ItemType.objects.get(type="Algorithm"),
+            module = Module.objects.get(id=module_pk),
+        )
+
+        algorithmName = request.POST.getlist('algorithm_name')[0]
+
+        algorithm = Algorithm.objects.create(
+            name = algorithmName,
+            item = item,
+            lines = lines.rstrip("\n"),
+            answers = answers.rstrip("\n"),
+            hints = hints.rstrip("\n"),
+        )
+
+        return redirect(reverse("modules", kwargs={"class_pk": class_pk}))
+    
+    return render(request, 'createAlgorithm.html', context)
 
 
 @login_required(login_url="/login")
@@ -697,26 +783,28 @@ def createPage(request, class_pk, module_pk):
         return redirect("/login")
 
     teacher_class = Class.objects.get(id=class_pk)
-    module = Module.objects.get(id=module_pk)
-    context = {"teacher_class": teacher_class, "module": module}
+    module = Module.objects.get(id=module_pk)    
+    form = CreatePageForm()
+    context = {"form": form, "teacher_class": teacher_class, "module": module}
 
+    if request.method == "POST":
+        # Get the posted element
+        name = request.POST.get('name')
+        content = request.POST.get('content')
+        
+        # Create an Item for this page
+        item = Item.objects.create(
+            type = ItemType.objects.get(type="Page"),
+            module = Module.objects.get(id=module_pk),
+        )
+        page = Page.objects.create(
+            name = name,
+            item = item,
+            content = content,
+        )
+
+        # return to the module page
+        url = reverse("modules", kwargs={"class_pk": class_pk})
+        return redirect(url)
+    
     return render(request, 'createPage.html', context)
-
-
-@login_required(login_url="/login")
-def algorithm(request, class_pk, module_pk):
-    print("\nupload Algorithm Views: def uploadAlgorithm(request):\n-----------------------------------------------")
-    if not isTeacher(request):
-        return redirect("/login")
-
-    teacher_class = Class.objects.get(id=class_pk)
-    module = Module.objects.get(id=module_pk)
-    form = AlgorithmForm()
-
-
-    context = {
-        "form":form,
-        "teacher_class": teacher_class,
-        "module": module
-    }
-    return render(request, 'algorithm.html', context)

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
 import uuid
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -157,7 +158,8 @@ class Item(models.Model):
 
 class Page(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
-    content = models.TextField(max_length=2000, null=True) # Required Field
+    # content = models.TextField(max_length=2000, null=True) # Required Field
+    content = RichTextField(blank=True, null=True)
     item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE) # The module this algorithm
 
     def __str__(self) -> str:

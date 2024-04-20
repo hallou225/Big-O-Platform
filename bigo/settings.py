@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     '_database',
     'about',
     'register',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

@@ -56,3 +56,8 @@ class UpdateAccountForm(ModelForm):
     class Meta:
         model = Account
         fields = ['first_name', 'middle_name', 'last_name', 'display_name', 'email']
+
+class CreatePageForm(ModelForm):
+    class Meta:
+        model = Page
+        fields = '__all__'
