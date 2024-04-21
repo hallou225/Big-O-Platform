@@ -5,6 +5,62 @@
     <!-- 
         <link rel="stylesheet" type="text/css" href="{% static '/css/teacher.css'%}">
     --> 
+    <!-- <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <style>
+        #code-status {
+            width: 40px;
+        }
+    
+    
+        input.form-control {
+            margin: 0;
+        }
+    
+        pre {
+            margin:0;
+            padding:0;
+        }
+    
+        #algorithmTable {
+            font-family: monospace;
+            background-color:none;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+    
+        th {
+            background-color: #0e6efd;
+            border:1px solid black;
+            color: white;
+        }
+    
+        #algorithmTable td, tr, th {
+            border:1px solid black;
+        }
+        input {
+            /* border-radius: unset; */
+            padding:4px;
+        }
+        input:focus {
+            background-color: yellow;
+            border-radius: 0%;
+        }
+        td.tnumber {
+            text-align: center;
+        } 
+    
+        .validLine {
+            background-color: green;
+        }
+    
+        .invalidLine {
+            background-color: red;
+        }
+    
+    
+    </style>
 {% endblock %}
 
 {% block javascript %}    
@@ -36,21 +92,46 @@
     </div>
 
     <div class="ms-auto p-2 bd-highlight">
-        <a class="btn btn-secondary col-auto" href="{% url 'updateAlgorithm' class_pk algorithm_pk %}">
+        <a class="btn btn-primary col-auto" href="{% url 'updateAlgorithm' class_pk algorithm_pk %}">
             Update
         </a>
-        <a class="btn btn-secondary col-auto" href="{% url 'deleteAlgorithm' class_pk  algorithm_pk %}">
+        <a class="btn btn-danger col-auto" href="{% url 'deleteAlgorithm' class_pk  algorithm_pk %}">
             Delete
         </a>
     </div>
 </div>
 
 <hr>
-
-<div class="row">
-    {{algorithm.lines}}
-    {{algorithm.answers}}
-    {{algorithm.hints}}
+<!-- row for displaying the content of the uploaded algorithm/answer-->
+<div class="row border-bottom p-2 mb-4">
+    <div style="width:2.5%; padding:0;margin:0;">
+        <h3> - </h3>
+        <hr>
+        {% for code in codes %}
+        <pre><code class="language-java">{{ forloop.counter }}<br></code></pre>
+        {% endfor %}
+    </div>
+    <div class="col-6 p-0">
+        <h3>Algorithm:</h3>
+        <hr>
+        {% for code in codes %}
+        <pre><code class="language-java">{{ code }}<br></code></pre>
+        {% endfor %}
+    </div>
+    <div class="col">
+        <h3>Answers:</h3>
+        <hr>
+        {% for answer in answers %}
+        <pre><code>{{ answer }}<br></code></pre>
+        {% endfor %}
+    </div>
+    <div class="col">
+        <h3>Hints:</h3>
+        <hr>
+        {% for hint in hints %}
+        <pre><code>{{ hint }}<br></code></pre>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

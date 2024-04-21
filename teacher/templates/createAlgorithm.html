@@ -55,8 +55,9 @@
     .invalidLine {
         background-color: red;
     }
-
-
+    #validationMessage {
+        font-weight: bold;
+    }
 </style>
 {% endblock %}
 
@@ -253,14 +254,24 @@
     </table>
 
     <input type="hidden" name="submitAlgorithmForm">
-
+    <br>
     {% if invalidCodeLine == True %}
-        <p id="invalidLineMessage" class="text-danger">Please fix invalid lines.</p>
+        <p id="validationMessage" class="text-danger"> 
+            Line Validation: Failed
+            <br>
+            lines with codes must have an answer and vice versa. Fix the invalid line to enable the submission button. 
+        </p>
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary" id="submitAlgorithmButton" disabled="true" onclick="parseTable()">Submit</button>
         </div>
     {% else %}
-    <p id="invalidLineMessage" class="text-success">All lines are now valid.</p>
+        <p id="validationMessage" class="text-success">
+            Line validation: Passed
+            <br>
+            All the lines have passed the validation test. You may submit this algorithm. 
+            <br>
+            <span class="ps-5"></span>
+        </p>
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary" id="submitAlgorithmButton" onclick="parseTable()">Submit</button>
         </div>
@@ -315,12 +326,9 @@
         form.appendChild(algorithmName);
 
         // Submit the form
-        // form.submit();
+        form.submit();
 
     }
-
-
-
 
 
     // Add event listeners to inputs in the table rows
@@ -332,6 +340,16 @@
     });
 
     function validateLine() {
+        var validationErrorMsg = `        
+        Line Validation: Failed
+        <br>
+        lines with codes must have an answer and vice versa. Fix the invalid line to enable the submission button. 
+        `
+        var validationSuccessMsg = `
+            Line validation: Passed
+            <br>
+            All the lines have passed the validation test. You may submit this algorithm. 
+        `
         // Get the parent row of the input
         var row = this.closest('tr');
 
@@ -346,13 +364,13 @@
             row.classList.remove("validLine");
             row.classList.add("invalidLine");
             submitAlgorithmButton.disabled = true;
-            document.getElementById("invalidLineMessage").innerHTML = "Please fix invalid lines.";
+            document.getElementById("validationMessage").innerHTML = validationErrorMsg;
             console.log("Changing to red1");
         } else if (codeInput.value.trim().length !== 0 && answerInput.value.trim().length === 0) {
             row.classList.remove("validLine");
             row.classList.add("invalidLine");
             submitAlgorithmButton.disabled = true;
-            document.getElementById("invalidLineMessage").innerHTML = "Please fix invalid lines.";
+            document.getElementById("validationMessage").innerHTML = validationErrorMsg;
             console.log("Changing to red2");
         } else {
             row.classList.remove("invalidLine");
@@ -366,17 +384,17 @@
             var row = table.rows[i];
             if (row.classList.contains("invalidLine")) {
                 tableStatus = "invalid";
-                document.getElementById("invalidLineMessage").innerHTML = "Please fix invalid lines.";
-                document.getElementById("invalidLineMessage").classList.remove("text-success");
-                document.getElementById("invalidLineMessage").classList.add("text-danger");
+                document.getElementById("validationMessage").innerHTML = validationErrorMsg;
+                document.getElementById("validationMessage").classList.remove("text-success");
+                document.getElementById("validationMessage").classList.add("text-danger");
             }
         }
 
         if (tableStatus === "valid") {
             submitAlgorithmButton.disabled = false;
-            document.getElementById("invalidLineMessage").innerHTML = "All lines are now valid.";
-            document.getElementById("invalidLineMessage").classList.remove("text-danger");
-            document.getElementById("invalidLineMessage").classList.add("text-success");
+            document.getElementById("validationMessage").innerHTML = validationSuccessMsg;
+            document.getElementById("validationMessage").classList.remove("text-danger");
+            document.getElementById("validationMessage").classList.add("text-success");
         }
 
     }

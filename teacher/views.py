@@ -393,11 +393,18 @@ def teacherViewAlgorithm(request, class_pk, algorithm_pk):
     if not isTeacher(request):
         return redirect("/login")
     
-    algorithm = Algorithm.objects.get(id=algorithm_pk)
+    algorithm = Algorithm.objects.get(id=algorithm_pk)    
+    codes = algorithm.lines.split("\n")
+    answers = algorithm.answers.split("\n")
+    hints = algorithm.hints.split("\n")
+
     item = Item.objects.get(id=algorithm.item.id)
     module = Module.objects.get(id=item.module.id)
     module_pk = module.id
     teacher_class = Class.objects.get(id=class_pk)
+
+    
+    
 
     context = {
         'class_pk': class_pk,
@@ -405,7 +412,11 @@ def teacherViewAlgorithm(request, class_pk, algorithm_pk):
         'algorithm_pk': algorithm_pk,
         "teacher_class": teacher_class,
         "module": module,
-        "algorithm": algorithm
+        "algorithm": algorithm,
+        "codes": codes,
+        "answers": answers,
+        "hints": hints,
+
     }
 
     return render(request, 'algorithm.html', context)
@@ -442,11 +453,17 @@ def updateAlgorithm(request, class_pk, algorithm_pk):
     if not isTeacher(request):
         return redirect("/login")
     
-    algorithm = Algorithm.objects.get(id=algorithm_pk)
+    algorithm = Algorithm.objects.get(id=algorithm_pk) 
+    codes = algorithm.lines.split("\n")
+    answers = algorithm.answers.split("\n")
+    hints = algorithm.hints.split("\n")
+
     item = Item.objects.get(id=algorithm.item.id)
     module = Module.objects.get(id=item.module.id)
     module_pk = module.id
     teacher_class = Class.objects.get(id=class_pk)
+    
+    data = zip(codes, answers, hints)
 
     context = {
         'class_pk': class_pk,
@@ -454,10 +471,76 @@ def updateAlgorithm(request, class_pk, algorithm_pk):
         'algorithm_pk': algorithm_pk,
         "teacher_class": teacher_class,
         "module": module,
-        "algorithm": algorithm
+        "algorithm": algorithm,
+        "codes": codes,
+        "answers": answers,
+        "hints": hints,
+        "data": data
     }
 
-    return render(request, '_template.html', context)
+    if request.method == "POST" and request.POST.getlist('submitAlgorithmForm'):
+        print(f"POST = {request.POST}")
+        table = request.POST.getlist('table_data')
+        print("TABLE = ", table)
+
+        formattedTable = []
+        for item in table:
+            formattedItem = eval(item)
+            formattedTable.append(formattedItem)
+        formattedTable = formattedTable[0]
+        print("FORMATTED_TABLE = ", formattedTable)
+
+        lines = ""
+        answers = ""
+        hints = ""
+
+        for i in range(len(formattedTable)):
+            print("Line: ", formattedTable[i])
+            lines += formattedTable[i]["code"] + "\n"
+            
+            answer = formattedTable[i]["answer"]
+            answer = clean_answer(answer)
+            answers += answer + "\n"
+
+            hint = formattedTable[i]["hint"]
+            # strip the hint from spaces 
+            hint = hint.rstrip()
+            # add one space after the hint. Needed to ensure at least an empty hint is saved for each line
+            # Needed for zip as zip needs all its list to have the save number of lines
+            hint += " "
+            
+            hints += hint + "\n"
+        
+        print(f"\n\nLines:\n{lines}")
+        print(f"Answers:\n{answers}")
+        print(f"Hints:\n{hints}]")
+
+        # return HttpResponse(
+        #     "Lines\n" + 
+        #     lines + 
+            
+        #     "\nAnswers\n" +
+        #      answers + 
+        #     "\nHints\n" + 
+        #      hints
+        #  )
+
+        
+
+        algorithmName = request.POST.getlist('algorithm_name')[0]
+
+        algorithm = Algorithm.objects.update(
+            name = algorithmName,
+            lines = lines.rstrip("\n"),
+            answers = answers.rstrip("\n"),
+            hints = hints.rstrip("\n"),
+        )
+        url = reverse("teacherViewAlgorithm", kwargs={"class_pk": class_pk, "algorithm_pk": algorithm_pk})
+        return redirect(url)
+
+
+
+    return render(request, 'updateAlgorithm.html', context)
 
 @login_required(login_url="/login")
 def updatePage(request, class_pk, page_pk):
@@ -493,7 +576,6 @@ def updatePage(request, class_pk, page_pk):
     }
 
     return render(request, 'updatePage.html', context)
-
 
 
 @login_required(login_url="/login")
@@ -580,7 +662,7 @@ def deleteModule_template(request, class_pk, module_pk):
 
 
 @login_required(login_url="/login")
-def module(request, class_pk, module_pk):
+def manageModule(request, class_pk, module_pk):
     print("\nTeacher Views: def module(request):\n-----------------------------------------------")
     if not isTeacher(request):
         return redirect("/login")
@@ -626,7 +708,7 @@ def module(request, class_pk, module_pk):
         "pages": pages
     }
 
-    return render(request, 'module.html', context)
+    return render(request, 'manageModule.html', context)
 
 
 
@@ -736,8 +818,13 @@ def createAlgorithm(request, class_pk, module_pk):
             answer = clean_answer(answer)
             answers += answer + "\n"
 
-            hint = formattedTable[i]["hint"] 
+            hint = formattedTable[i]["hint"]             
+            # strip the hint from spaces 
+            hint = hint.rstrip()
+            # add one space after the hint. Needed to ensure at least an empty hint is saved for each line
+            # Needed for zip as zip needs all its list to have the save number of lines
             hint += " "
+
             hints += hint + "\n"
         
         print(f"\n\nLines:\n{lines}")
@@ -771,7 +858,9 @@ def createAlgorithm(request, class_pk, module_pk):
             hints = hints.rstrip("\n"),
         )
 
-        return redirect(reverse("modules", kwargs={"class_pk": class_pk}))
+        url = reverse("modules", kwargs={"class_pk": class_pk})
+        url = reverse("teacherViewAlgorithm", kwargs={"class_pk": class_pk, "algorithm_pk": algorithm.id})
+        return redirect(url)
     
     return render(request, 'createAlgorithm.html', context)
 
