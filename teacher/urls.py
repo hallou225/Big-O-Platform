@@ -18,9 +18,9 @@ urlpatterns = [
     path("class/<str:class_pk>/", views.teacherClass, name="teacherClass"),
 
     # Module CRUD
-    path("class/<str:class_pk>/createModule/", views.createModule, name="createModule"),
-    path("class/<str:class_pk>/updateModule/<str:module_pk>/", views.updateModule, name="updateModule"),
-    path("class/<str:class_pk>/deleteModule/<str:module_pk>/", views.deleteModule, name="deleteModule"),
+    path("class/<str:class_pk>/createModule", views.createModule, name="createModule"),
+    path("class/<str:class_pk>/modules/<str:module_pk>/updateModule", views.updateModule, name="updateModule"),
+    path("class/<str:class_pk>/modules/<str:module_pk>/deleteModule", views.deleteModule, name="deleteModule"),
     path("class/<str:class_pk>/modules/", views.modules, name="modules"),
     path("class/<str:class_pk>/modules/<str:module_pk>/", views.manageModule, name="manageModule"),
 

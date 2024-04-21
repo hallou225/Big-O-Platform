@@ -11,7 +11,6 @@
 {% endblock %}
 
 {% block javascript %}    
-<script src="{% static '/js/modules.js'%}"></script>
 <script src="{% static 'js/Sortable.min.js' %}"></script>
 {% endblock %}
 
@@ -33,7 +32,7 @@
     <div class="p-2 bd-highlight"><h3>Class Name: {{teacher_class.class_name}}</h3></div>
   
     <div class="ms-auto p-2 bd-highlight">
-      <a class="btn btn-secondary col-auto" href="/teacher/class/{{teacher_class.id }}/createModule/">Create Module</a>
+      <a class="btn btn-secondary col-auto" href="{% url 'createModule' class_pk %}">Create Module</a>
     </div>
   </div>
 
@@ -43,7 +42,14 @@
 </div>
 {% else %}
 
-<hr>
+<hr> <!----------------------------------------------------------------------------------------------- -->
+
+{% if post and reorder %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Updated the algorithm/page order successfully</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
 
 
     <!-- Button to toggle visibility of all accordion items -->
@@ -206,18 +212,23 @@
     {% endfor %}
   </div> <!-- end of accordion -->
 
-  <form method="post" id="orderingForm" action="">
-    {% csrf_token %}
-    <input type="hidden" id="orderingInput" name="orderDict" value="">
-  </form>
 
-  
-    <!-- Button to save ordering visibility of all accordion items -->
-    <div class="container">
-      <div class="d-flex justify-content-end">
-        <button class="btn btn-primary mb-3 ml-10" id="saveOrdering" aria-expanded="False">Save Ordering</button>
-      </div>
-    </div>
+
+    {% if modules|length > 1 %}
+      <form method="post" id="orderingForm" action="">
+        {% csrf_token %}
+        <input type="hidden" id="orderingInput" name="orderDict" value="">
+      </form>
+
+      
+        <!-- Button to save ordering visibility of all accordion items -->
+        <div class="container">
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-primary mb-3 ml-10" id="saveOrdering" aria-expanded="False">Save Ordering</button>
+          </div>
+        </div>
+    {% endif %}
+
 
 {% endif %}
 

@@ -119,7 +119,12 @@ def teacherClass(request, class_pk):
 
     students = teacher_class.students.all()
 
-    context = {"teacher_class": teacher_class, "modules": modules, "students": students}
+    context = {
+        "class_pk": class_pk,
+        "teacher_class": teacher_class,
+        "modules": modules, 
+        "students": students
+    }
     return render(request, 'class.html', context)
 
 
@@ -232,7 +237,12 @@ def deleteModule(request, class_pk, module_pk):
         url = reverse("teacherClass", kwargs={"class_pk":teacher_class.id})
         return redirect(url)
 
-    context = {"teacher_class": teacher_class, "module": module}
+    context = {
+        "class_pk": class_pk,
+        "module_pk": module_pk,
+        "teacher_class": teacher_class,
+        "module": module
+    }
     return render(request, 'deleteModule.html', context)
 
 
@@ -261,7 +271,12 @@ def updateModule(request, class_pk, module_pk):
             return redirect("/teacher/class/" + class_pk)
 
     teacher_class = Class.objects.get(id=class_pk)    
-    context = {"form": form, "teacher_class": teacher_class}
+    context = {"form": form,
+        "class_pk": class_pk,
+        "module_pk": module_pk,
+        "teacher_class": teacher_class,
+        "module": module,
+    }
     return render(request, 'updateModule.html', context)
 
 
@@ -300,11 +315,13 @@ def modules(request, class_pk):
     if not isTeacher(request):
         return redirect("/login")
 
-
     teacher_class = Class.objects.get(id=class_pk)
     teacher_modules = teacher_class.module_set.all()
+    reorder = False
+    post = False
 
     if request.method == 'POST':
+        post = True
         orderDict = request.POST.get('orderDict') 
         print("Dictionary of new order: ")
         print("--------------- *** ---------------")
@@ -324,66 +341,67 @@ def modules(request, class_pk):
                     obj = Module.objects.get(pk=obj_id)
                     obj.order = new_order
                     obj.save()
-                    
-                url = reverse("modules", kwargs={"class_pk":teacher_class.id})
-                return redirect(url)   
-                #return JsonResponse({'success': True})
-            
+                    reorder = True
+
             except Module.DoesNotExist:
                 return JsonResponse({'success': False, 'error': 'Object not found'})
             except Exception as e:
                 return JsonResponse({'success': False, 'error': str(e)})
         else:
             return JsonResponse({'success': False, 'error': 'No data provided'})
-    else:
-        items = Item.objects.none()
-        algorithms = Algorithm.objects.none()
-        pages = Page.objects.none()
-        empty_modules = Module.objects.none()
-        for module in teacher_modules:
-            # return all items of this module
-            module_items = Item.objects.filter(module=module)
-            
-            # if items are returned append to the items query set
-            if module_items.exists():            
-                items = items.union(module_items)
-            else: # else, if no items are returned, add the module to the empty_modules queryset
-                empty_modules = empty_modules | Module.objects.filter(id=module.id)
 
-        print("All items: ", items)
-        print("empty_modules", empty_modules)
-        print()
-        # create a query set for the pages and algorithms that matches the items in the items queryset
-        for item in items:
-            item_pages = Page.objects.filter(item=item)
-            pages = pages.union(item_pages)
-            
-            item_algorithms = Algorithm.objects.filter(item=item)
-            algorithms = algorithms.union(item_algorithms)
-
-
-        print("algorithms: ", algorithms)
-        for algorithm in algorithms:
-            print("algorithm: ", algorithm)
+    items = Item.objects.none()
+    algorithms = Algorithm.objects.none()
+    pages = Page.objects.none()
+    empty_modules = Module.objects.none()
+    for module in teacher_modules:
+        # return all items of this module
+        module_items = Item.objects.filter(module=module)
         
-        print()
-        print("pages: ", pages)
-        for page in pages:
-            print("page: ", page)
-        
-        # Order the list of modules by order
-        teacher_modules = teacher_modules.order_by('order')
-        context = {
-            "teacher_class": teacher_class,
-            "modules": teacher_modules,
-            "empty_modules": empty_modules,
-            "module_number": teacher_modules.count(),
-            "items": items,
-            "algorithms": algorithms,
-            "pages": pages
-        }
+        # if items are returned append to the items query set
+        if module_items.exists():            
+            items = items.union(module_items)
+        else: # else, if no items are returned, add the module to the empty_modules queryset
+            empty_modules = empty_modules | Module.objects.filter(id=module.id)
 
-        return render(request, 'modules.html', context)
+    print("All items: ", items)
+    print("empty_modules", empty_modules)
+    print()
+    # create a query set for the pages and algorithms that matches the items in the items queryset
+    for item in items:
+        item_pages = Page.objects.filter(item=item)
+        pages = pages.union(item_pages)
+        
+        item_algorithms = Algorithm.objects.filter(item=item)
+        algorithms = algorithms.union(item_algorithms)
+
+
+    print("algorithms: ", algorithms)
+    for algorithm in algorithms:
+        print("algorithm: ", algorithm)
+    
+    print()
+    print("pages: ", pages)
+    for page in pages:
+        print("page: ", page)
+    
+    # Order the list of modules by order
+    teacher_modules = teacher_modules.order_by('order')        
+    items = items.order_by('order')
+    context = {
+        "class_pk": class_pk,
+        "teacher_class": teacher_class,
+        "modules": teacher_modules,
+        "empty_modules": empty_modules,
+        "module_number": teacher_modules.count(),
+        "items": items,
+        "algorithms": algorithms,
+        "pages": pages,
+        "post": post,
+        "reorder": reorder
+    }
+
+    return render(request, 'modules.html', context)
 
 
 
@@ -669,11 +687,45 @@ def manageModule(request, class_pk, module_pk):
 
     teacher_class = Class.objects.get(id=class_pk)
     module = Module.objects.get(id=module_pk)
-    items = Item.objects.filter(module=module.id)
-
+    
     algorithms = Algorithm.objects.none()
     pages = Page.objects.none()
+    post = False
+    reorder = False
 
+    if request.method == 'POST':
+        post = True
+        orderDict = request.POST.get('orderDict') 
+        print("Dictionary of new order: ")
+        print("--------------- *** ---------------")
+        print("order object: ", orderDict)
+
+        # return HttpResponse(orderDict)
+        context = {
+            "teacher_class": teacher_class
+        }
+        
+        if orderDict:
+            try:
+                # Convert string representation to dictionary
+                orderDict = json.loads(orderDict)  
+                # Parse the order dictionary and update every module that matches the obj_id
+                for obj_id, new_order in orderDict.items():  
+                    obj = Item.objects.get(pk=obj_id)
+                    obj.order = new_order
+                    obj.save()
+                reorder = True   
+            
+            except Module.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Object not found'})
+            except Exception as e:
+                return JsonResponse({'success': False, 'error': str(e)})
+        else:
+            reorder = False
+            return JsonResponse({'success': False, 'error': 'No data provided'})
+
+
+    items = Item.objects.filter(module=module.id)
     for item in items:
         item_pages = Page.objects.filter(item=item)
         pages = pages.union(item_pages)
@@ -695,19 +747,21 @@ def manageModule(request, class_pk, module_pk):
     print("pages: ", pages)
     for page in pages:
         print("page: ", page)
-    
-    
     print()
 
+    items = items.order_by('order')
     context = {
-        
+        "class_pk": class_pk,
+        "module_pk": module_pk,
         "teacher_class": teacher_class,
         "module": module,
         "items": items,
         "algorithms": algorithms,
-        "pages": pages
-    }
+        "pages": pages,
+        "post": post,
+        "reorder": reorder
 
+    }
     return render(request, 'manageModule.html', context)
 
 

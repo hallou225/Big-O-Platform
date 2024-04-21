@@ -133,6 +133,7 @@ class ItemType(models.Model):
 class Item(models.Model):
     type = models.ForeignKey(ItemType, null=True, on_delete=models.SET_NULL)
     module = models.ForeignKey(Module, null=True, on_delete=models.SET_NULL)
+    order = models.IntegerField(blank=False, default=100_000)                       # for ordering
 
     def __str__(self) -> str:
         child_item_type = None
