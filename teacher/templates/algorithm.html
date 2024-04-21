@@ -1,41 +1,56 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load custom_filters %}
-{% block css %}    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/algorithm.css'%}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/teacher_sidebar.css'%}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 
+{% block css %}    
+    <!-- 
+        <link rel="stylesheet" type="text/css" href="{% static '/css/teacher.css'%}">
+    --> 
 {% endblock %}
 
 {% block javascript %}    
-    <script src="{% static '/js/algorithm.js'%}"></script>
+    <script src="{% static '/js/teacher.js'%}"></script>
 {% endblock %}
 
 {% block sidebar %}
     {% include 'teacher_sidebar.html' %}
 {% endblock %}
 
-{% block content %}
-    <!-- Div for sidebar of page -->
-    <div id="sidebar">
-
-    </div>
-
-    <!-- Div for main content of page -->
-    <div id="mainContent">
-        <!-- Div for main heading -->
-        <div id="mainHeadingDiv">
-            <!-- Main heading -->
-            <h1 class="myH1" id="mainHeading">Algorithm</h1>
-        </div>
-    </div>
-
+{% block path %}  
+<a class="nav-item nav-link path" href="{% url 'teacher' %}">Home</a>
+<a class="nav-item nav-link path" href="{% url 'teacherClass' class_pk %}" >{{ teacher_class.class_name }}</a>
+<a class="nav-item nav-link path "href="{% url 'modules' class_pk %}">Modules</a>
+<a class="nav-item nav-link path activePath"href="{% url 'teacherViewAlgorithm' class_pk algorithm_pk %}"><span>A:</span> {{algorithm.name}}</a>
 {% endblock %}
 
 
 
-{% block jsscript %} 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+
+{% block content %}    
+
+
+<div class="d-flex bd-highlight mb-0">
+
+    <div class="p-2 bd-highlight">
+        <h3>{{algorithm.name}}</h3>
+    </div>
+
+    <div class="ms-auto p-2 bd-highlight">
+        <a class="btn btn-secondary col-auto" href="{% url 'updateAlgorithm' class_pk algorithm_pk %}">
+            Update
+        </a>
+        <a class="btn btn-secondary col-auto" href="{% url 'deleteAlgorithm' class_pk  algorithm_pk %}">
+            Delete
+        </a>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    {{algorithm.lines}}
+    {{algorithm.answers}}
+    {{algorithm.hints}}
+</div>
 
 {% endblock %}

@@ -28,7 +28,7 @@
 
 
 {% block content %}    
-<div class="card">
+<div class="card mt-2">
     <div class="card-header bg-danger text-white">
         Delete Page : <span class="h3">{{page.name}}</span>
     </div>
@@ -38,7 +38,7 @@
         <p class="card-text">CAUTION: Proceeding will delete your page and all related data.</p>
 
 
-        <form class="bg-transparent" method="POST" action="{% url 'deletePage' teacher_class.id module.id page.id %}">
+        <form class="bg-transparent" method="POST" action="{% url 'deletePage' teacher_class.id  page.id %}">
             {% csrf_token %}
 
             <a href="{% url 'modules' teacher_class.id %}"  class="btn btn-primary">Cancel</a>

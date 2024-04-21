@@ -171,7 +171,7 @@
                                       {% for algorithm in algorithms %}
                                         {% if item.id == algorithm.item.id %}
                                       <li><a class="dropdown-item"
-                                        href="{% url 'deleteAlgorithm' teacher_class.id module.id algorithm.id %}">
+                                        href="{% url 'deleteAlgorithm' teacher_class.id algorithm.id %}">
                                         <span class="text-danger">A: </span>{{algorithm.name}}
                                           </a>
                                       </li>
@@ -181,7 +181,7 @@
                                       {% for page in pages %}
                                         {% if item.id == page.item.id %}
                                       <li><a class="dropdown-item"
-                                      href="{% url 'deletePage' teacher_class.id module.id page.id %}">
+                                      href="{% url 'deletePage' teacher_class.id  page.id %}">
                                       <span class="text-primary">P: </span>{{page.name}}
                                         </a>
                                       </li>

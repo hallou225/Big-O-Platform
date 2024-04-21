@@ -33,7 +33,7 @@
         <p class="card-text">CAUTION: Proceeding will delete your algorithm and all related data.</p>
 
 
-        <form class="bg-transparent" method="POST" action="{% url 'deleteAlgorithm' teacher_class.id module.id algorithm.id %}">
+        <form class="bg-transparent" method="POST" action="{% url 'deleteAlgorithm' teacher_class.id algorithm.id %}">
             {% csrf_token %}
 
             <a href="{% url 'modules' teacher_class.id %}"  class="btn btn-primary">Cancel</a>
