@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load custom_filters %}
-{% block css %}    
-    <!-- <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}"> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+
+{% block css %} 
+<!-- <link rel="stylesheet" type="text/css" href="{% static '/css/module.css'%}"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 <style>
     #code-status {
         width: 40px;
@@ -15,13 +16,13 @@
     }
 
     pre {
-        margin:0;
-        padding:0;
+        margin: 0;
+        padding: 0;
     }
 
     #algorithmTable {
         font-family: monospace;
-        background-color:none;
+        background-color: none;
         margin-left: auto;
         margin-right: auto;
         width: 100%;
@@ -29,24 +30,29 @@
 
     th {
         background-color: #0e6efd;
-        border:1px solid black;
+        border: 1px solid black;
         color: white;
     }
 
-    #algorithmTable td, tr, th {
-        border:1px solid black;
+    #algorithmTable td,
+    tr,
+    th {
+        border: 1px solid black;
     }
+
     input {
         /* border-radius: unset; */
-        padding:4px;
+        padding: 4px;
     }
+
     input:focus {
         background-color: yellow;
         border-radius: 0%;
     }
+
     td.tnumber {
         text-align: center;
-    } 
+    }
 
     .validLine {
         background-color: green;
@@ -62,7 +68,8 @@
 {% endblock %}
 
 {% block javascript %}    
-    <script src="{% static '/js/module.js'%}"></script>
+<script src="{% static '/js/updateClass.js'%}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block sidebar %}
@@ -70,103 +77,76 @@
 {% endblock %}
 
 {% block path %}   
-            <a class="nav-item nav-link path" href="/teacher">Home</a>
-            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
-            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
-            <a class="nav-item nav-link path activePath" href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}/createAlgorithm">Create Algorithm</a>
+    <a class="nav-item nav-link path" href="{% url 'teacher' %}">Home</a>
+    <a class="nav-item nav-link path" href="{% url 'teacherClass' class_pk %}" >{{ teacher_class.class_name }}</a>
+    <a class="nav-item nav-link path "href="{% url 'modules' class_pk %}">Modules</a>
+    <a class="nav-item nav-link path "href="{% url 'teacherViewAlgorithm' class_pk algorithm_pk %}"><span>A:</span> {{algorithm.name}}</a>
+    <a class="nav-item nav-link path activePath"href="{% url 'updateAlgorithm' class_pk algorithm_pk %}">update Algorithm</a>
 {% endblock %}
 
+
 {% block content %}
-<!-- information header -->
+
 <div class="d-flex bd-highlight mb-0">
+
     <div class="p-2 bd-highlight">
-        <h3>Module Name: {{module.name}}</h3>
-    </div>
-
-    <div class="ms-auto p-2 bd-highlight">
-        <a class="btn btn-secondary col-auto" href="{% url 'createPage' teacher_class.id module.id %}">
-            Create Page
-        </a>
+        <h3>Update Algorithm: {{algorithm.name}}</h3>
     </div>
 </div>
-<div class="d-flex justify-content-center">
-    <h5>Create Algorithm</h5>
-</div>
 
-<!--  file upload form for  algorithm and answer key -->
-<div class="row mt-3">
-    <form method="POST" action="" enctype="multipart/form-data" class="bg-transparent border border-light">
-        {% csrf_token %}
+<hr> <!------------------------------------------------------------------------------------------------>
 
-        <div class="mb-3">
-            <label for="formFileLg" class="form-label">Select algorithm file</label>
-            <input class="form-control form-control-lg" type="file" id="algorithmUpload" name="algorithmUpload">
+
+
+    <!-- row for displaying the content of the uploaded algorithm/answer-->
+    <div class="row border-bottom p-2 mb-4">
+        <div style="width:2.5%; padding:0;margin:0;">
+            <h3> - </h3>
+            <hr>
+            {% for code in codes %}
+                <pre><code class="language-java">{{ forloop.counter }}<br></code></pre>
+            {% endfor %}
         </div>
-        <div>
-            <label for="formFileLg" class="form-label">Select Answer file</label>
-            <input class="form-control form-control-lg" type="file" id="answerkeyUpload" name="answerkeyUpload">
+        <div class="col-6 p-0">
+            <h3>Algorithm:</h3>
+            <hr>
+            {% for code in codes %}
+                <pre><code class="language-java">{{ code }}<br></code></pre>
+            {% endfor %}
         </div>
-
-        <input type="hidden" name="fileUploadForm">
-
-        <div class="text-center mt-4 mb-2">
-            <button type="submit" class="btn btn-primary" id="uploadButton">Upload</button>
-        </div>
-
-    </form>
-</div>
-
-<!-- row for displaying the content of the uploaded algorithm/answer-->
-<div class="row border-bottom p-2 mb-4">
-    {% if algorithm_file_lines %}
-    <div class="col">
-        <h3>Algorithm: {{algorithm_line_count}} line(s)</h3>
-        {% for line in algorithm_file_lines|remove_newlines %}
-        <pre><code class="language-java">{{ line }}</code></pre>
-        {% endfor %}
+        <div class="col">
+            <h3>Answers:</h3>
+            <hr>
+            {% for answer in answers %}
+                <pre><code>{{ answer }}<br></code></pre>
+            {% endfor %} 
+        </div>  
+        <div class="col">
+            <h3>Hints:</h3>
+            <hr>
+            {% for hint in hints %}
+                <pre><code>{{ hint }}<br></code></pre>
+            {% endfor %} 
+        </div>    
     </div>
-    <div class="col">
-        <h3>Answer Key: {{answerkey_line_count}} line(s)</h3>
-        {% for line in answerkey_file_lines %}
-            <pre><code>{{ line.decode }}</code></pre>
-        {% endfor %} 
-    </div>    
-    {% endif %} 
-</div>
 
-<!-- first validation row row to display the algorithm, answer, hints side by side and submit -->
-<div class="row">
-    {% if algorithm_line_count != answerkey_line_count %}
-    <p>Line Requirement: <span class="text-success"><img id="code-status" src="/static/images/Failure.png" alt=""></span></p>
-    <p class="bg-dark text-danger ">
-        NB:
-        the algorithm content lines does not match the answer key content lines
-        Please check the files and reupload.
-    </p>
-    
-    <br>
-
-    {% else %}
-    <p>Line Requirement: <span class="text-success"><img id="code-status" src="/static/images/Success.png" class="img-thumbnail" alt=""></span></p>
-
-    {% endif %}
-
-</div>
 
 <!-- submission form -->
-{% if algorithm_file_lines and algorithm_line_count == answerkey_line_count %}
-<form id="algorithmForm" action="" method="POST" class="mb-4 p-2">
+<form id="algorithmForm" action="" method="POST" class="p-2">
     {% csrf_token %}
 
-    <div class="row justify-content-center">
-        <div class="col-auto col-form-label">
-            <label class="mb-2">Algorithm Name</label>
+    <div class="row justify-content-left">
+        <div class="col-2">
+            Algorithm Name: 
         </div>
-        <div class="col-auto">
-            <input type="text" id="algorithmNameInput" class="mb-2" value="" placeholder="Enter Algorithm Name..." required>
+
+        <div class="col">
+            <div class="row">
+                <input type="text" id="algorithmNameInput" class="mb-2" value="{{algorithm.name}}" placeholder="Enter Algorithm Name..." required>
+            </div>
         </div>
     </div>
-
+    <p>Content: </p>
     <table id="algorithmTable" border="0" cellspacing="0" cellpadding="0">
         <tbody>
             <col style="width: 2%">
@@ -182,9 +162,8 @@
                 <th id="tableHint">Hint</th>
             </tr>
         
-            {% for code, answer in algorithm_file_lines|zip:answerkey_file_lines %}
-            
-            {% if code|strip_length == 0 and answer.decode|strip_length == 0 %}
+            {% for code, answer, hint in data %}
+            {% if code|strip_length == 0 and answer|strip_length == 0 %}
             <!--  No code, no answer - valid by default -->
             <tr class="validLine">
                 <td class="tnumber text-white">{{ forloop.counter }}</td>
@@ -195,7 +174,7 @@
                     <input class="lineAnswer d-none" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
                 </td>
                 <td class="bg-white">
-                    <input class="d-none" type="text" value="" placeholder="hint" style="width:100%; height:100%;" >
+                    <input class="" type="text" value="{{hint}}" placeholder="hint" style="width:100%; height:100%;" >
                 </td>
             </tr>
             
@@ -207,10 +186,10 @@
                     <input class="lineCode" type="text" value="{{code}}" style="width:100%; height:100%;">
                 </td>
                 <td>
-                    <input class="lineAnswer" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
+                    <input class="lineAnswer" type="text" value="{{answer}}" style="width:100%; height:100%;">
                 </td>
                 <td>
-                    <input type="text"  value="" placeholder="hint" style="width:100%; height:100%;">
+                    <input class="" type="text" value="{{hint}}" placeholder="hint" style="width:100%; height:100%;" >
                 </td>
             </tr>
         
@@ -223,10 +202,10 @@
                     <input class="lineCode" type="text" value="" style="width:100%; height:100%;">
                 </td>
                 <td>
-                    <input class="lineAnswer" type="text" value="{{answer.decode}}" style="width:100%; height:100%;">
+                    <input class="lineAnswer" type="text" value="{{answer}}" style="width:100%; height:100%;">
                 </td>
                 <td>
-                    <input type="text"  value="" placeholder="hint"  style="width:100%; height:100%;">
+                    <input class="" type="text" value="{{hint}}" placeholder="hint" style="width:100%; height:100%;" >
                 </td>
             </tr>
         
@@ -241,10 +220,10 @@
                 </td>
                 <td>
                     <!-- Empty Answer -->
-                    <input class="lineAnswer" type="text" value="" style="width:100%; height:100%;" class="has-error">
+                    <input class="lineAnswer" type="text" value="{{answer}}" style="width:100%; height:100%;" class="has-error">
                 </td>
                 <td>
-                    <input type="text"  value="" placeholder="hint" style="width:100%; height:100%;">
+                    <input class="" type="text" value="{{hint}}" placeholder="hint" style="width:100%; height:100%;" >
                 </td>
             </tr>
             {% endif %}
@@ -269,15 +248,15 @@
             Line validation: Passed
             <br>
             All the lines have passed the validation test. You may submit this algorithm. 
-            <br>
-            <span class="ps-5"></span>
         </p>
+
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary" id="submitAlgorithmButton" onclick="parseTable()">Submit</button>
         </div>
     {% endif %}
 </form>
-{% endif %}
+
+
 
 <script>
 
@@ -326,9 +305,12 @@
         form.appendChild(algorithmName);
 
         // Submit the form
-        form.submit();
+        // form.submit();
 
     }
+
+
+
 
 
     // Add event listeners to inputs in the table rows
@@ -360,11 +342,12 @@
         var submitAlgorithmButton = document.getElementById("submitAlgorithmButton");
 
         // If either input is empty, change the row color to red, otherwise revert to default
+         
         if (codeInput.value.trim().length === 0 && answerInput.value.trim().length !== 0) {
             row.classList.remove("validLine");
             row.classList.add("invalidLine");
             submitAlgorithmButton.disabled = true;
-            document.getElementById("validationMessage").innerHTML = validationErrorMsg;
+            document.getElementById("validationMessage").innerHTML =  validationErrorMsg;
             console.log("Changing to red1");
         } else if (codeInput.value.trim().length !== 0 && answerInput.value.trim().length === 0) {
             row.classList.remove("validLine");

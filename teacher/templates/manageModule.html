@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block css %}    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/modules.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<style>
+      /* Custom CSS for enhancing animation */
+    .sortable-chosen {
+      background-color: #f2f2f2 !important;
+      opacity: 0.6 !important;
+    }
+    .sortable-ghost {
+      background-color: #f8f9fa !important;
+      opacity: 0.6 !important;
+    }
+</style>
+{% endblock %}
+
+{% block javascript %}    
+    <script src="{% static 'js/Sortable.min.js' %}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'teacher_sidebar.html' %}
+{% endblock %}
+
+
+{% block path %}  
+            <a class="nav-item nav-link path" href="{% url 'teacher' %}">Home</a>
+            <a class="nav-item nav-link path" href="{% url 'teacherClass' class_pk %}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path "href="{% url 'modules' class_pk %}">Modules</a>
+            <a class="nav-item nav-link path activePath"href="{% url 'manageModule' class_pk module_pk  %}">{{module.name}}</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex bd-highlight mb-0">
+
+  <div class="p-2 bd-highlight">
+      <h3>{{module.name}}</h3>
+  </div>
+
+  {% for message in messages %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{message}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+
+  <div class="ms-auto p-2 bd-highlight">
+
+
+      <a class="btn btn-primary col-auto" href="{% url 'updateModule' class_pk module_pk %}">
+          Update Module
+      </a>
+      <a class="btn btn-danger col-auto" href="{% url 'deleteModule' class_pk  module_pk %}">
+          Delete Module
+      </a>
+  </div>
+</div>
+
+
+<hr> <!-- ----------------------------------------------------------------------------------------------- -->
+
+
+{% if post and reorder %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Updated the algorithm/page order successfully</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+  
+<div class="container">
+  <ul id="sortable-list" class="list-group">
+    {% for item in items %}
+    {% if module.name == item.module.name %}
+      
+      <!-- Loop through the algorithms-->
+      {% for algorithm in algorithms %}
+      {% if item.id == algorithm.item.id %}
+      <!-- <div class="row">
+                <a class="list-group-item " 
+                style="border-radius:unset; width:80%" -->
+      <li class="list-group-item p-0 mt-2">
+      
+        <a class="list-group-item" style="border-radius:unset; width:100%;"
+          href="{% url 'teacherViewAlgorithm' teacher_class.id algorithm.id %}">
+          
+          <span class="itemId d-none">{{item.id}} </span>
+          <span class="text-danger">A: </span> {{algorithm.name}}          
+          <!-- < class="itemOrder d-none">  -->
+          <span class="itemOrder d-none">{{item.order}} </span>
+        </a>
+      </li>
+      <!-- <button style="width:20%">D</button>
+              </div> -->
+      {% endif %}
+      {% endfor %}
+
+      <!-- Loop through the pages-->
+      {% for page in pages %}
+      {% if item.id == page.item.id %}
+      <li class="list-group-item p-0 mt-2">
+        <a class="list-group-item" style="border-radius:unset" href="{% url 'teacherViewPage' teacher_class.id page.id %}">
+
+          <span class="itemId d-none">{{item.id}} </span>
+          <span class="text-primary">P: </span>
+          {{page.name}}
+          <!-- < class="itemOrder d-none">  -->
+          <span class="itemOrder d-none">{{item.order}} </span>
+        </a>
+      </li>
+      {% endif %}
+      {% endfor %}
+
+    {% endif %}
+    {% endfor %}
+
+    {% if not items and not empty_modules %}
+    <li class="list-group-item p-0">
+      <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">
+        <span class="text-secondary">E: Empty Module </span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+  <!-- nav bar to create class, algorithm, and delete button for that module-->
+  <div class="accordion-body p-0 ">
+  
+    <nav class="navbar navbar-expand-sm navbar-light">
+      <div class="container-fluid bg-transparent">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            
+            <!-- Add Page -->
+            <li class="nav-item dropdown pb-0">
+              <a href="{% url 'createPage' teacher_class.id module.id %}" class="accordionSubBtn " role="button" style="">
+                + Page
+              </a>
+            </li>
+  
+            <!-- Add Algorithm -->
+            <li class="nav-item dropdown pb-0">
+              <a href="{% url 'createAlgorithm' teacher_class.id module.id %}" class="accordionSubBtn" role="button"
+                style="">
+                + Algorithm
+              </a>
+            </li>
+  
+            <!-- Delete an algorithm or page -->
+            {% if items %}
+            <!-- Delete button -->
+            <li class="nav-item dropdown pb-0">
+              <a href="#" class="accordionSubBtnDel dropdown-toggle btn-danger" id="navbarDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false" style="">
+                Delete
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for item in items %}
+                {% if module.name == item.module.name %}
+  
+                {% for algorithm in algorithms %}
+                {% if item.id == algorithm.item.id %}
+                <li><a class="dropdown-item" href="{% url 'deleteAlgorithm' teacher_class.id  algorithm.id %}">
+                    <span class="text-danger">A: </span>{{algorithm.name}}
+                  </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+  
+                {% for page in pages %}
+                {% if item.id == page.item.id %}
+                <li><a class="dropdown-item" href="{% url 'deletePage' teacher_class.id page.id %}">
+                    <span class="text-primary">P: </span>{{page.name}}
+                  </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+  
+                {% endif %}
+                {% endfor %}
+  
+              </ul>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  
+  </div>
+</div>
+
+
+{% if items|length > 1 %}
+<form method="post" id="orderingForm" action="">
+  {% csrf_token %}
+  <input type="hidden" id="orderingInput" name="orderDict" value="">
+</form>
+<!-- Button to save ordering visibility of all accordion items -->
+<div class="container">
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-primary mb-3 ml-10" id="saveOrdering" aria-expanded="False">Save Ordering</button>
+  </div>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+
+
+
+{% block javascriptEnd %} 
+
+<script>
+
+  /*
+    Parse the accordion structure to retrieve the current ordering 
+    and create a new ordering dictionary 
+    and load that dictionary in the hidden input of the ordering form
+   */
+  var dictionary = {};
+  const saveOrderingButton = document.getElementById('saveOrdering');
+  const orderingForm = document.getElementById('orderingForm');
+  const formInputOrder = orderingForm.querySelector('#orderingInput');
+
+  function saveOrdering() {
+    var sortableList = document.getElementById('sortable-list');
+    var listItems = sortableList.querySelectorAll('li.list-group-item');
+    var dictionary = {};
+
+    listItems.forEach(function (item) {
+      var aLink = item.querySelector('a.list-group-item');
+      var header = aLink.querySelector('span.itemId');
+      var content = aLink.querySelector('span.itemOrder');
+      var key = header.textContent.trim();
+      var value = content.textContent.trim();
+      dictionary[key] = value;
+    });
+
+    console.log("list Dictionary:", dictionary);
+    orderDict = JSON.stringify(dictionary)
+    formInputOrder.value = orderDict
+
+    // Submit the form 
+    orderingForm.submit()
+  }
+  /* Add event listener to the save ordering button and call saveOrdering function above */
+  saveOrderingButton.addEventListener('click', saveOrdering);
+
+
+    // Function to update the order of accordion items
+  function updateListOrder() {
+    var sortableList = document.getElementById('sortable-list');
+    var listItems = sortableList.querySelectorAll('li.list-group-item');
+    var listOrder = [];
+
+    for (var i = 0; i < listItems.length; i++) {
+      var aLink = listItems[i].querySelector('a.list-group-item');
+      var spanItemOrder = aLink.querySelector(".itemOrder")
+      listOrder.push(spanItemOrder.textContent.trim());
+      spanItemOrder.innerHTML = i + 1;
+    }
+    console.log('New accordion order:', listOrder);
+    // Here you can perform any action with the updated order
+  }
+  // Initialize Sortable.js for the accordion
+  new Sortable(document.getElementById('sortable-list'), {
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    onEnd: function (evt) {
+      // Update the order of the accordion items after dragging
+      updateListOrder();
+    }
+  });
+  
+</script>
+
+{% endblock %}

@@ -11,7 +11,6 @@
 {% endblock %}
 
 {% block javascript %}    
-<script src="{% static '/js/modules.js'%}"></script>
 <script src="{% static 'js/Sortable.min.js' %}"></script>
 {% endblock %}
 
@@ -32,8 +31,16 @@
   
     <div class="p-2 bd-highlight"><h3>Class Name: {{teacher_class.class_name}}</h3></div>
   
+    
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>{{message}}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
     <div class="ms-auto p-2 bd-highlight">
-      <a class="btn btn-secondary col-auto" href="/teacher/class/{{teacher_class.id }}/createModule/">Create Module</a>
+      <a class="btn btn-secondary col-auto" href="{% url 'createModule' class_pk %}">Create Module</a>
     </div>
   </div>
 
@@ -43,7 +50,14 @@
 </div>
 {% else %}
 
-<hr>
+<hr> <!----------------------------------------------------------------------------------------------- -->
+
+{% if post and reorder %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Updated the modules order successfully</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
 
 
     <!-- Button to toggle visibility of all accordion items -->
@@ -126,7 +140,7 @@
                       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown pb-0">
                           <a 
-                              href="{% url 'module' teacher_class.id module.id %}"
+                              href="{% url 'manageModule' teacher_class.id module.id %}"
                               class="accordionSubBtn nav-link " role="button"
                               style="">
                               Manage
@@ -171,7 +185,7 @@
                                       {% for algorithm in algorithms %}
                                         {% if item.id == algorithm.item.id %}
                                       <li><a class="dropdown-item"
-                                        href="{% url 'deleteAlgorithm' teacher_class.id module.id algorithm.id %}">
+                                        href="{% url 'deleteAlgorithm' teacher_class.id algorithm.id %}">
                                         <span class="text-danger">A: </span>{{algorithm.name}}
                                           </a>
                                       </li>
@@ -181,7 +195,7 @@
                                       {% for page in pages %}
                                         {% if item.id == page.item.id %}
                                       <li><a class="dropdown-item"
-                                      href="{% url 'deletePage' teacher_class.id module.id page.id %}">
+                                      href="{% url 'deletePage' teacher_class.id  page.id %}">
                                       <span class="text-primary">P: </span>{{page.name}}
                                         </a>
                                       </li>
@@ -206,18 +220,23 @@
     {% endfor %}
   </div> <!-- end of accordion -->
 
-  <form method="post" id="orderingForm" action="">
-    {% csrf_token %}
-    <input type="hidden" id="orderingInput" name="orderDict" value="">
-  </form>
 
-  
-    <!-- Button to save ordering visibility of all accordion items -->
-    <div class="container">
-      <div class="d-flex justify-content-end">
-        <button class="btn btn-primary mb-3 ml-10" id="saveOrdering" aria-expanded="False">Save Ordering</button>
-      </div>
-    </div>
+
+    {% if modules|length > 1 %}
+      <form method="post" id="orderingForm" action="">
+        {% csrf_token %}
+        <input type="hidden" id="orderingInput" name="orderDict" value="">
+      </form>
+
+      
+        <!-- Button to save ordering visibility of all accordion items -->
+        <div class="container">
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-primary mb-3 ml-10" id="saveOrdering" aria-expanded="False">Save Ordering</button>
+          </div>
+        </div>
+    {% endif %}
+
 
 {% endif %}
 

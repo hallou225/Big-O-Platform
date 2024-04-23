@@ -3,6 +3,10 @@ from django.contrib.auth.decorators import login_required
 from bigo.forms import *
 from django.http import HttpResponse
 from markdownx.utils import markdown
+import ast
+from django.http import JsonResponse
+from django.urls import reverse
+import json
 
 # Create your views here.
 
@@ -227,6 +231,24 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
                 lineStatus.append(True)
             else:                              # Incorrect
                 lineStatus.append(False)
+
+    # If there's a previous answer stored in the database for this student and this algorithm...
+    else:
+        try:
+            student_algorithm = StudentAlgorithm.objects.get(student=request.user.id, algorithm=algorithm_pk)
+            studentAnswers = ast.literal_eval(student_algorithm.answers)
+            print(f"type(studentAnswers): {type(studentAnswers)}")
+            print(f"studentAnswers: {studentAnswers}")
+            for i in range(len(codes)):
+                # If student answers (the current line in iteration) correctly
+                if answers[i] == studentAnswers[i]:  # Correct
+                    score += 1
+                    lineStatus.append(True)
+                else:                              # Incorrect
+                    lineStatus.append(False)
+        except:
+            pass
+        
     
     results = zip(lineStatus, codes, studentAnswers, hints)
     # print("\n zip result \n")
@@ -238,6 +260,47 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
     percentage = round(percentage, 2)
     score = f"{score}/{total}"
     percentage = f"{percentage}%"
+
+    ###################################### Save the student's submission in the database ######################################
+
+    # If the student has never submitted for this algorithm...
+
+    try:
+        student_algorithm = StudentAlgorithm.objects.get(student=request.user.id, algorithm=algorithm_pk)
+        # Student has ALREADY submitted for this algorithm...
+        print("STUDENT HAS ALREADY SUBMITTED FOR THIS ALGORITHM BEFORE")
+
+        # Storing answers, score, and percentage in the database
+        student_algorithm.answers = studentAnswers
+        student_algorithm.score = score
+        student_algorithm.percentage = percentage
+        student_algorithm.save()
+
+    except:
+        # Student has NEVER submitted for this algorithm before...
+        print("STUDENT HAS NEVER SUBMITTED BEFORE")
+
+        # Creating a new instance of the StudentAlgorithm model
+        student_algorithm = StudentAlgorithm(
+            student_id = request.user.id, algorithm_id = algorithm_pk,
+            answers = studentAnswers, score = score, percentage = percentage
+        )
+        student_algorithm.save()
+
+        # student_algorithm = StudentAlgorithm()
+        # student_algorithm.student_id = request.user.id
+        # student_algorithm.algorithm_id = algorithm_pk
+        # student_algorithm.answers = studentAnswers
+        # student_algorithm.score = score
+        # student_algorithm.percentage = percentage
+        # student_algorithm.save()
+
+        # student_algorithm = StudentAlgorithm.objects.create(
+        #     student_id = request.user.id, algorithm_id = algorithm_pk,
+        #     answers = studentAnswers, score = score, percentage = percentage
+        # )
+
+    ###########################################################################################################################
 
     context = {"student_class": student_class, "module": module, "algorithm": algorithm,
             "codes": codes, "answers": answers, 
@@ -258,3 +321,77 @@ def page(request, class_pk, module_pk, page_pk):
 
     context = {"student_class": student_class, "module": module, "page": page}
     return render(request, 'studentPage.html', context)
+
+@login_required(login_url="/login")
+def studentModules(request, class_pk):
+    print("\nStudent Views: def studentModules(request):\n-----------------------------------------------")
+    if not isStudent(request):
+        return redirect("/login")
+
+    student_class = Class.objects.get(id=class_pk)
+    student_modules = student_class.module_set.all()
+
+    if request.method == 'POST':
+        orderDict = request.POST.get('orderDict') 
+
+        context = {
+            "student_class": student_class
+        }
+        
+        if orderDict:
+            try:
+                # Convert string representation to dictionary
+                orderDict = json.loads(orderDict)  
+                # Parse the order dictionary and update every module that matches the obj_id
+                for obj_id, new_order in orderDict.items():  
+                    obj = Module.objects.get(pk=obj_id)
+                    obj.order = new_order
+                    obj.save()
+                    
+                url = reverse("studentModules", kwargs={"class_pk":student_class.id})
+                return redirect(url)   
+                #return JsonResponse({'success': True})
+            
+            except Module.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Object not found'})
+            except Exception as e:
+                return JsonResponse({'success': False, 'error': str(e)})
+        else:
+            return JsonResponse({'success': False, 'error': 'No data provided'})
+    else:
+        items = Item.objects.none()
+        algorithms = Algorithm.objects.none()
+        pages = Page.objects.none()
+        empty_modules = Module.objects.none()
+        for module in student_modules:
+            # return all items of this module
+            module_items = Item.objects.filter(module=module)
+            
+            # if items are returned append to the items query set
+            if module_items.exists():            
+                items = items.union(module_items)
+            else: # else, if no items are returned, add the module to the empty_modules queryset
+                empty_modules = empty_modules | Module.objects.filter(id=module.id)
+
+        # create a query set for the pages and algorithms that matches the items in the items queryset
+        for item in items:
+            item_pages = Page.objects.filter(item=item)
+            pages = pages.union(item_pages)
+            
+            item_algorithms = Algorithm.objects.filter(item=item)
+            algorithms = algorithms.union(item_algorithms)
+        
+        # Order the list of modules and items by order
+        student_modules = student_modules.order_by('order')
+        items = items.order_by('order')
+        context = {
+            "student_class": student_class,
+            "modules": student_modules,
+            "empty_modules": empty_modules,
+            "module_number": student_modules.count(),
+            "items": items,
+            "algorithms": algorithms,
+            "pages": pages
+        }
+
+        return render(request, 'studentModules.html', context)
