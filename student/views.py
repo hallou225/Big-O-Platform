@@ -381,8 +381,9 @@ def studentModules(request, class_pk):
             item_algorithms = Algorithm.objects.filter(item=item)
             algorithms = algorithms.union(item_algorithms)
         
-        # Order the list of modules by order
+        # Order the list of modules and items by order
         student_modules = student_modules.order_by('order')
+        items = items.order_by('order')
         context = {
             "student_class": student_class,
             "modules": student_modules,

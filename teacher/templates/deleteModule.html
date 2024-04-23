@@ -12,9 +12,10 @@
     {% include 'teacher_sidebar.html' %}
 {% endblock %}
 {% block path %}  
-            <a class="nav-item nav-link path" href="/teacher">Home</a>
-            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
-            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/deleteModule/{{module.id}}">Delete Module {{module.id}}</a>
+            <a class="nav-item nav-link path" href="{% url 'teacher' %}">Home</a>
+            <a class="nav-item nav-link path" href="{% url 'teacherClass' class_pk %}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path "href="{% url 'modules' class_pk %}">Modules</a>
+            <a class="nav-item nav-link path activePath"href="{% url 'deleteModule' teacher_class.id module.id %}">Delete Module {{module.id}}</a>
 {% endblock %}
 
 {% block content %}

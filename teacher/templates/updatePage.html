@@ -20,7 +20,7 @@
     <a class="nav-item nav-link path" href="{% url 'teacherClass' class_pk %}" >{{ teacher_class.class_name }}</a>
     <a class="nav-item nav-link path "href="{% url 'modules' class_pk %}">Modules</a>
     <a class="nav-item nav-link path "href="{% url 'teacherViewPage' class_pk page_pk %}"><span>P:</span> {{page.name}}</a>
-    <a class="nav-item nav-link path activePath"href="{% url 'updatePage' class_pk page_pk %}"><span>Update</a>
+    <a class="nav-item nav-link path activePath"href="{% url 'updatePage' class_pk page_pk %}"><span>Update Page</a>
 {% endblock %}
 
 
@@ -28,6 +28,16 @@
 
 
 {% block content %}    
+
+<div class="d-flex bd-highlight mb-0">
+
+    <div class="p-2 bd-highlight">
+        <h3>Update Page: {{page.name}}</h3>
+    </div>
+</div>
+
+<hr> <!------------------------------------------------------------------------------------------------>
+
     <!-- form content-->
     <div class="form-group">
         <form method="POST" action="" class="p-3">
