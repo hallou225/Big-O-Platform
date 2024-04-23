@@ -18,20 +18,73 @@
 {% block path %}   
             <a class="nav-item nav-link path" href="/teacher">Home</a>
             <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
-            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}">{{module.name}}</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
             <a class="nav-item nav-link path activePath" href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}/createPage">Create Page</a>
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-        <!-- Button positioned to the right -->
-            <div class="d-flex justify-content-between">
-                <h5>{{module.name}} Create Page</h5>
-            </div>
+    <!-- content header -->
+    <div class="d-flex bd-highlight mb-0">
+        <div class="p-2 bd-highlight">            
+            <h3>Module Name: {{module.name}}</h3>
+        </div>
+
+        <div class="ms-auto p-2 bd-highlight">
+            <a class="btn btn-secondary col-auto" href="{% url 'createAlgorithm' teacher_class.id module.id %}">
+                Create Algorithm
+            </a>
         </div>
     </div>
+
+    <hr>
+    
+    <!-- form content-->
+        <div class="form-group">
+            <form method="POST" action="" class="p-3">
+                {% csrf_token %}
+    
+                <div class="row mb-3 text-center pt-3">
+                    <h3 class="pb-0 mb-0">Create Page</h3>
+                </div>
+                
+                {{form.media}}
+    
+                <div class="row mb-3 justify-content-left pt-2">
+                    <label class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-12">
+                        {{form.name}}
+                    </div>
+                </div>
+                <div class="row mb-3 justify-content-left">
+                    <label class="col-sm-2 col-form-label">Content</label>
+                    <div class="col-12">
+                        {{form.content}}
+                    </div>
+                </div>                
+    
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" id="submitButton">Create Page</button>
+                </div>
+    
+                <div class="row mb-3 justify-content-center">
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <p class="errors">
+                                    {% for error in field.errors %}
+                                        <p class="text-danger text-center pb-0 mb-0">{{error}}</p>
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+    
+            </form>    
+        </div>
+
+
 </div>
 {% endblock %}
 

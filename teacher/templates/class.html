@@ -50,7 +50,7 @@
                 </table>
             </div>
 
-            <div class="row justify-content-center">             
+            <div class="row justify-content-center mb-2">             
                 <a class="btn btn-primary col-3" href="{% url 'updateClass' teacher_class.id %}">Edit</a>
                 <a class="btn btn-danger col-3" style="margin-left:10px;" href="{% url 'deleteClass' teacher_class.id %}">Delete </a>
             </div>   
@@ -69,15 +69,16 @@
                 {% for module in modules %}
                 <tr>
                     <td>{{ module.name  }}</td>    
-                    <td><a class="moduleButton" href="{% url 'module' teacher_class.id module.id %}">View</a></td> 
-                    <td>Update</td>
-                    <td>delete</td>            
+                    <td><a class="moduleButton" href="{% url 'manageModule' teacher_class.id module.id %}">View</a></td> 
+                    <td><a class="moduleButton" href="{% url 'updateModule' teacher_class.id module.id %}">Update</a></td>     
+                    <td><a class="moduleButton" href="{% url 'deleteModule' teacher_class.id module.id %}">Delete</a></td>       
                 </tr>             
                 {% endfor %}
             </table>
 
-            <div class="row justify-content-center">  
-                <a class="btn btn-primary col-4" href="/teacher/class/{{teacher_class.id }}/createModule/">Create a Module</a>                       
+            <div class="row justify-content-center mb-2">  
+                <a class="btn btn-primary col-4" href="{% url 'modules' class_pk %}">View modules</a>   
+                <a class="btn btn-primary col-4 ms-3" href="{% url 'createModule' class_pk %}">Create a Module</a>                      
             </div>   
         </div>
     </div>

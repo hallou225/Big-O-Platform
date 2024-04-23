@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
+import uuid
+from django_ckeditor_5.fields import CKEditor5Field
 
 # Create your models here.
 
@@ -111,6 +113,7 @@ class Class(models.Model):
 class Module(models.Model):
     name      = models.CharField(max_length=100, null=True)                          # Required Field
     parent_class = models.ForeignKey(Class, null=True, on_delete=models.SET_NULL)  # The class this module belongs to
+    order = models.IntegerField(blank=False, default=100_000)                       # for ordering
     # number_of_question
     # algorithm_id
 
@@ -130,6 +133,7 @@ class ItemType(models.Model):
 class Item(models.Model):
     type = models.ForeignKey(ItemType, null=True, on_delete=models.SET_NULL)
     module = models.ForeignKey(Module, null=True, on_delete=models.SET_NULL)
+    order = models.IntegerField(blank=False, default=100_000)                       # for ordering
 
     def __str__(self) -> str:
         child_item_type = None
@@ -140,6 +144,7 @@ class Item(models.Model):
         if page:
             child_item_type = 'Page'
             child_item_name = page.name
+            child_item_id = page.id
 
         # If the child item is not a Page, check if it's an Algorithm
         if not child_item_name:
@@ -147,32 +152,34 @@ class Item(models.Model):
             if algorithm:
                 child_item_type = 'Algorithm'
                 child_item_name = algorithm.name
+                child_item_id = algorithm.id
         
-        return f"M:{self.module.name} Item:{self.id}:{self.type}       ->     {child_item_name}"
+        return f"{self.module.name}: {self.type}->{child_item_name}"
+        #return f"[{self.module.id}]: {self.module.name} [{self.id}]: {self.type}  [{child_item_id}]: {child_item_name}"
 
 class Page(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
-    content = models.CharField(max_length=2000, null=True) # Required Field
-    item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL) # The module this algorithm
+    # content = models.TextField(max_length=2000, null=True) # Required Field
+    content = CKEditor5Field(blank=True, null=True, config_name='extends')
+    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE) # The module this algorithm
 
     def __str__(self) -> str:
         return self.name
 
 class Algorithm(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
-    item = models.ForeignKey(Item, null=True, on_delete=models.SET_NULL) # The module this algorithm  belongs to
+    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE) # The module this algorithm  belongs to
+    lines = models.TextField(max_length=2000, null=True)
+    answers = models.TextField(max_length=2000, null=True)
+    hints = models.TextField(max_length=2000, null=True)
     
     def __str__(self) -> str:
         return self.name
 
+class StudentAlgorithm(models.Model):
+    student = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    algorithm = models.ForeignKey(Algorithm, null=True, on_delete=models.SET_NULL)
+    answers = models.TextField(max_length=2000, null=True)
+    score = models.CharField(max_length=20, null=True)
+    percentage = models.CharField(max_length=20, null=True)
 
-class Line(models.Model):
-    code      = models.CharField(max_length=100, null=True)                          # Required Field
-    answer    = models.CharField(max_length=100, null=True)                          # Required Field
-    hint      = models.CharField(max_length=100, null=True, blank=True)                          # Required Field
-    algorithm = models.ForeignKey(Algorithm, null=True, on_delete=models.SET_NULL)  # The algorithm this Line  belongs to
-    # number_of_question
-    # algorithm_id
-
-    def __str__(self) -> str:
-        return self.algorithm.name +"-"+ str(self.id)

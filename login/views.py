@@ -23,6 +23,10 @@ def bootstrap(request):
     print("Login Views: def bootstrap(request):")
     return render(request, 'bootstrap.html')
 
+def test_code(request):
+    print("Login Views: def test_code(request):")
+    return render(request, 'test_code.html')
+
 
 
 

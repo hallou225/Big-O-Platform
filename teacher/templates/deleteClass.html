@@ -24,9 +24,9 @@
     </div>
     <div class="card-body bg-warning text-dark">
         <h5 class="card-title">Warning</h5>
-        <p class="card-text">Are you sure you want to delete your class, {{teacher_class.class_name}}?</p>
+        <p class="card-text">Are you sure you want to delete your class: <span class="fw-bolder">{{teacher_class.class_name}} </span>?</p>
         <p class="card-text">CAUTION: Proceeding will delete your class and all related data.</p>
-        <form method="POST" action="{% url 'deleteClass' teacher_class.id %}">
+        <form class="bg-transparent" method="POST" action="{% url 'deleteClass' teacher_class.id %}">
             {% csrf_token %}
 
             <a href="{% url 'teacherClass' teacher_class.id %}"  class="btn btn-primary">Cancel</a>

@@ -16,26 +16,73 @@
 {% block path %}   
             <a class="nav-item nav-link path" href="/teacher">Home</a>
             <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
             <a class="nav-item nav-link path activePath" href="/teacher/class/{{teacher_class.id}}/createModule">Create Module</a>
 {% endblock %}
 
 {% block content %}
-    <form id="createAModuleForm" method="POST" action="">
-        {% csrf_token %}
-        {{form}}
-        <div id="createAModuleFormContent">     
-            <input class="btn btn-primary col-2 mt-2" id="submitButton" type="submit" value="Submit">
-            {% if form.errors %}
-					{% for field in form %}
-						{% if field.errors %}
-							<p class="errors">
-								{% for error in field.errors %}
-									{{ error }}
-								{% endfor %}
-							</p>
-						{% endif %}
-					{% endfor %}
-			{% endif %}
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <form method="POST" action="" class="form-inline border col-8">
+                {% csrf_token %}
+    
+                <div class="row mb-3 text-center pt-3">
+                    <h3 class="pb-0 mb-0">Create Module</h3>
+                </div>
+    
+                <div class="row mb-3 justify-content-center pt-2">
+                    <label class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-sm-5">
+                        {{form.name}}
+                    </div>
+                </div>
+                <div class="row mb-3 justify-content-center d-none">
+                    <label class="col-sm-2 col-form-label">Parent Class</label>
+                    <div class="col-sm-5">
+                        {{form.parent_class}}
+                    </div>
+                </div>
+                
+                <div class="row mb-3 justify-content-center d-none">
+                    <label class="col-sm-2 col-form-label">Order</label>
+                    <div class="col-sm-5">
+                        {{form.order}}
+                    </div>
+                </div>
+    
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" id="submitButton">Create Module</button>
+                </div>
+    
+                <div class="row mb-3 justify-content-center">
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <p class="errors">
+                                    {% for error in field.errors %}
+                                        <p class="text-danger text-center pb-0 mb-0">{{error}}</p>
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+    
+            </form>    
         </div>
-    </form>
+    </div>
+
+    
+    <script>
+        //Query All input fields
+		var form_fields = document.getElementsByTagName('input')
+		form_fields[1].placeholder='Module Name';
+		form_fields[2].placeholder='Module Order';
+
+        for (var field in form_fields) {
+            form_fields[field].className += ' form-control';
+			form_fields[field].className += ' textEntry';
+        }
+    </script>
 {% endblock %}
