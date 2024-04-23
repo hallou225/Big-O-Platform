@@ -14,12 +14,25 @@
 {% endblock %}
 
 {% block path %}  
-            <a class="nav-item nav-link path" href="/teacher">Home</a>
-            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
-            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/deleteModule/">Update Module</a>
+            <a class="nav-item nav-link path" href="{% url 'teacher' %}">Home</a>
+            <a class="nav-item nav-link path" href="{% url 'teacherClass' class_pk %}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path "href="{% url 'modules' class_pk %}">Modules</a>
+            <a class="nav-item nav-link path activePath"href="{% url 'updateModule' teacher_class.id module.id %}">Update Module {{module.id}}</a>
 {% endblock %}
 
+
 {% block content %}
+
+<div class="d-flex bd-highlight mb-0">
+
+    <div class="p-2 bd-highlight">
+        <h3>Update Module: {{module.name}}</h3>
+        
+    </div>
+    
+</div>
+
+<hr> <!-- ----------------------------------------------------------------------------------------------- -->
 
     <div class="container mt-4">
         <div class="row justify-content-center">
@@ -36,15 +49,21 @@
                         {{form.name}}
                     </div>
                 </div>
-                <div class="row mb-3 justify-content-center">
+                <div class="row mb-3 justify-content-center  d-none">
                     <label class="col-sm-2 col-form-label">Class</label>
                     <div class="col-sm-5">
                         {{form.parent_class}}
                     </div>
                 </div>
+                <div class="row mb-3 justify-content-center d-none">
+                    <label class="col-sm-2 col-form-label">Order</label>
+                    <div class="col-sm-5">
+                        {{form.order}}
+                    </div>
+                </div>
                 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary" id="submitButton">Update Class</button>
+                    <button type="submit" class="btn btn-primary" id="submitButton">Update</button>
                 </div>
     
                 <div class="row mb-3 justify-content-center">

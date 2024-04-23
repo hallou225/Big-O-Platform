@@ -15,11 +15,12 @@
     {% include 'teacher_sidebar.html' %}
 {% endblock %}
 
+
 {% block path %}  
-<a class="nav-item nav-link path" href="/teacher">Home</a>
-<a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
-<a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
-<a class="nav-item nav-link path activePath" href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}/DeletePage/{{page_pk}}">Create Page</a>
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path"href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
+            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}/deletePage/{{page.id}}">deletePage</a>
 {% endblock %}
 
 
@@ -27,8 +28,29 @@
 
 
 {% block content %}    
+<div class="card mt-2">
+    <div class="card-header bg-danger text-white">
+        Delete Page : <span class="h3">{{page.name}}</span>
+    </div>
+    <div class="card-body bg-warning text-dark">
+        <h5 class="card-title">Warning</h5>
+        <p class="card-text">Are you sure you want to delete your page: <span class="fw-bolder"> {{page.name}} </span>?</p>
+        <p class="card-text">CAUTION: Proceeding will delete your page and all related data.</p>
 
 
-<h1> Delete Page Template</h1>
+        <form class="bg-transparent" method="POST" action="{% url 'deletePage' teacher_class.id  page.id %}">
+            {% csrf_token %}
+
+            <a href="{% url 'modules' teacher_class.id %}"  class="btn btn-primary">Cancel</a>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+</div>
+
 
 {% endblock %}
+
+
+
+
+

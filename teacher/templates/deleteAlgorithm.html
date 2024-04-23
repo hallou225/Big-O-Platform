@@ -16,16 +16,29 @@
 {% endblock %}
 
 {% block path %}  
-            <a class="nav-item nav-link path activePath" href="/teacher">Home</a>
+            <a class="nav-item nav-link path" href="/teacher">Home</a>
+            <a class="nav-item nav-link path" href="/teacher/class/{{teacher_class.id}}" >{{ teacher_class.class_name }}</a>
+            <a class="nav-item nav-link path"href="/teacher/class/{{teacher_class.id}}/modules/">Modules</a>
+            <a class="nav-item nav-link path activePath"href="/teacher/class/{{teacher_class.id}}/module/{{module.id}}/deleteAlgorithm/{{algorithm.id}}">DeleteAlgorithm</a>
 {% endblock %}
 
-
-
-
-
 {% block content %}    
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        Delete Algorithm : <span class="h3">{{algorithm.name}}</span>
+    </div>
+    <div class="card-body bg-warning text-dark">
+        <h5 class="card-title">Warning</h5>
+        <p class="card-text">Are you sure you want to delete your algorithm: <span class="fw-bolder"> {{algorithm.name}} </span>?</p>
+        <p class="card-text">CAUTION: Proceeding will delete your algorithm and all related data.</p>
 
 
-<h1> Delete Algorithm</h1>
+        <form class="bg-transparent" method="POST" action="{% url 'deleteAlgorithm' teacher_class.id algorithm.id %}">
+            {% csrf_token %}
 
+            <a href="{% url 'modules' teacher_class.id %}"  class="btn btn-primary">Cancel</a>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

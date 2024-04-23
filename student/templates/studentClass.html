@@ -53,7 +53,7 @@
             </div>   
         </div>
 
-        <div class="col border bg-light">          
+        <div class="col border bg-light">   
 
             <div class="accordion" id="accordionExample">
               {% for module in modules %}
@@ -91,9 +91,52 @@
               {% endfor %}
             </div>
 
+            <div class="row justify-content-center mb-2">  
+              <a class="btn btn-primary col-4 mb-2 mt-3 m-2" href="/student/class/{{student_class.id }}/studentModules/">View modules</a>   
+
+              <!-- Button to toggle visibility of all accordion items -->
+              <button class="btn btn-primary col-4 mb-2 mt-3" id="toggleAccordion" aria-expanded="False">Collapse All</button>
+
+            </div>
+
         </div>
     </div>
 </div>
 
+<script>
+  // Add click event listener to accordion headers to toggle visibility
+  var accordionHeaders = document.querySelectorAll('.accordion-header');
+  accordionHeaders.forEach(function (header) {
+    header.addEventListener('click', function () {
+      this.parentElement.classList.toggle('active');
+    });
+  });
+
+
+  // Expand - Collapse accordion items
+  document.getElementById('toggleAccordion').addEventListener('click', function () {
+    var accordionItems = document.querySelectorAll('.accordion-item');
+    var button = document.getElementById('toggleAccordion');
+    var expandAll = button.getAttribute('aria-expanded') === 'false';
+
+    accordionItems.forEach(function (item) {
+      var button = item.querySelector('.accordion-button');
+      var collapse = item.querySelector('.accordion-collapse');
+
+      if (expandAll) {
+        collapse.classList.add('show');
+        button.setAttribute('aria-expanded', 'true');
+        button.classList.remove('collapsed');
+      } else {
+        collapse.classList.remove('show');
+        button.setAttribute('aria-expanded', 'false');
+        button.classList.add('collapsed');
+      }
+    });
+
+    button.setAttribute('aria-expanded', expandAll ? 'true' : 'false');
+    button.innerText = expandAll ? 'Collapse All' : 'Expand All';
+  });
+</script>
 
 {% endblock %}

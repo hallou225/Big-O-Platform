@@ -37,10 +37,17 @@
                         {{form.name}}
                     </div>
                 </div>
-                <div class="row mb-3 justify-content-center">
+                <div class="row mb-3 justify-content-center d-none">
                     <label class="col-sm-2 col-form-label">Parent Class</label>
                     <div class="col-sm-5">
                         {{form.parent_class}}
+                    </div>
+                </div>
+                
+                <div class="row mb-3 justify-content-center d-none">
+                    <label class="col-sm-2 col-form-label">Order</label>
+                    <div class="col-sm-5">
+                        {{form.order}}
                     </div>
                 </div>
     
@@ -71,7 +78,7 @@
         //Query All input fields
 		var form_fields = document.getElementsByTagName('input')
 		form_fields[1].placeholder='Module Name';
-		form_fields[2].placeholder='Class Code';
+		form_fields[2].placeholder='Module Order';
 
         for (var field in form_fields) {
             form_fields[field].className += ' form-control';
