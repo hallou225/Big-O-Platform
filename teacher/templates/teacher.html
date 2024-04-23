@@ -20,45 +20,32 @@
 {% endblock %}
 
 {% block content %}    
-    <br>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-            <!-- Button positioned to the right -->
-                <div class="d-flex justify-content-between">
-                    <h5>{{teacher_display_name}} Classes</h5>  
-                    <a class="btn btn-primary ml-auto" href="/teacher/createClass">Create a Class</a>    
-                </div>
-            </div>
+
+    <div class="d-flex bd-highlight mb-0">
+  
+        <div class="p-2 bd-highlight"><h3>{{teacher_display_name}} Classes</h3></div>
+      
+        
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>{{message}}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col-md">
-                <table class="table table-hover">
-                    <tr>
-                        <th>Name</th>
-                        <th>Language</th>
-                        <th>Term</th>
-                        <th>Class Code</th>
-                    </tr>
-
-                    {% for i in teacher_classes %}
-                    <tr>
-                        <td>{{ i.class_name  }}</td>     
-                        <td>{{ i.language  }}</td>
-                        <td>{{ i.term  }}</td>
-                        <td>{{ i.class_code  }}</td>               
-                    </tr>             
-                    {% endfor %}
-                </table>
+        {% endfor %}
+    
+        <div class="ms-auto p-2 bd-highlight">
+            <a class="btn btn-primary ml-auto" href="/teacher/createClass">Create a Class</a> 
         </div>
-    </div>
+      </div>
+    
+    <hr> <!----------------------------------------------------------------------------------------------- -->
+    
 
-    <div class="row mt-2">
+    <div class="row">
+        <hr> <!----------------------------------------------------------------------------------------------- -->   
         {% for i in teacher_classes %}
-            <div class="col-md-4 ">
-                <a class="border" href="{% url 'teacherClass' i.id %}" style="text-decoration: none;">
+            <div class="col-md-4 mt-3">
+                <a href="{% url 'teacherClass' i.id %}" style="text-decoration: none;">
                     <div class="card classCard" style="width:250px">        
                         <img class="card-img-top" style="width:250px" src="{% static '/images/pencilBLUE3.svg'%}"  />
                         <div class="card-body">
