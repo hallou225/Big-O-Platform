@@ -10,3 +10,4 @@ Doxyfile
 db.sqlite3
 ignore/
 media/
+static/
