@@ -1,0 +1,35 @@
+/* Custom CSS for all sidebar */
+.navbar-nav {
+    list-style: none;
+    padding-left: 0;
+    text-align: center;
+}
+
+.nav-item {
+    padding-bottom: 1.5vw;
+    font-size: 1.2vw;
+}
+
+.nav-item:hover .nav-link {
+    color: #1b33b6;
+    font-weight: 600;
+}
+
+.nav-item:hover .sidebarIcon {
+    width: 3.4vw;
+    height: 3.4vw;
+}
+
+.nav-link {
+    color: black;
+    text-decoration: none;
+}
+
+#content {
+    visibility: visible;
+}
+
+.sidebarIcon {
+    width: 3vw;
+    height: 3vw;
+}

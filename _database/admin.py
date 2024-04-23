@@ -21,3 +21,4 @@ admin.site.register(Item)
 admin.site.register(Page)
 admin.site.register(Algorithm)
 admin.site.register(StudentAlgorithm)
+

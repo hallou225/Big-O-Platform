@@ -41,14 +41,21 @@
       <h3>{{module.name}}</h3>
   </div>
 
+  {% for message in messages %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{message}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+
   <div class="ms-auto p-2 bd-highlight">
 
 
       <a class="btn btn-primary col-auto" href="{% url 'updateModule' class_pk module_pk %}">
-          Update
+          Update Module
       </a>
       <a class="btn btn-danger col-auto" href="{% url 'deleteModule' class_pk  module_pk %}">
-          Delete
+          Delete Module
       </a>
   </div>
 </div>

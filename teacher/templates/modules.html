@@ -31,6 +31,14 @@
   
     <div class="p-2 bd-highlight"><h3>Class Name: {{teacher_class.class_name}}</h3></div>
   
+    
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>{{message}}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
     <div class="ms-auto p-2 bd-highlight">
       <a class="btn btn-secondary col-auto" href="{% url 'createModule' class_pk %}">Create Module</a>
     </div>
@@ -46,7 +54,7 @@
 
 {% if post and reorder %}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Updated the algorithm/page order successfully</strong>
+  <strong>Updated the modules order successfully</strong>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}

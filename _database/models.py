@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
 import uuid
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 
 # Create your models here.
 
@@ -160,7 +160,7 @@ class Item(models.Model):
 class Page(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
     # content = models.TextField(max_length=2000, null=True) # Required Field
-    content = RichTextField(blank=True, null=True)
+    content = CKEditor5Field(blank=True, null=True, config_name='extends')
     item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE) # The module this algorithm
 
     def __str__(self) -> str:
@@ -183,13 +183,3 @@ class StudentAlgorithm(models.Model):
     score = models.CharField(max_length=20, null=True)
     percentage = models.CharField(max_length=20, null=True)
 
-'''class Line(models.Model):
-    code      = models.CharField(max_length=100, null=True)                          # Required Field
-    answer    = models.CharField(max_length=100, null=True)                          # Required Field
-    hint      = models.CharField(max_length=100, null=True, blank=True)                          # Required Field
-    algorithm = models.ForeignKey(Algorithm, null=True, on_delete=models.SET_NULL)  # The algorithm this Line  belongs to
-    # number_of_question
-    # algorithm_id
-
-    def __str__(self) -> str:
-        return self.algorithm.name +"-"+ str(self.id)'''

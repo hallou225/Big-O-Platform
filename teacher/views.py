@@ -9,7 +9,8 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 import json
 import re
-from django.views.generic import UpdateView
+from django.contrib import messages
+
 
 
 def clean_answer(text):
@@ -104,7 +105,7 @@ def updateTeacherAccount(request):
         if form.is_valid():
             form.save()
             return redirect("/teacher/profile")
- 
+
     context = {"form": form, "teacher": teacher}
     return render(request, 'updateTeacherAccount.html', context)
 
@@ -205,11 +206,14 @@ def createModule(request, class_pk):
         if form.is_valid():
             print("in is valid")
             teacher = request.user
-            new_class = form.save(commit=False)
-            new_class.teacher = teacher
-            new_class.save()            
-            url = reverse("teacherClass", kwargs={"class_pk":teacher_class.id})
-            return redirect(url)        
+            module = form.save(commit=False)
+            module.teacher = teacher
+            module.save() 
+            module_pk = module.id        
+            # create message and redirect
+            messages.success(request, 'Module Created successfully')
+            url = reverse("manageModule", kwargs={"class_pk":class_pk, "module_pk": module_pk})
+            return redirect(url)
             
     teacher_class = Class.objects.get(id=class_pk)    
     context = {"form": form, "teacher_class": teacher_class}
@@ -234,7 +238,9 @@ def deleteModule(request, class_pk, module_pk):
 
     if request.method == "POST":
         module.delete()
-        url = reverse("teacherClass", kwargs={"class_pk":teacher_class.id})
+        
+        messages.success(request, 'Module Deleted Successfully')
+        url = reverse("modules", kwargs={"class_pk":class_pk})
         return redirect(url)
 
     context = {
@@ -268,7 +274,9 @@ def updateModule(request, class_pk, module_pk):
         form = CreateModuleForm(request.POST, instance=module)
         if form.is_valid():
             form.save()
-            return redirect("/teacher/class/" + class_pk)
+            messages.success(request, 'Module updated successfully')
+            url = reverse("manageModule", kwargs={"class_pk":class_pk, "module_pk": module_pk})
+            return redirect(url)
 
     teacher_class = Class.objects.get(id=class_pk)    
     context = {"form": form,
@@ -277,6 +285,7 @@ def updateModule(request, class_pk, module_pk):
         "teacher_class": teacher_class,
         "module": module,
     }
+    
     return render(request, 'updateModule.html', context)
 
 
@@ -303,6 +312,9 @@ def updateModuleOrder(request, class_pk, module_pk):
         if form.is_valid():
             form.save()
             return redirect("/teacher/class/" + class_pk)
+            # messages.success(request, 'Module updated successfully')
+            # url = reverse("manageModule", kwargs={"class_pk":class_pk, "module_pk": module_pk})
+            # return redirect(url)
 
     teacher_class = Class.objects.get(id=class_pk)    
     context = {"form": form, "teacher_class": teacher_class}
@@ -317,11 +329,8 @@ def modules(request, class_pk):
 
     teacher_class = Class.objects.get(id=class_pk)
     teacher_modules = teacher_class.module_set.all()
-    reorder = False
-    post = False
 
     if request.method == 'POST':
-        post = True
         orderDict = request.POST.get('orderDict') 
         print("Dictionary of new order: ")
         print("--------------- *** ---------------")
@@ -340,8 +349,8 @@ def modules(request, class_pk):
                 for obj_id, new_order in orderDict.items():  
                     obj = Module.objects.get(pk=obj_id)
                     obj.order = new_order
-                    obj.save()
-                    reorder = True
+                    obj.save()                    
+                messages.success(request, 'Module order updated successfully')
 
             except Module.DoesNotExist:
                 return JsonResponse({'success': False, 'error': 'Object not found'})
@@ -385,7 +394,7 @@ def modules(request, class_pk):
     for page in pages:
         print("page: ", page)
     
-    # Order the list of modules by order
+    # Order the list of modules and items by order
     teacher_modules = teacher_modules.order_by('order')        
     items = items.order_by('order')
     context = {
@@ -396,9 +405,7 @@ def modules(request, class_pk):
         "module_number": teacher_modules.count(),
         "items": items,
         "algorithms": algorithms,
-        "pages": pages,
-        "post": post,
-        "reorder": reorder
+        "pages": pages
     }
 
     return render(request, 'modules.html', context)
@@ -422,7 +429,6 @@ def teacherViewAlgorithm(request, class_pk, algorithm_pk):
     teacher_class = Class.objects.get(id=class_pk)
 
     
-    
 
     context = {
         'class_pk': class_pk,
@@ -434,7 +440,6 @@ def teacherViewAlgorithm(request, class_pk, algorithm_pk):
         "codes": codes,
         "answers": answers,
         "hints": hints,
-
     }
 
     return render(request, 'algorithm.html', context)
@@ -472,29 +477,10 @@ def updateAlgorithm(request, class_pk, algorithm_pk):
         return redirect("/login")
     
     algorithm = Algorithm.objects.get(id=algorithm_pk) 
-    codes = algorithm.lines.split("\n")
-    answers = algorithm.answers.split("\n")
-    hints = algorithm.hints.split("\n")
-
     item = Item.objects.get(id=algorithm.item.id)
     module = Module.objects.get(id=item.module.id)
     module_pk = module.id
     teacher_class = Class.objects.get(id=class_pk)
-    
-    data = zip(codes, answers, hints)
-
-    context = {
-        'class_pk': class_pk,
-        'module_pk': module_pk,
-        'algorithm_pk': algorithm_pk,
-        "teacher_class": teacher_class,
-        "module": module,
-        "algorithm": algorithm,
-        "codes": codes,
-        "answers": answers,
-        "hints": hints,
-        "data": data
-    }
 
     if request.method == "POST" and request.POST.getlist('submitAlgorithmForm'):
         print(f"POST = {request.POST}")
@@ -533,7 +519,10 @@ def updateAlgorithm(request, class_pk, algorithm_pk):
         print(f"Answers:\n{answers}")
         print(f"Hints:\n{hints}]")
 
+        algorithmName = request.POST.getlist('algorithm_name')[0]
+        form = AlgorithmForm
         # return HttpResponse(
+        #     "Name: " + algorithmName + "\n"
         #     "Lines\n" + 
         #     lines + 
             
@@ -542,22 +531,35 @@ def updateAlgorithm(request, class_pk, algorithm_pk):
         #     "\nHints\n" + 
         #      hints
         #  )
+            
+        algorithm.name = algorithmName
+        algorithm.lines = lines.rstrip("\n")
+        algorithm.answers = answers.rstrip("\n")
+        algorithm.hints = hints.rstrip("\n")
+        algorithm.save()
+        messages.success(request, 'Algorithm updated successfully')
 
-        
-
-        algorithmName = request.POST.getlist('algorithm_name')[0]
-
-        algorithm = Algorithm.objects.update(
-            name = algorithmName,
-            lines = lines.rstrip("\n"),
-            answers = answers.rstrip("\n"),
-            hints = hints.rstrip("\n"),
-        )
         url = reverse("teacherViewAlgorithm", kwargs={"class_pk": class_pk, "algorithm_pk": algorithm_pk})
         return redirect(url)
+    
 
-
-
+    codes = algorithm.lines.split("\n")
+    answers = algorithm.answers.split("\n")
+    hints = algorithm.hints.split("\n")
+    data = zip(codes, answers, hints)
+    
+    context = {
+        'class_pk': class_pk,
+        'module_pk': module_pk,
+        'algorithm_pk': algorithm_pk,
+        "teacher_class": teacher_class,
+        "module": module,
+        "algorithm": algorithm,
+        "codes": codes,
+        "answers": answers,
+        "hints": hints,
+        "data": data
+    }
     return render(request, 'updateAlgorithm.html', context)
 
 @login_required(login_url="/login")
@@ -578,7 +580,8 @@ def updatePage(request, class_pk, page_pk):
         if form.is_valid():
             form.save()
             
-            # return to the view page 
+            # create message and redirect
+            messages.success(request, 'Page Updated Successfully')
             url = reverse("teacherViewPage", kwargs={"class_pk": class_pk, "page_pk": page_pk})
             return redirect(url)
 
@@ -612,7 +615,9 @@ def deletePage(request, class_pk, page_pk):
 
     if request.method == "POST":
         item.delete()
-        url = reverse("modules", kwargs={"class_pk": class_pk})
+        # create message and redirect
+        messages.success(request, 'Page Deleted successfully')
+        url = reverse("manageModule", kwargs={"class_pk": class_pk, "module_pk": module_pk})
         return redirect(url)
     
     context = {
@@ -690,11 +695,9 @@ def manageModule(request, class_pk, module_pk):
     
     algorithms = Algorithm.objects.none()
     pages = Page.objects.none()
-    post = False
-    reorder = False
 
     if request.method == 'POST':
-        post = True
+
         orderDict = request.POST.get('orderDict') 
         print("Dictionary of new order: ")
         print("--------------- *** ---------------")
@@ -714,14 +717,14 @@ def manageModule(request, class_pk, module_pk):
                     obj = Item.objects.get(pk=obj_id)
                     obj.order = new_order
                     obj.save()
-                reorder = True   
+                
+                messages.success(request, 'Algorithm/Page order updated successfully')
             
             except Module.DoesNotExist:
                 return JsonResponse({'success': False, 'error': 'Object not found'})
             except Exception as e:
                 return JsonResponse({'success': False, 'error': str(e)})
         else:
-            reorder = False
             return JsonResponse({'success': False, 'error': 'No data provided'})
 
 
@@ -757,10 +760,7 @@ def manageModule(request, class_pk, module_pk):
         "module": module,
         "items": items,
         "algorithms": algorithms,
-        "pages": pages,
-        "post": post,
-        "reorder": reorder
-
+        "pages": pages
     }
     return render(request, 'manageModule.html', context)
 
@@ -911,8 +911,8 @@ def createAlgorithm(request, class_pk, module_pk):
             answers = answers.rstrip("\n"),
             hints = hints.rstrip("\n"),
         )
+        messages.success(request, 'Algorithm created successfully')
 
-        url = reverse("modules", kwargs={"class_pk": class_pk})
         url = reverse("teacherViewAlgorithm", kwargs={"class_pk": class_pk, "algorithm_pk": algorithm.id})
         return redirect(url)
     
@@ -945,9 +945,11 @@ def createPage(request, class_pk, module_pk):
             item = item,
             content = content,
         )
+        page_pk = page.id
 
-        # return to the module page
-        url = reverse("modules", kwargs={"class_pk": class_pk})
+        # create message and redirect
+        messages.success(request, 'Page Created successfully')
+        url = reverse("teacherViewPage", kwargs={"class_pk": class_pk, "page_pk": page_pk})
         return redirect(url)
     
     return render(request, 'createPage.html', context)
