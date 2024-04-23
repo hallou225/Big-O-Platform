@@ -9,5 +9,4 @@ Doxyfile
 *.sqlite3
 db.sqlite3
 ignore/
-_database/migrations/
 media/
