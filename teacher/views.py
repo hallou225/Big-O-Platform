@@ -141,17 +141,8 @@ def createClass(request):
     form = CreateClassForm()
     if request.method == "POST":
         form = CreateClassForm(request.POST)
-
         if form.is_valid():
             teacher = request.user
-
-            class_code = request.POST.get("class_code")
-            classesWithCode = Class.objects.filter(class_code=class_code)
-            classToJoin = classesWithCode.first()
-
-            print("|")
-            print(f"classesWithCode: {classesWithCode}")
-            print("|")
 
             '''
             teacher_id = request.user.id
@@ -162,6 +153,7 @@ def createClass(request):
             new_class = form.save(commit=False)
             new_class.teacher = teacher
             new_class.save()
+            class_pk = new_class.id   
 
             # create class and redirect
             messages.success(request, 'Class Created successfully')
@@ -171,7 +163,6 @@ def createClass(request):
     
     context = {"form": form}
     return render(request, 'createClass.html', context)
-
 
 @login_required(login_url="/login")
 def deleteClass(request, class_pk):
