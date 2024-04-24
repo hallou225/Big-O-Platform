@@ -150,7 +150,12 @@ def createClass(request):
             new_class = form.save(commit=False)
             new_class.teacher = teacher
             new_class.save()
+            class_pk = new_class.id   
 
+            # create class and redirect
+            messages.success(request, 'Class Created successfully')
+            url = reverse("teacherClass", kwargs={"class_pk":class_pk})
+            return redirect(url)
             return redirect("/teacher")
     
     context = {"form": form}
@@ -164,11 +169,15 @@ def deleteClass(request, class_pk):
         return redirect("/login")
         
     teacher_class = Class.objects.get(id=class_pk)
+    className = teacher_class.class_name
 
     if request.method == "POST":
         teacher_class.delete()
-        return redirect("/teacher")
-
+        # delete class and redirect
+        messages.success(request, f'Successfully deleted class: {className}')
+        url = reverse("teacher")
+        return redirect(url)
+    
     context = {"teacher_class": teacher_class}
     return render(request, 'deleteClass.html', context)
 
@@ -185,7 +194,12 @@ def updateClass(request, class_pk):
         form = CreateClassForm(request.POST, instance=teacherClass)
         if form.is_valid():
             form.save()
-            return redirect("/teacher/class/" + class_pk)
+            
+            # create class and redirect
+            messages.success(request, 'Class updated successfully')
+            url = reverse("teacherClass", kwargs={"class_pk":class_pk})
+            return redirect(url)
+        
 
     teacher_class = Class.objects.get(id=class_pk)    
     context = {"form": form, "teacher_class": teacher_class}
@@ -615,6 +629,7 @@ def deletePage(request, class_pk, page_pk):
 
     if request.method == "POST":
         item.delete()
+
         # create message and redirect
         messages.success(request, 'Page Deleted successfully')
         url = reverse("manageModule", kwargs={"class_pk": class_pk, "module_pk": module_pk})
@@ -642,10 +657,14 @@ def deleteAlgorithm(request, class_pk, algorithm_pk):
     module_pk = module.id
     teacher_class = Class.objects.get(id=class_pk)
 
-    if request.method == "POST":
+    if request.method == "POST":        
+        algorithmName = algorithm.name
         item.delete()
-        url = reverse("modules", kwargs={"class_pk": class_pk})
+        # create message and redirect
+        messages.success(request, f'Successfully deleted algorithm: {algorithmName}')
+        url = reverse("manageModule", kwargs={"class_pk": class_pk, "module_pk": module_pk})
         return redirect(url)
+    
     
     context = {
     "class_pk": class_pk,
