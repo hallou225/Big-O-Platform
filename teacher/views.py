@@ -104,7 +104,10 @@ def updateTeacherAccount(request):
         form = UpdateAccountForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
-            return redirect("/teacher/profile")
+            messages.success(request, 'Account updated successfully')
+            url = reverse("profile")
+            return redirect(url)
+            # return redirect("/teacher/profile")
 
     context = {"form": form, "teacher": teacher}
     return render(request, 'updateTeacherAccount.html', context)
@@ -138,8 +141,17 @@ def createClass(request):
     form = CreateClassForm()
     if request.method == "POST":
         form = CreateClassForm(request.POST)
+
         if form.is_valid():
             teacher = request.user
+
+            class_code = request.POST.get("class_code")
+            classesWithCode = Class.objects.filter(class_code=class_code)
+            classToJoin = classesWithCode.first()
+
+            print("|")
+            print(f"classesWithCode: {classesWithCode}")
+            print("|")
 
             '''
             teacher_id = request.user.id
@@ -151,6 +163,9 @@ def createClass(request):
             new_class.teacher = teacher
             new_class.save()
 
+            messages.success(request, 'Class created successfully')
+            # url = reverse("teacherClass", kwargs={"class_pk":classToJoin.id})
+            # return redirect(url)
             return redirect("/teacher")
     
     context = {"form": form}
@@ -167,7 +182,11 @@ def deleteClass(request, class_pk):
 
     if request.method == "POST":
         teacher_class.delete()
-        return redirect("/teacher")
+        
+        messages.success(request, 'Class deleted successfully')
+        url = reverse("teacher")
+        return redirect(url)
+        # return redirect("/teacher")
 
     context = {"teacher_class": teacher_class}
     return render(request, 'deleteClass.html', context)
@@ -185,7 +204,10 @@ def updateClass(request, class_pk):
         form = CreateClassForm(request.POST, instance=teacherClass)
         if form.is_valid():
             form.save()
-            return redirect("/teacher/class/" + class_pk)
+            messages.success(request, 'Joined class successfully')
+            url = reverse("teacherClass", kwargs={"class_pk":class_pk})
+            return redirect(url)
+            # return redirect("/teacher/class/" + class_pk)
 
     teacher_class = Class.objects.get(id=class_pk)    
     context = {"form": form, "teacher_class": teacher_class}
