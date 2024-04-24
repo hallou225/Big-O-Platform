@@ -38,6 +38,19 @@
         </div>
     </div>
 
+
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>{{message}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+
+
     <div class="row mt-2">
         <div class="col border bg-light">
 
@@ -85,8 +98,7 @@
             </table>
 
             <div class="row justify-content-center mb-2">  
-                <a class="btn btn-primary col-4" href="{% url 'modules' class_pk %}">View modules</a>   
-                <a class="btn btn-primary col-4 ms-3" href="{% url 'createModule' class_pk %}">Create a Module</a>                      
+                <a class="btn btn-primary col-4" href="{% url 'modules' class_pk %}">View modules</a>                      
             </div>   
         </div>
     </div>
