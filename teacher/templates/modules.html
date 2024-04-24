@@ -118,6 +118,7 @@
             {% endif %}
             {% endfor %}
 
+
             {% if module in empty_modules %}
               <div class="list-group accordion-body p-0">
                 <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">
@@ -131,11 +132,13 @@
 
             <nav class="navbar navbar-expand-sm navbar-light">
               <div class="container-fluid bg-transparent">
+
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                       aria-expanded="false" aria-label="Toggle navigation">
                       <span class="navbar-toggler-icon"></span>
                   </button>
+
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown pb-0">
@@ -146,70 +149,9 @@
                               Manage
                           </a>
                           </li>
-                        <!-- Add Page -->
-                        <li class="nav-item dropdown pb-0">
-                          <a 
-                          href="{% url 'createPage' teacher_class.id module.id %}"
-                              class="accordionSubBtn " role="button"
-                              style="">
-                              + Page
-                          </a>
-                          </li>
-                          
-                        <!-- Add Algorithm -->
-                        <li class="nav-item dropdown pb-0">
-                          <a 
-                          href="{% url 'createAlgorithm' teacher_class.id module.id %}"
-                              class="accordionSubBtn" role="button"
-                              style="">
-                              + Algorithm
-                          </a>
-                          </li>
-                          
-                        <!-- Delete an algorithm or page -->
-                          {% if module in empty_modules %}
-                          {% else %}
-                          <!-- Delete button -->
-                          <li class="nav-item dropdown pb-0">
-                              <a 
-                                  href="#" 
-                                  class="accordionSubBtnDel dropdown-toggle btn-danger" id="navbarDropdown" role="button"
-                                  data-bs-toggle="dropdown" aria-expanded="false" 
-                                  style="">
-                                  Delete
-                              </a>
-                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                  {% for item in items %}
-                                  {% if module.name == item.module.name %}
-
-                                      {% for algorithm in algorithms %}
-                                        {% if item.id == algorithm.item.id %}
-                                      <li><a class="dropdown-item"
-                                        href="{% url 'deleteAlgorithm' teacher_class.id algorithm.id %}">
-                                        <span class="text-danger">A: </span>{{algorithm.name}}
-                                          </a>
-                                      </li>
-                                      {% endif %}
-                                      {% endfor %}
-
-                                      {% for page in pages %}
-                                        {% if item.id == page.item.id %}
-                                      <li><a class="dropdown-item"
-                                      href="{% url 'deletePage' teacher_class.id  page.id %}">
-                                      <span class="text-primary">P: </span>{{page.name}}
-                                        </a>
-                                      </li>
-                                      {% endif %}
-                                      {% endfor %}
-
-                                  {% endif %}
-                                  {% endfor %}
-
-                              </ul>
-                          </li>
-                          {% endif %}
                       </ul>
                   </div>
+                  
               </div>
             </nav>
 
@@ -227,7 +169,6 @@
         {% csrf_token %}
         <input type="hidden" id="orderingInput" name="orderDict" value="">
       </form>
-
       
         <!-- Button to save ordering visibility of all accordion items -->
         <div class="container">
