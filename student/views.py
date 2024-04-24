@@ -7,6 +7,7 @@ import ast
 from django.http import JsonResponse
 from django.urls import reverse
 import json
+from django.contrib import messages
 
 # Create your views here.
 
@@ -85,7 +86,10 @@ def updateStudentAccount(request):
         form = UpdateAccountForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return redirect("/student/profile")
+            messages.success(request, 'Account updated successfully')
+            url = reverse("studentProfile")
+            return redirect(url)
+            # return redirect("/student/profile")
  
     context = {"form": form, "student": student}
     return render(request, 'updateStudentAccount.html', context)
@@ -169,7 +173,10 @@ def joinclass(request):
                 errorMessage = "You are already enrolled in this class."
             else:
                 classToJoin.students.add(student)
-                return redirect("/student")
+                messages.success(request, 'Joined class successfully')
+                url = reverse("studentClass", kwargs={"class_pk":classToJoin.id})
+                return redirect(url)
+                # return redirect("/student")
         else:
             errorMessage = "There is no class with this class code."
 
@@ -186,6 +193,9 @@ def leaveClass(request, class_pk):
 
     if request.method == "POST":
         student_class.students.remove(request.user)
+        messages.success(request, 'Class unenrolled successfully')
+        url = reverse("student")
+        return redirect(url)
         return redirect("/student")
 
     context = {"student_class": student_class}
