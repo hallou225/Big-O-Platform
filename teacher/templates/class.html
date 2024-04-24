@@ -21,19 +21,22 @@
 {% block content %}
 <div class="container">
 
-<div class="d-flex bd-highlight mb-0">
+    <div class="row">
+        <div class="d-flex bd-highlight mb-0">
 
-    <div class="p-2 bd-highlight">
-        <h3>{{teacher_display_name}} Classes</h3>
+            <!-- Button positioned to the right -->
+            <div class="p-2 bd-highlight">
+                <h3>{{teacher_display_name}} Classes</h3>  
+            </div>
+            
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-
-
-    {% for message in messages %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>{{message}}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
 
 </div>
 

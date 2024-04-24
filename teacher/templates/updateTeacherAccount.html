@@ -18,58 +18,74 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Update Teacher Account Form (use post method to prevent data being shown in url) -->
-    <form id="updateTeacherAccountForm" method="POST" action="">
-        {% csrf_token %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <!-- Update Student Account Form (use post method to prevent data being shown in url) -->
+        <form id="updateStudentAccountForm" method="POST" action="" class="form-inline border col-8">
+            {% csrf_token %}
 
-        <!-- Content inside the form -->
-        <div id="updateTeacherAccountFormContent">
-        
-            <h1 id="editTeacherAccountInfoHeader">Edit Account Info</h1>
-
-            <div id="row">
-                <h3>First Name</h3>
-                {{form.first_name}}
-            </div>
-
-            <div id="row">
-                <h3>Middle Name</h3>
-                {{form.middle_name}}
-            </div>
+            <!-- Content inside the form -->
+            <div id="updateStudentAccountFormContent">
             
-            <div id="row">
-                <h3>Last Name</h3>
-                {{form.last_name}}
-            </div>
+                <div class="row mb-3 text-center pt-3">
+                    <h3 class="pb-0 mb-0">Edit Account Info</h3>
+                </div>
 
-            <div id="row">
-                <h3>Display Name</h3>
-                {{form.display_name}}
-            </div>
+                <div class="row mb-3 justify-content-center pt-2">
+                    <label class="col-sm-3 col-form-label">First Name</label>
+                    <div class="col-sm-5">
+                        {{form.first_name}}
+                    </div>
+                </div>
 
-            <div id="row">
-                <h3>Email</h3>
-                {{form.email}}
-            </div>
+                <div class="row mb-3 justify-content-center pt-2">
+                    <label class="col-sm-3 col-form-label">Middle Name</label>
+                    <div class="col-sm-5">
+                        {{form.middle_name}}
+                    </div>
+                </div>
 
-            <div id="row">
-                <input class="btn btn-primary col-2 mt-2" id="submitButton" type="submit" value="Update Account">
-            </div>
+                <div class="row mb-3 justify-content-center pt-2">
+                    <label class="col-sm-3 col-form-label">Last Name</label>
+                    <div class="col-sm-5">
+                        {{form.last_name}}
+                    </div>
+                </div>
 
-            {% if form.errors %}
-                {% for field in form %}
-                    {% if field.errors %}
-                        <p class="errors">
-                            {% for error in field.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </p>
+                <div class="row mb-3 justify-content-center pt-2">
+                    <label class="col-sm-3 col-form-label">Display Name</label>
+                    <div class="col-sm-5">
+                        {{form.display_name}}
+                    </div>
+                </div>
+
+                <div class="row mb-3 justify-content-center pt-2">
+                    <label class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-5">
+                        {{form.email}}
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <input class="btn btn-primary" id="submitButton" type="submit" value="Update Account">
+                </div>
+
+                <div class="row mb-3 justify-content-center">
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <p class="errors">
+                                    {% for error in field.errors %}
+                                        <p class="text-danger text-center pb-0 mb-0">{{error}}</p>
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
-                {% endfor %}
-			{% endif %}
+                </div>
 
-
-        </div>
-
-    </form>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

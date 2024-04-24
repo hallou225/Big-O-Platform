@@ -104,7 +104,10 @@ def updateTeacherAccount(request):
         form = UpdateAccountForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
-            return redirect("/teacher/profile")
+            messages.success(request, 'Account updated successfully')
+            url = reverse("profile")
+            return redirect(url)
+            # return redirect("/teacher/profile")
 
     context = {"form": form, "teacher": teacher}
     return render(request, 'updateTeacherAccount.html', context)
@@ -156,11 +159,10 @@ def createClass(request):
             messages.success(request, 'Class Created successfully')
             url = reverse("teacherClass", kwargs={"class_pk":class_pk})
             return redirect(url)
-            return redirect("/teacher")
+            # return redirect("/teacher")
     
     context = {"form": form}
     return render(request, 'createClass.html', context)
-
 
 @login_required(login_url="/login")
 def deleteClass(request, class_pk):
@@ -177,6 +179,7 @@ def deleteClass(request, class_pk):
         messages.success(request, f'Successfully deleted class: {className}')
         url = reverse("teacher")
         return redirect(url)
+    
     
     context = {"teacher_class": teacher_class}
     return render(request, 'deleteClass.html', context)
@@ -199,6 +202,7 @@ def updateClass(request, class_pk):
             messages.success(request, 'Class updated successfully')
             url = reverse("teacherClass", kwargs={"class_pk":class_pk})
             return redirect(url)
+        
         
 
     teacher_class = Class.objects.get(id=class_pk)    
