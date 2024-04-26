@@ -943,6 +943,165 @@ def createAlgorithm(request, class_pk, module_pk):
 
 
 @login_required(login_url="/login")
+def createAlgorithm2(request, class_pk, module_pk):
+    print("\ncreateAlgorithm2 Views: def createAlgorithm2(request):\n-------------------------------------------------")
+    if not isTeacher(request):
+        return redirect("/login")
+
+    teacher_class = Class.objects.get(id=class_pk)
+    module = Module.objects.get(id=module_pk)
+    context = {"teacher_class": teacher_class, "module": module}
+
+    # for table code line validation
+    invalidCodeLine = False
+
+    # variables for extracting table data from the HTML form
+    lines = []
+    answers = []
+    hints = []
+
+    if request.method == "POST" and request.POST.getlist('fileUploadForm'):
+        print("fileUpload")
+        try:
+            algorithm_file = request.FILES['algorithmUpload']
+            algorithm_file_name = algorithm_file.name
+            algorithm_file_size = algorithm_file.size
+            algorithm_file_content_type = algorithm_file.content_type
+            algorithm_file_lines = algorithm_file.open().readlines()
+            algorithm_file.close()
+
+            algorithm_file_lines = [line.decode("utf-8") for line in algorithm_file_lines]
+
+            # Debugging Messages:
+            print("Name of algorithm file: ", algorithm_file_name)
+            print("Size of algorithm file: ", algorithm_file_size)
+            
+            algorithm_line_count = sum(1 for line in algorithm_file_lines)        
+            print("number of line ", algorithm_line_count)
+
+            print("Content Type of algorithm file: ", algorithm_file_content_type)
+            print("Was the algorithm file closed? ", algorithm_file.closed)
+
+            algorithm = zip(algorithm_file_lines)
+            print(f"algorithm_file_lines: {algorithm_file_lines}")
+
+            answerkey_lines = []
+
+            # Prefill the answers for every line of code
+            for code in algorithm_file_lines:
+                print(f"code: {code}")
+
+                split_line = code.strip().split(' ')
+                print(f"split_code: {split_line}")
+
+                # If blank line, no answer
+                if len(code.strip()) == 0 or split_line[0][0] == "#":
+                    answerkey_lines.append("")
+                
+                # If not blank line
+                else:
+                    split_line = code.strip().split(' ')
+                    print(f"split_code: {split_line}")
+
+                    # If loop, set answer to O(n)
+                    if split_line[0] == "for" or split_line[0] == "while":
+                        answerkey_lines.append("O(n)")
+                    
+                    # Otherwise, set answer to O(1)
+                    else:
+                        answerkey_lines.append("O(1)")
+
+            print(f"answerkey_lines: {answerkey_lines}")
+
+            for answer in answerkey_lines:
+                print(f"answer: {answer}")
+            
+            context.update({
+                "algorithm_file_lines": algorithm_file_lines,
+                "algorithm_line_count": algorithm_line_count,
+                "answerkey_lines": answerkey_lines,
+                "algorithm": algorithm,
+                "invalidCodeLine": invalidCodeLine,
+            })
+
+            if request.method == "POST":
+                print(request.POST)
+
+        except MultiValueDictKeyError:
+            print("No file was chosen.")
+
+    elif request.method == "POST" and request.POST.getlist('submitAlgorithmForm'):
+        print(f"POST = {request.POST}")
+        table = request.POST.getlist('table_data')
+        print("TABLE = ", table)
+
+        formattedTable = []
+        for item in table:
+            formattedItem = eval(item)
+            formattedTable.append(formattedItem)
+        formattedTable = formattedTable[0]
+        print("FORMATTED_TABLE = ", formattedTable)
+
+        lines = ""
+        answers = ""
+        hints = ""
+
+        for i in range(len(formattedTable)):
+            print("Line: ", formattedTable[i])
+            lines += formattedTable[i]["code"] + "\n"
+            
+            answer = formattedTable[i]["answer"]
+            answer = clean_answer(answer)
+            answers += answer + "\n"
+
+            hint = formattedTable[i]["hint"]             
+            # strip the hint from spaces 
+            hint = hint.rstrip()
+            # add one space after the hint. Needed to ensure at least an empty hint is saved for each line
+            # Needed for zip as zip needs all its list to have the save number of lines
+            hint += " "
+
+            hints += hint + "\n"
+        
+        print(f"\n\nLines:\n{lines}")
+        print(f"Answers:\n{answers}")
+        print(f"Hints:\n{hints}]")
+
+        # return HttpResponse(
+        #     "Lines\n" + 
+        #     lines + 
+            
+        #     "\nAnswers\n" +
+        #      answers + 
+        #     "\nHints\n" + 
+        #      hints
+        #  )
+
+        # After the posted data for the algorithm are validated
+        # Create an Item for this algorithm
+        item = Item.objects.create(
+            type = ItemType.objects.get(type="Algorithm"),
+            module = Module.objects.get(id=module_pk),
+        )
+
+        algorithmName = request.POST.getlist('algorithm_name')[0]
+
+        algorithm = Algorithm.objects.create(
+            name = algorithmName,
+            item = item,
+            lines = lines.rstrip("\n"),
+            answers = answers.rstrip("\n"),
+            hints = hints.rstrip("\n"),
+        )
+        messages.success(request, 'Algorithm created successfully')
+
+        url = reverse("teacherViewAlgorithm", kwargs={"class_pk": class_pk, "algorithm_pk": algorithm.id})
+        return redirect(url)
+    
+    return render(request, 'createAlgorithm2.html', context)
+
+
+@login_required(login_url="/login")
 def createPage(request, class_pk, module_pk):
     print("\ncreatePage Views: def createPage(request):\n-----------------------------------------------")
     if not isTeacher(request):
