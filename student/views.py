@@ -7,6 +7,7 @@ import ast
 from django.http import JsonResponse
 from django.urls import reverse
 import json
+from django.contrib import messages
 
 # Create your views here.
 
@@ -85,7 +86,10 @@ def updateStudentAccount(request):
         form = UpdateAccountForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return redirect("/student/profile")
+            messages.success(request, 'Account updated successfully')
+            url = reverse("studentProfile")
+            return redirect(url)
+            # return redirect("/student/profile")
  
     context = {"form": form, "student": student}
     return render(request, 'updateStudentAccount.html', context)
@@ -138,6 +142,9 @@ def studentClass(request, class_pk):
         for item in items:
             if module.name == item.module.name:
                 print("item.module: ", item.module)
+    
+    student_modules = student_modules.order_by('order')
+    items = items.order_by('order')
             
     context = {"student_class": student_class, "modules": student_modules,
                 "module_number": student_modules.count(), "items": items,
@@ -169,7 +176,10 @@ def joinclass(request):
                 errorMessage = "You are already enrolled in this class."
             else:
                 classToJoin.students.add(student)
-                return redirect("/student")
+                messages.success(request, 'Joined class successfully')
+                url = reverse("studentClass", kwargs={"class_pk":classToJoin.id})
+                return redirect(url)
+                # return redirect("/student")
         else:
             errorMessage = "There is no class with this class code."
 
@@ -186,6 +196,9 @@ def leaveClass(request, class_pk):
 
     if request.method == "POST":
         student_class.students.remove(request.user)
+        messages.success(request, 'Class unenrolled successfully')
+        url = reverse("student")
+        return redirect(url)
         return redirect("/student")
 
     context = {"student_class": student_class}
@@ -217,6 +230,12 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
     codes = algorithm.lines.split("\n")
     answers = algorithm.answers.split("\n")
     hints = algorithm.hints.split("\n")
+
+    # Constructing answer options list
+    options = set(answers)
+    presets = {"O(1)", "O(log n)", "O(n)", "O(n log n)", "O(n^2)", "O(n^3)", "O(2^n)", "O(n!)"}
+    options = list(options.union(presets))
+    print(f"---------options: {options}")
 
     # Retrieving the answers submitted by the student and calculate the grade
     score = 0
@@ -303,7 +322,7 @@ def algorithm(request, class_pk, module_pk, algorithm_pk):
     ###########################################################################################################################
 
     context = {"student_class": student_class, "module": module, "algorithm": algorithm,
-            "codes": codes, "answers": answers, 
+            "codes": codes, "answers": answers, "options": options,
             "score": score, "percentage": percentage , "lineStatus": lineStatus, "results": results}
     return render(request, 'studentAlgorithm.html', context)
 

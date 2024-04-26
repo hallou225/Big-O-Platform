@@ -18,7 +18,20 @@
 
 {% block content %}
     <div class="col">
-        <h1>Profile</h1>
+        <div class="d-flex bd-highlight mb-0">
+
+            <div class="p-2 bd-highlight">
+                <h3>Profile</h3>
+            </div>
+
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+
         <!-- Teacher Info -->
         <p>First Name: {{teacher.first_name}}</p>
         <p>Middle Name: {{teacher.middle_name}}</p>
