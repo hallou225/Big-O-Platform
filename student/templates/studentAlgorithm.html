@@ -105,14 +105,9 @@
                 {% if code != '' %}
                     <select name="answers[]" class="w-100" required>
                         <option value="">Select an option...</option>
-                        <option value="O(1)">O(1)</option>
-                        <option value="O(log n)">O(log n)</option>
-                        <option value="O(n)">O(n)</option>
-                        <option value="O(n log n)">O(n log n)</option>
-                        <option value="O(n^2)">O(n^2)</option>
-                        <option value="O(n^3)">O(n^3)</option>
-                        <option value="O(2^n)">O(2^n)</option>
-                        <option value="O(n!)">O(n!)</option>
+                        {% for option in options %}
+                            <option value="{{option}}">{{option}}</option>
+                        {% endfor %}
                     </select>
                 {% else %}
                     <select name="answers[]" class="w-100 d-none">
