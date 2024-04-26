@@ -990,10 +990,23 @@ def createAlgorithm2(request, class_pk, module_pk):
             # Prefill every answer with O(1) for lines of code, empty string for blank lines
             for code in algorithm_file_lines:
                 print(f"code: {code}")
+
+                # If blank line, no answer
                 if len(code.strip()) == 0:
                     answerkey_lines.append("")
+                
+                # If not blank line
                 else:
-                    answerkey_lines.append("O(1)")
+                    split_code = code.strip().split(' ')
+                    print(f"split_code: {split_code}")
+
+                    # If loop, set answer to O(n)
+                    if split_code[0] == "for" or split_code[0] == "while":
+                        answerkey_lines.append("O(n)")
+                    
+                    # Otherwise, set answer to O(1)
+                    else:
+                        answerkey_lines.append("O(1)")
 
             print(f"answerkey_lines: {answerkey_lines}")
 
