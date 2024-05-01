@@ -847,14 +847,18 @@ def createAlgorithm(request, class_pk, module_pk):
             print(f"algorithm_file_lines: {algorithm_file_lines}")
 
             for code, answer in algorithm:
-                print(f"code: {len(code)} - answer: {len(answer.decode())}")
+                print(f"code: {code} - answer: {answer.decode()}")
+                print(f"code.strip(): {len(code.strip())} - answer: {len(answer.decode())}")
 
-                if len(code) == 1 and len(answer.decode()) != 1:
+                if len(code.strip()) == 0 and len(answer.decode().strip()) != 0:
                     invalidCodeLine = True
                     print("Missing code")
-                elif len(code) != 1 and len(answer.decode()) == 1:
+                elif len(code.strip()) != 0 and code.strip()[0] != "#" and len(answer.decode().strip()) == 0:
                     invalidCodeLine = True
                     print("Missing answer")
+                elif len(code.strip()) != 0 and code.strip()[0] == "#" and len(answer.decode().strip()) != 0:
+                    invalidCodeLine = True
+                    print("Shouldn't have answer for comment")
             
             context.update({
                 "algorithm_file_lines": algorithm_file_lines,

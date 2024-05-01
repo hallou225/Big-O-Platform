@@ -5,7 +5,7 @@ def compute_largest_cc_size_bf(g):
 	Inputs: an undirected graph g = (V, E)
 	Outputs: the size of the largest connected component of g
 	"""
-	largestsize = -float('inf)
+	largestsize = -float('inf')
 	visited = {}
 
 	for node in g.nodes():
@@ -26,5 +26,3 @@ def compute_largest_cc_size_bf(g):
 		largestsize = max(largestsize, ccsize)
 
 	return largestsize
-	
-	
