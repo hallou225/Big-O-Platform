@@ -19,13 +19,11 @@
 
 {% block content %}
 <div class="card">
-    <div class="card-header bg-danger text-white">
-        Leave class
-    </div>
+    <div class="card-header bg-danger text-white">Leave class</div>
     <div class="card-body bg-warning text-dark">
         <h5 class="card-title">Warning</h5>
         <p class="card-text">Are you sure you want to unenroll from your class, {{student_class.class_name}}?</p>
-        <form method="POST" action="{% url 'leaveClass' student_class.id %}">
+        <form class="bg-transparent" method="POST" action="{% url 'leaveClass' student_class.id %}">
             {% csrf_token %}
 
             <a href="{% url 'studentClass' student_class.id %}"  class="btn btn-primary">Cancel</a>
