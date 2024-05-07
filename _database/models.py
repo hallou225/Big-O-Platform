@@ -154,12 +154,13 @@ class Item(models.Model):
                 child_item_name = algorithm.name
                 child_item_id = algorithm.id
         
-        return f"{self.module.name}: {self.type}->{child_item_name}"
+        #return f"{self.module.name}: {self.type}->{child_item_name}"
+        return f"{self.type}->{child_item_name}"
         #return f"[{self.module.id}]: {self.module.name} [{self.id}]: {self.type}  [{child_item_id}]: {child_item_name}"
 
 class Page(models.Model):
     name = models.CharField(max_length=100, null=True) # Required Field
-    # content = models.TextField(max_length=2000, null=True) # Required Field
+    # content = models.TextField(max_length=2000, null=True) # Required Field 
     content = CKEditor5Field(blank=True, null=True, config_name='extends')
     item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE) # The module this algorithm
 
