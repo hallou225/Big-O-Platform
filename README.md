@@ -5,7 +5,9 @@
 
 **Release Notes:**
   Milestone 1: We finalized work on the server, setting up the database and the initial website configuration.
+  
   Milestone 2: We developed a working teacher side of the application, ensuring it worked with our previous work.
+  
   Milestone 3: We developed a working student side of the application, ensuring it worked with our previous work.
   Milestone 4: We implemented the logic and functionality for the algorithm upload and submission, implemented the page uploads, and tested that the teacher and student sides worked together as expected.
   Milestone 5: We finalized the project by gathering realistic data for the website, populating the database with the realistic data. We also fine tuned some details and styling before doing a final run-                 through of the application to make sure everything worked as expected.
