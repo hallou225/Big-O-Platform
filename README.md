@@ -1,9 +1,9 @@
 # Big-O-Platform
 
-Introduction:
+**Introduction:**
   Our application is a learning management system that provides an intuitive interface for teachers to teach, and students to learn about, algorithm run-time complexity analysis using big-O notation. To use our application, a student would create a student account and join their teacher's class via a class code that the teacher must provide to the student. Teachers and create pages for the students to read or algorithms (via code upload and customization) for the students to complete.
 
-Release Notes:
+**Release Notes:**
   Milestone 1: We finalized work on the server, setting up the database and the initial website configuration.
   Milestone 2: We developed a working teacher side of the application, ensuring it worked with our previous work.
   Milestone 3: We developed a working student side of the application, ensuring it worked with our previous work.
