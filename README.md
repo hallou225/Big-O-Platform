@@ -2,7 +2,7 @@
 
 **Introduction:**
 
-  Our application is a learning management system that provides an intuitive interface for teachers to teach, and students to learn about, algorithm run-time complexity analysis using big-O notation. To use our application, a student would create a student account and join their teacher's class via a class code that the teacher must provide to the student. Teachers can create pages for the students to read or algorithms (via code upload and customization) for the students to complete.
+Our application is a learning management system that provides an intuitive interface for teachers to teach, and students to learn about, algorithm run-time complexity analysis using big-O notation. To use our application, a student would create a student account and join their teacher's class via a class code that the teacher must provide to the student. Teachers can create pages for the students to read or algorithms (via code upload and customization) for the students to complete.
 
 
 **Release Notes:**
