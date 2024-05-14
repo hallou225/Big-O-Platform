@@ -23,11 +23,11 @@
     <div class="card-body bg-warning text-dark">
         <h5 class="card-title">Warning</h5>
         <p class="card-text">Are you sure you want to delete your account</p>
-        <form method="POST" action="">
+        <form class="bg-transparent" method="POST" action="">
             {% csrf_token %}
 
             <a href="{% url 'studentProfile' %}"  class="btn btn-primary">Cancel</a>
-            <button type="submit" class="btn btn-danger">Leave</button>
+            <button type="submit" class="btn btn-danger">Delete Account</button>
         </form>
     </div>
 </div>

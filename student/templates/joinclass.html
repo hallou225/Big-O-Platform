@@ -17,27 +17,36 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Join a Class form (use post method to prevent data being shown in url) -->
-    <form id="joinAClassForm" method="POST" action="">
-        {% csrf_token %}
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <!-- Join a Class form (use post method to prevent data being shown in url) -->
+            <form id="joinAClassForm" method="POST" action="" class="form-inline border col-8">
+                {% csrf_token %}
 
-        <!-- Content inside the form -->
-        <div id="joinAClassFormContent">
+                <!-- Content inside the form -->
+                <div id="joinAClassFormContent">
+                
+                    <div class="row mb-3 text-center pt-3">
+                        <h3 id="joinAClassHeader" class="pb-0 mb-0">Join a Class</h3>
+                    </div>
+                    
+                    <div class="row mb-3 justify-content-center pt-2">
+                        <label id="enterClassCode" class="col-sm-4 col-form-label">Enter the Class Code</label>
+                        <div class="col-sm-5">
+                            {{form.class_code}}
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <input class="btn btn-primary col-2 mt-2" id="submitButton" type="submit" value="Join Class">
+                    </div>
+                    <br>
         
-            <h1 id="joinAClassHeader">Join a Class</h1>
-            <h2 id="enterClassCode">Enter the Class Code</h2>
-
-            <!-- Text entry for class code -->
-            {{form.class_code}}
-
-            <br>
-            <input class="btn btn-primary col-2 mt-2" id="submitButton" type="submit" value="Join Class">
-
-            <p class="errors">
-                {{ errorMessage }}
-            </p>
-
+                    <div class="row mb-3 justify-content-center">
+                        <p class="text-danger text-center pb-0 mb-0">{{errorMessage}}</p>
+                    </div>
+                </div>
+            </form>
         </div>
-
-    </form>
+    </div>
 {% endblock %}

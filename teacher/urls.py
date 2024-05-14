@@ -26,6 +26,7 @@ urlpatterns = [
 
     # Algorithm CRUD
     path("class/<str:class_pk>/module/<str:module_pk>/createAlgorithm", views.createAlgorithm, name="createAlgorithm"),
+    path("class/<str:class_pk>/module/<str:module_pk>/createAlgorithm2", views.createAlgorithm2, name="createAlgorithm2"),
     path("class/<str:class_pk>/algorithms/<str:algorithm_pk>/update", views.updateAlgorithm, name="updateAlgorithm"),
     path("class/<str:class_pk>/algorithms/<str:algorithm_pk>/deleteAlgorithm", views.deleteAlgorithm, name="deleteAlgorithm"),
     path("class/<str:class_pk>/algorithms/<str:algorithm_pk>", views.teacherViewAlgorithm, name="teacherViewAlgorithm"),

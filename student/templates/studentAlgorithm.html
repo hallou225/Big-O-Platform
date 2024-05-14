@@ -65,23 +65,6 @@
 <form id="algorithmAnswerForm" action="" method="POST" class="p-2">
     {% csrf_token %}
 
-    <!-- row for displaying the content of the uploaded algorithm/answer-->
-    <div class="row border-bottom p-2 mb-4">
-        <h1> for debugging purposes - remove when done</h1>
-        <div class="col">
-            <h3>Algorithm:</h3>
-            {% for code in codes %}
-                <pre><code class="language-java">{{ code }}<br></code></pre>
-            {% endfor %}
-        </div>
-        <div class="col">
-            <h3>Answer Key:</h3>
-            {% for answer in answers %}
-                <pre><code>{{ answer }}<br></code></pre>
-            {% endfor %} 
-        </div>    
-    </div>
-
     <table id="algorithmTable" class="mb-2">
         <col style="width: 2%;">
         <col style="width: 50%;">
@@ -105,14 +88,9 @@
                 {% if code != '' %}
                     <select name="answers[]" class="w-100" required>
                         <option value="">Select an option...</option>
-                        <option value="O(1)">O(1)</option>
-                        <option value="O(log n)">O(log n)</option>
-                        <option value="O(n)">O(n)</option>
-                        <option value="O(n log n)">O(n log n)</option>
-                        <option value="O(n^2)">O(n^2)</option>
-                        <option value="O(n^3)">O(n^3)</option>
-                        <option value="O(2^n)">O(2^n)</option>
-                        <option value="O(n!)">O(n!)</option>
+                        {% for option in options %}
+                            <option value="{{option}}">{{option}}</option>
+                        {% endfor %}
                     </select>
                 {% else %}
                     <select name="answers[]" class="w-100 d-none">
